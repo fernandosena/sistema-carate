@@ -3,50 +3,11 @@
         <section class="app_main_left">
             <article class="app_widget">
                 <header class="app_widget_title">
-                    <h2 class="icon-bar-chart">Controle</h2>
+                    <h2 class="icon-bar-chart">Controle de alunos</h2>
                 </header>
                 <div id="control"></div>
             </article>
 
-            <div class="app_main_left_fature">
-                <article class="app_widget app_widget_balance">
-                    <header class="app_widget_title">
-                        <h2 class="icon-calendar-minus-o">À receber:</h2>
-                    </header>
-                    <div class="app_widget_content">
-                        <?php if (!empty($income)): ?>
-                            <?php foreach ($income as $incomeItem): ?>
-                                <?= $this->insert("views/balance", ["invoice" => $incomeItem->data()]); ?>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <div class="message success al-center icon-check-square-o">
-                                No momento, não existem contas a receber.
-                            </div>
-                        <?php endif; ?>
-                        <a href="<?= url("app/receber"); ?>" title="Receitas"
-                           class="app_widget_more transition">+ Receitas</a>
-                    </div>
-                </article>
-
-                <article class="app_widget app_widget_balance">
-                    <header class="app_widget_title">
-                        <h2 class="icon-calendar-check-o">À pagar:</h2>
-                    </header>
-                    <div class="app_widget_content">
-                        <?php if (!empty($expense)): ?>
-                            <?php foreach ($expense as $expenseItem): ?>
-                                <?= $this->insert("views/balance", ["invoice" => $expenseItem->data()]); ?>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <div class="message error al-center icon-check-square-o">
-                                No momento, não existem contas a pagar.
-                            </div>
-                        <?php endif; ?>
-                        <a href="<?= url("app/pagar"); ?>" title="Despesas"
-                           class="app_widget_more transition">+ Despesas</a>
-                    </div>
-                </article>
-            </div>
         </section>
 
         <section class="app_main_right">
@@ -62,12 +23,12 @@
                     <h2 class="icon-user radius">Alunos Cadastrados</h2>
                 </header>
 
-                <p class="app_flex_amount">0</p>
+                <p class="app_flex_amount"><?= $studentscount ?? 0 ?></p>
             </article>
 
             <section class="app_widget app_widget_blog">
                 <header class="app_widget_title">
-                    <h2 class="icon-graduation-cap">Aprenda:</h2>
+                    <h2 class="icon-info">Avisos:</h2>
                 </header>
                 <div class="app_widget_content">
                     <?php if (!empty($posts)): ?>
@@ -83,9 +44,11 @@
                                 </h3>
                             </article>
                         <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="message info icon-info">
+                            Não existem nenhum aviso ainda.
+                        </div>
                     <?php endif; ?>
-                    <a target="_blank" href="<?= url("/blog"); ?>" title="Blog"
-                       class="app_widget_more transition">Ver Mais...</a>
                 </div>
             </section>
         </section>
@@ -112,7 +75,7 @@
                 },
                 title: null,
                 xAxis: {
-                    categories: [<?= $chart->categories;?>],
+                    categories: [<?= $chart->categories; ?>],
                     minTickInterval: 1
                 },
                 yAxis: {
@@ -121,8 +84,7 @@
                 },
                 tooltip: {
                     shared: true,
-                    valueDecimals: 2,
-                    valuePrefix: 'R$ '
+                    valueDecimals: 0,
                 },
                 credits: {
                     enabled: false
@@ -133,42 +95,11 @@
                     }
                 },
                 series: [{
-                    name: 'Receitas',
-                    data: [<?= $chart->income;?>],
+                    name: 'Alunos',
+                    data: [<?= $chart->students;?>],
                     color: '#61DDBC',
                     lineColor: '#36BA9B'
-                }, {
-                    name: 'Despesas',
-                    data: [<?= $chart->expense;?>],
-                    color: '#F76C82',
-                    lineColor: '#D94352'
                 }]
-            });
-
-            $("[data-onpaid]").click(function (e) {
-                setTimeout(function () {
-                    $.post('<?= url("/app/dash");?>', function (callback) {
-                        if (callback.chart) {
-                            chart.update({
-                                xAxis: {
-                                    categories: callback.chart.categories
-                                },
-                                series: [{
-                                    data: callback.chart.income
-                                }, {
-                                    data: callback.chart.expense
-                                }]
-                            });
-                        }
-
-                        if (callback.wallet) {
-                            $(".app_wallet").removeClass("gradient-red gradient-green").addClass(callback.wallet.status);
-                            $(".app_flex_amount").text("R$ " + callback.wallet.wallet);
-                            $(".app_flex_balance .income").text("R$ " + callback.wallet.income);
-                            $(".app_flex_balance .expense").text("R$ " + callback.wallet.expense);
-                        }
-                    }, "json");
-                }, 200);
             });
         });
     </script>

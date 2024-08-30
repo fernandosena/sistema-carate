@@ -16,6 +16,7 @@ use Source\Models\Post;
 use Source\Models\Report\Access;
 use Source\Models\Report\Online;
 use Source\Models\User;
+use Source\Models\Student;
 use Source\Support\Email;
 use Source\Support\Thumb;
 use Source\Support\Upload;
@@ -118,7 +119,7 @@ class App extends Controller
         );
 
         //CHART
-        $chartData = (new AppInvoice())->chartData($this->user);
+        $chartData = (new Student())->chartData($this->user);
         //END CHART
 
         //INCOME && EXPENSE
@@ -148,8 +149,13 @@ class App extends Controller
         $posts = (new Post())->findPost()->limit(3)->order("post_at DESC")->fetch(true);
         //END POSTS
 
+        //STUDENTS
+        $student = (new Student())->find("user_id = :id", "id={$this->user->id}")->count();
+        //END STUDENTS
+
         echo $this->view->render("home", [
             "head" => $head,
+            "studentscount" => $student,
             "chart" => $chartData,
             "income" => $income,
             "expense" => $expense,
@@ -220,6 +226,47 @@ class App extends Controller
 
     public function students(?array $data): void
     {
+        if (!empty($data["action"]) && $data["action"] == "create") {
+            $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
+
+            $studentCreate = new Student();
+            $studentCreate->user_id = $this->user->id;
+            $studentCreate->first_name = $data["first_name"];
+            $studentCreate->last_name = $data["last_name"];
+            $studentCreate->email = $data["email"];
+            $studentCreate->phone = $data["phone"];
+            $studentCreate->belts = $data["belts"];
+            $studentCreate->description = $data["description"];
+
+            //upload photo
+            if (!empty($_FILES["photo"])) {
+                $files = $_FILES["photo"];
+                $upload = new Upload();
+                $image = $upload->image($files, $studentCreate->fullName(), 600);
+
+                if (!$image) {
+                    $json["message"] = $upload->message()->render();
+                    echo json_encode($json);
+                    return;
+                }
+
+                $studentCreate->photo = $image;
+            }
+
+            if (!$studentCreate->save()) {
+                $json["message"] = $studentCreate->message()->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $this->message->success("Aluno cadastrado com sucesso...")->flash();
+            // $json["redirect"] = url("/admin/users/user/{$studentCreate->id}");
+            $json["redirect"] = url("/app/alunos");
+
+            echo json_encode($json);
+            return;
+        }
+        
         $head = $this->seo->render(
             "Meus Alunos - " . CONF_SITE_NAME,
             CONF_SITE_DESC,
@@ -228,9 +275,11 @@ class App extends Controller
             false
         );
 
+
         echo $this->view->render("students", [
             "user" => $this->user,
             "head" => $head,
+            "invoices" => (new Student())->filter($this->user, "income", ($data ?? null)),
             "filter" => (object)[
                 "status" => ($data["status"] ?? null),
                 "category" => ($data["category"] ?? null),

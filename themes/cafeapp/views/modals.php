@@ -25,7 +25,12 @@
             ->fetch(true)
     ]);
 
-    $this->insert("views/student");
+    $this->insert("views/student", [
+        "categories" => (new \Source\Models\Belts())
+            ->find()
+            ->order("title")
+            ->fetch(true)
+    ]);
     ?>
 
     <!--SUPPORT-->
@@ -38,8 +43,7 @@
                     <option value="Pedido de suporte">&ofcir; Preciso de suporte</option>
                     <option value="Nova sugestão">&ofcir; Enviar uma sugestão</option>
                     <option value="Nova reclamação">&ofcir; Enviar uma reclamação</option>
-                    <option value="Mudança de plano">&ofcir; Mudar meu plano</option>
-                    <option value="Pedido de cancelamento">&ofcir; Cancelar assinatura</option>
+                    <option value="Outro">&ofcir; Outro</option>
                 </select>
             </label>
 

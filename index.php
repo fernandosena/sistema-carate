@@ -47,6 +47,7 @@ $route->group("/app");
 $route->get("/", "App:home");
 $route->get("/receber", "App:income");
 $route->get("/alunos", "App:students");
+$route->post("/alunos", "App:students");
 $route->get("/receber/{status}/{category}/{date}", "App:income");
 $route->get("/pagar", "App:expense");
 $route->get("/pagar/{status}/{category}/{date}", "App:expense");
