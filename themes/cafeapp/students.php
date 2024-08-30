@@ -63,7 +63,7 @@
                 <p class="desc app_invoice_link transition">
                     <a title="<?= $invoice->fullName(); ?>"
                        href="<?= url("/app/aluno/{$invoice->id}"); ?>"><?= str_limit_words($invoice->fullName(),
-                            3, "&nbsp;<span class='icon-info icon-notext'></span>") ?></a>
+                            3, "...") ?></a>
                 </p>
                 <p class="category"><?= $invoice->email ?></p>
                 <p class="enrollment"><?= $invoice->belts()->title ?></p>

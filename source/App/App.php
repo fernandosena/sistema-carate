@@ -234,6 +234,7 @@ class App extends Controller
             $studentCreate->first_name = $data["first_name"];
             $studentCreate->last_name = $data["last_name"];
             $studentCreate->email = $data["email"];
+            $studentCreate->document = $data["document"];
             $studentCreate->phone = $data["phone"];
             $studentCreate->belts = $data["belts"];
             $studentCreate->description = $data["description"];

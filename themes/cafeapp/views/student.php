@@ -24,7 +24,7 @@
         <div class="label_group">
             <label>
                 <span class="field icon-briefcase">CPF:</span>
-                <input class="radius mask-cpf" type="text" name="document" placeholder="Ex: 123.456.789-01" required/>
+                <input class="radius mask-doc" type="text" name="document" placeholder="Ex: 123.456.789-01" required/>
             </label>
             <label>
                 <span class="field icon-phone">Telefone:</span>
