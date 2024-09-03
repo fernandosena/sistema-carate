@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <?= $head; ?>
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="<?= theme("plugins/fontawesome-free/css/all.min.css", CONF_VIEW_ADMIN); ?>">
+    <link rel="stylesheet" href="<?= theme("plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css", CONF_VIEW_ADMIN); ?>">
+    <link rel="stylesheet" href="<?= theme("plugins/icheck-bootstrap/icheck-bootstrap.min.css", CONF_VIEW_ADMIN); ?>">
+    <link rel="stylesheet" href="<?= theme("plugins/jqvmap/jqvmap.min.css", CONF_VIEW_ADMIN); ?>">
+    <link rel="stylesheet" href="<?= theme("dist/css/adminlte.min.css", CONF_VIEW_ADMIN); ?>">
+    <link rel="stylesheet" href="<?= theme("plugins/overlayScrollbars/css/OverlayScrollbars.min.css", CONF_VIEW_ADMIN); ?>">
+    <link rel="stylesheet" href="<?= theme("plugins/daterangepicker/daterangepicker.css", CONF_VIEW_ADMIN); ?>">
+    <link rel="stylesheet" href="<?= theme("plugins/summernote/summernote-bs4.min.css", CONF_VIEW_ADMIN); ?>">
+    <link rel="stylesheet" href="<?= url("shared/styles/load.css"); ?>">
+    <link rel="stylesheet" href="<?= theme("assets/css/style.css", CONF_VIEW_ADMIN); ?>">
+</head>
+    <body class="hold-transition sidebar-mini layout-fixed">
+        <div class="ajax_load" style="z-index: 999;">
+            <div class="ajax_load_box">
+                <div class="ajax_load_box_circle"></div>
+                <p class="ajax_load_box_title">Aguarde, carregando...</p>
+            </div>
+        </div>
+        <div class="wrapper">
+            <div class="preloader flex-column justify-content-center align-items-center">
+                <img class="animation__shake" src="<?= theme("dist/img/AdminLTELogo.png", CONF_VIEW_ADMIN) ?>" alt="<?= CONF_SITE_NAME ?>" height="60" width="60">
+            </div>
+
+            <!-- Navbar -->
+            <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+                <!-- Left navbar links -->
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                    </li>
+                    <li class="nav-item d-none d-sm-inline-block">
+                        <a href="<?= url("admin") ?>" class="nav-link">Home</a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.navbar -->
+
+            <!-- Main Sidebar Container -->
+            <aside class="main-sidebar sidebar-dark-primary elevation-4">
+                <!-- Brand Logo -->
+                <a href="<?= url("admin/") ?>" class="brand-link">
+                <img src="<?= theme("dist/img/AdminLTELogo.png", CONF_VIEW_ADMIN) ?>" alt="<?= CONF_SITE_NAME ?> Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light"><?= CONF_SITE_NAME ?></span>
+                </a>
+                <!-- Sidebar -->
+                <div class="sidebar">
+                    <!-- Sidebar user panel (optional) -->
+                    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                        <div class="image">
+                            <?php if (user()->photo()): ?>
+                                <img class="img-circle elevation-2" alt="<?= user()->first_name; ?>" title="<?= user()->first_name; ?>"
+                                        src="<?= image(user()->photo, 260, 260); ?>"/>
+                            <?php else: ?>
+                                <img class="img-circle elevation-2"  alt="<?= user()->first_name; ?>" title="<?= user()->first_name; ?>"
+                                        src="<?= theme("/assets/images/avatar.jpg", CONF_VIEW_ADMIN); ?>"/>
+                            <?php endif; ?>
+                        </div>
+                        <div class="info">
+                            <a href="#" class="d-block"><?= str_limit_words(user()->fullName(), 3); ?></a>
+                        </div>
+                    </div>
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <?php
+                            $nav = function ($array) use ($app) {
+                                $nav = "";
+                                if(is_array($array)){
+                                    $activeM = (explode("/", $app)[0] == explode("/", $array['href'])[0] ? "active" : null);
+                                    $urlM = url("/admin/{$array['href']}");
+
+                                    $nav .= "<li class='nav-item ".(!empty($activeM) ? "menu-open" : null )."'>
+                                                <a href='{$urlM}' class='nav-link {$activeM}'>
+                                                    <i class='nav-icon fas {$array["icon"]}'></i>
+                                                    <p>
+                                                        {$array['title']}
+                                                        ".(!empty($array["submenu"]) ? "
+                                                        <i class='right fas fa-angle-left'></i>" : null) ."
+                                                    </p>
+                                                </a>";
+                                        if(!empty($array["submenu"])){
+                                            $nav .= "<ul class='nav nav-treeview'>";
+                                            foreach ($array["submenu"] as $submenu) {
+                                                $activeS = (explode("/", $app)[1] == explode("/", $submenu['href'])[1] ? "active" : null);
+                                                $urlS = url("/admin/{$submenu['href']}");
+
+                                                $nav .= "<li class='nav-item'>
+                                                            <a class='nav-link {$activeS}' href='{$urlS}'>
+                                                                <i class='far {$submenu["icon"]}'></i>
+                                                                <p>{$submenu["title"]}</p>
+                                                            </a>
+                                                        </li>";
+                                            }
+                                            $nav .= "</ul>";
+                                        }
+                                    $nav .= "</li>";
+                                }
+                                return $nav;
+                            };
+
+                            echo $nav(
+                                [
+                                    "icon"=>"fa-tachometer-alt",
+                                    "href"=>"dash",
+                                    "title"=>"Dashboard",
+                                ],
+                            );
+                            echo $nav(
+                                [
+                                    "icon"=>"fa-user",
+                                    "href"=>"users",
+                                    "title"=>"Professores",
+                                    "submenu"=> [
+                                        [
+                                            "icon"=>"fa-list",
+                                            "href"=>"users/home",
+                                            "title"=>"Listar",
+                                        ],
+                                        [
+                                            "icon"=>"fa-user-plus",
+                                            "href"=>"users/user",
+                                            "title"=>"Cadastrar",
+                                        ]
+                                    ],
+                                ],
+                            );
+                            echo $nav(
+                                [
+                                    "icon"=>"fa-user",
+                                    "href"=>"students",
+                                    "title"=>"Alunos",
+                                    "submenu"=> [
+                                        [
+                                            "icon"=>"fa-list",
+                                            "href"=>"students/home",
+                                            "title"=>"Listar",
+                                        ],
+                                        [
+                                            "icon"=>"fa-user-plus",
+                                            "href"=>"students/student",
+                                            "title"=>"Cadastrar",
+                                        ]
+                                    ],
+                                ],
+                            );
+                            echo $nav(
+                                [
+                                    "icon"=>"fa-user",
+                                    "href"=>"students",
+                                    "title"=>"Faixas",
+                                    "submenu"=> [
+                                        [
+                                            "icon"=>"fa-list",
+                                            "href"=>"belts/home",
+                                            "title"=>"Listar",
+                                        ],
+                                        [
+                                            "icon"=>"fa-user-plus",
+                                            "href"=>"belts/belt",
+                                            "title"=>"Cadastrar",
+                                        ]
+                                    ],
+                                ],
+                            );
+                            echo $nav(
+                                [
+                                    "icon"=>"fa-sign-out",
+                                    "href"=>"logoff",
+                                    "title"=>"Sair",
+                                ],
+                            );
+                        ?>
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+                </div>
+                <!-- /.sidebar -->
+            </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <div class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1 class="m-0">Dashboard</h1>
+                        </div><!-- /.col -->
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Dashboard</li>
+                            </ol>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+                </div><!-- /.container-fluid -->
+            </div>
+            <!-- /.content-header -->
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="ajax_response"><?= flash(); ?></div>
+                    <?= $this->section("content"); ?>
+                </div><!-- /.container-fluid -->
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+        <footer class="main-footer">
+            <strong>Copyright &copy; <?= date('Y')?></strong>
+            Todos os direitos reservados.
+            <div class="float-right d-none d-sm-inline-block">
+            <b>Version</b> 0.1.0
+            </div>
+        </footer>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+        </div>
+    <!-- ./wrapper -->
+
+    <!-- jQuery -->
+    <script src="<?= theme("plugins/jquery/jquery.min.js", CONF_VIEW_ADMIN); ?>"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="<?= theme("plugins/jquery-ui/jquery-ui.min.js", CONF_VIEW_ADMIN); ?>"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+
+    <script src="<?= url("shared/scripts/jquery.mask.js"); ?>"></script>
+    </body>
+    <script>
+    $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="<?= theme("plugins/bootstrap/js/bootstrap.bundle.min.js", CONF_VIEW_ADMIN); ?>"></script>
+    <!-- ChartJS -->
+    <script src="<?= theme("plugins/chart.js/Chart.min.js", CONF_VIEW_ADMIN); ?>"></script>
+    <!-- Sparkline -->
+    <script src="<?= theme("plugins/sparklines/sparkline.js", CONF_VIEW_ADMIN); ?>"></script>
+    <!-- JQVMap -->
+    <script src="<?= theme("plugins/jqvmap/jquery.vmap.min.js", CONF_VIEW_ADMIN); ?>"></script>
+    <script src="<?= theme("plugins/jqvmap/maps/jquery.vmap.usa.js", CONF_VIEW_ADMIN); ?>"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="<?= theme("plugins/jquery-knob/jquery.knob.min.js", CONF_VIEW_ADMIN); ?>"></script>
+    <!-- daterangepicker -->
+    <script src="<?= theme("plugins/moment/moment.min.js", CONF_VIEW_ADMIN); ?>"></script>
+    <script src="<?= theme("plugins/daterangepicker/daterangepicker.js", CONF_VIEW_ADMIN); ?>"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="<?= theme("plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js", CONF_VIEW_ADMIN); ?>"></script>
+    <!-- Summernote -->
+    <script src="<?= theme("plugins/summernote/summernote-bs4.min.js", CONF_VIEW_ADMIN); ?>"></script>
+    <!-- overlayScrollbars -->
+    <script src="<?= theme("plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js", CONF_VIEW_ADMIN); ?>"></script>
+    <script src="<?= url("/shared/scripts/jquery.form.js"); ?>"></script>
+    <!-- AdminLTE App -->
+    <script src="<?= theme("dist/js/adminlte.js", CONF_VIEW_ADMIN); ?>"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="<?= theme("dist/js/pages/dashboard.js", CONF_VIEW_ADMIN); ?>"></script>
+    <script src="<?= theme("assets/js/scripts.js", CONF_VIEW_ADMIN); ?>"></script>
+    </body>
+</html>

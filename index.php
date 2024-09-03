@@ -90,7 +90,16 @@ $route->post("/users/user", "Users:user");
 $route->get("/users/user/{user_id}", "Users:user");
 $route->post("/users/user/{user_id}", "Users:user");
 
-//users
+//student
+$route->get("/students/home", "Students:home");
+$route->post("/students/home", "Students:home");
+$route->get("/students/home/{search}/{page}", "Students:home");
+$route->get("/students/student", "Students:student");
+$route->post("/students/student", "Students:student");
+$route->get("/students/student/{student_id}", "Students:student");
+$route->post("/students/student/{student_id}", "Students:student");
+
+//belts
 $route->get("/belts/home", "Belts:home");
 $route->post("/belts/home", "Belts:home");
 $route->get("/belts/home/{search}/{page}", "Belts:home");

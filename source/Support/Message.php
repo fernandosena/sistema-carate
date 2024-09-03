@@ -74,7 +74,7 @@ class Message
      */
     public function info(string $message): Message
     {
-        $this->type = "info icon-info";
+        $this->type = "info icon-info alert alert-info alert-dismissible";
         $this->text = $this->filter($message);
         return $this;
     }
@@ -85,7 +85,7 @@ class Message
      */
     public function success(string $message): Message
     {
-        $this->type = "success icon-check-square-o";
+        $this->type = "success icon-check-square-o alert alert-success alert-dismissible";
         $this->text = $this->filter($message);
         return $this;
     }
@@ -96,7 +96,7 @@ class Message
      */
     public function warning(string $message): Message
     {
-        $this->type = "warning icon-warning";
+        $this->type = "warning icon-warning alert alert-warning alert-dismissible";
         $this->text = $this->filter($message);
         return $this;
     }
@@ -107,7 +107,7 @@ class Message
      */
     public function error(string $message): Message
     {
-        $this->type = "error icon-warning";
+        $this->type = "error icon-warning alert alert-danger alert-dismissible";
         $this->text = $this->filter($message);
         return $this;
     }

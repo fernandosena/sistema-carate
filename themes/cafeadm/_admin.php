@@ -38,16 +38,16 @@
 
         <ul class="dash_sidebar_nav">
             <?php
-            $nav = function ($icon, $href, $title) use ($app) {
-                $active = (explode("/", $app)[0] == explode("/", $href)[0] ? "active" : null);
-                $url = url("/admin/{$href}");
-                return "<li class=\"dash_sidebar_nav_li {$active}\"><a class=\"icon-{$icon}\" href=\"{$url}\">{$title}</a></li>";
-            };
+                $nav = function ($icon, $href, $title) use ($app) {
+                    $active = (explode("/", $app)[0] == explode("/", $href)[0] ? "active" : null);
+                    $url = url("/admin/{$href}");
+                    return "<li class=\"dash_sidebar_nav_li {$active}\"><a class=\"icon-{$icon}\" href=\"{$url}\">{$title}</a></li>";
+                };
 
-            echo $nav("home", "dash", "Dashboard");
-            echo $nav("user", "users/home", "Usuários");
-            echo $nav("user", "belts/home", "Faixas");
-            echo $nav("sign-out on_mobile", "logoff", "Sair");
+                echo $nav("home", "dash", "Dashboard");
+                echo $nav("user", "users/home", "Usuários");
+                echo $nav("user", "belts/home", "Faixas");
+                echo $nav("sign-out on_mobile", "logoff", "Sair");
             ?>
         </ul>
     </aside>

@@ -180,6 +180,7 @@ class Belts extends Admin
         echo $this->view->render("widgets/belts/home", [
             "app" => "belts/home",
             "head" => $head,
+            
             "search" => $search,
             "belts" => $belts->order("title")->limit($pager->limit())->offset($pager->offset())->fetch(true),
             "paginator" => $pager->render()
