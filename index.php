@@ -30,15 +30,13 @@ $route->get("/recuperar", "Web:forget");
 $route->post("/recuperar", "Web:forget");
 $route->get("/recuperar/{code}", "Web:reset");
 $route->post("/recuperar/resetar", "Web:reset");
+$route->get("/certificado", "Web:certificate");
+$route->post("/certificado", "Web:certificate");
 
 //optin
 $route->group(null);
 $route->get("/confirma", "Web:confirm");
 $route->get("/obrigado/{email}", "Web:success");
-
-//services
-$route->group(null);
-$route->get("/termos", "Web:terms");
 
 /**
  * APP
@@ -91,6 +89,15 @@ $route->get("/users/user", "Users:user");
 $route->post("/users/user", "Users:user");
 $route->get("/users/user/{user_id}", "Users:user");
 $route->post("/users/user/{user_id}", "Users:user");
+
+//users
+$route->get("/belts/home", "Belts:home");
+$route->post("/belts/home", "Belts:home");
+$route->get("/belts/home/{search}/{page}", "Belts:home");
+$route->get("/belts/belt", "Belts:belt");
+$route->post("/belts/belt", "Belts:belt");
+$route->get("/belts/belt/{belt_id}", "Belts:belt");
+$route->post("/belts/belt/{belt_id}", "Belts:belt");
 
 //notification center
 $route->post("/notifications/count", "Notifications:count");

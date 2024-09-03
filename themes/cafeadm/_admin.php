@@ -46,7 +46,7 @@
 
             echo $nav("home", "dash", "Dashboard");
             echo $nav("user", "users/home", "Usuários");
-
+            echo $nav("user", "belts/home", "Faixas");
             echo $nav("sign-out on_mobile", "logoff", "Sair");
             ?>
         </ul>

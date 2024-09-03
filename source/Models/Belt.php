@@ -5,16 +5,16 @@ namespace Source\Models;
 use Source\Core\Model;
 
 /**
- * Class Belts
+ * Class Belt
  * @package Source\Models
  */
-class Belts extends Model
+class Belt extends Model
 {
     /**
-     * Belts constructor.
+     * Belt constructor.
      */
     public function __construct()
     {
-        parent::__construct("belts", ["id"], ["title", "description"]);
+        parent::__construct("belts", ["id"], ["title", "color", "description"]);
     }
 }

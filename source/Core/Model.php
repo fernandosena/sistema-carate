@@ -144,6 +144,17 @@ abstract class Model
     }
 
     /**
+     * @param string $document
+     * @param string $columns
+     * @return null|mixed|Model
+     */
+    public function findByDocument(string $document, string $columns = "*"): ?Model
+    {
+        $find = $this->find("document = :document", "document={$document}", $columns);
+        return $find->fetch();
+    }
+
+    /**
      * @param string $columnOrder
      * @return Model
      */

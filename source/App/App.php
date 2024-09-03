@@ -42,6 +42,10 @@ class App extends Controller
             redirect("/entrar");
         }
 
+        if($this->user->level == 5){
+            redirect("/admin");
+        }
+        
         (new Access())->report();
         (new Online())->report();
 

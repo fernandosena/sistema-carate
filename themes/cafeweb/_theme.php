@@ -58,7 +58,6 @@
             <article class="main_footer_content_item">
                 <h2>Sobre:</h2>
                 <p>O <?= CONF_SITE_NAME ?> é um gerenciador de contas simples, poderoso e gratuito.</p>
-                <a title="Termos de uso" href="<?= url("/termos"); ?>">Termos de uso</a>
             </article>
 
             <article class="main_footer_content_item">
@@ -69,7 +68,7 @@
             <article class="main_footer_content_item">
                 <h2>Contato:</h2>
                 <p class="icon-phone"><b>Telefone:</b><br> +55 55 5555.5555</p>
-                <p class="icon-envelope"><b>Email:</b><br> cafe@<?= CONF_SITE_NAME ?>.com</p>
+                <p class="icon-envelope"><b>Email:</b><br> sac@<?= CONF_SITE_DOMAIN ?></p>
                 <p class="icon-map-marker"><b>Endereço:</b><br> Fpolis, SC/Brasil</p>
             </article>
 

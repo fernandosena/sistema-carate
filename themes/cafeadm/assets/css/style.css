@@ -675,6 +675,12 @@ p {
 .dash_content_app_box {
     margin-top: 30px
 }
+.dash_content_app_box .actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
 
 /*DASHBOARD*/
 /*home stats*/

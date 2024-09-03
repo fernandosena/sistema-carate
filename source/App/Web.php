@@ -10,6 +10,7 @@ use Source\Models\Post;
 use Source\Models\Report\Access;
 use Source\Models\Report\Online;
 use Source\Models\User;
+use Source\Models\Student;
 use Source\Support\Pager;
 
 /**
@@ -217,6 +218,48 @@ class Web extends Controller
                 ->order("rand()")
                 ->limit(3)
                 ->fetch(true)
+        ]);
+    }
+/**
+     * SITE CERTIFICATE
+     * @param null|array $data
+     */
+    public function certificate(?array $data): void
+    {
+        if (!empty($data['csrf'])) {
+            if (!csrf_verify($data)) {
+                $json['message'] = $this->message->error("Erro ao enviar, favor use o formulário")->render();
+                echo json_encode($json);
+                return;
+            }
+
+            if (empty($data['document'])) {
+                $json['message'] = $this->message->warning("Informe o seu CPF para consultar seu certificado")->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $student = (new Student())->findByDocument($data['document']);
+            if ($student->count()) {
+                $this->message->success("Seja bem-vindo(a) de volta")->flash();
+                $json['redirect'] = url("/app");
+            } else {
+                $json['message'] = $student->message()->before("Ooops! ")->render();
+            }
+
+            echo json_encode($json);
+            return;
+        }
+
+        $head = $this->seo->render(
+            "Certificado - " . CONF_SITE_NAME,
+            CONF_SITE_DESC,
+            url("/entrar"),
+            theme("/assets/images/share.jpg")
+        );
+
+        echo $this->view->render("certificate", [
+            "head" => $head
         ]);
     }
 
