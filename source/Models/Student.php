@@ -4,8 +4,7 @@ namespace Source\Models;
 
 use Source\Core\Model;
 use Source\Models\User;
-use Source\Models\Belts;
-use Source\Models\Student;
+use Source\Models\Belt;
 
 /**
  * Class Student
@@ -57,13 +56,32 @@ class Student extends Model
     {
         return "{$this->first_name} {$this->last_name}";
     }
-    
     /**
-     * @return Belts
+     * @return string|null
      */
-    public function belts(): Belts
+    public function photo(): ?string
     {
-        return (new Belts())->find("id = :id", "id={$this->belts}")->fetch();
+        if ($this->photo && file_exists(__DIR__ . "/../../" . CONF_UPLOAD_DIR . "/{$this->photo}")) {
+            return $this->photo;
+        }
+
+        return null;
+    }
+
+    /**
+     * @return Belt
+     */
+    public function belt(): Belt
+    {
+        return (new Belt())->find("id = :id", "id={$this->belts}")->fetch();
+    }
+
+    /**
+     * @return User
+     */
+    public function teacher(): User
+    {
+        return (new User())->find("id = :id", "id={$this->user_id}")->fetch();
     }
 
     /**

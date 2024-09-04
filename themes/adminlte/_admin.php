@@ -92,7 +92,10 @@
                                         if(!empty($array["submenu"])){
                                             $nav .= "<ul class='nav nav-treeview'>";
                                             foreach ($array["submenu"] as $submenu) {
-                                                $activeS = (explode("/", $app)[1] == explode("/", $submenu['href'])[1] ? "active" : null);
+                                                $exp1 = explode("/", $app);
+                                                $exp2 = explode("/", $submenu['href']);
+
+                                                $activeS = (($exp1[0] == $exp2[0]) && ($exp1[1] == $exp2[1])) ? "active" : null;
                                                 $urlS = url("/admin/{$submenu['href']}");
 
                                                 $nav .= "<li class='nav-item'>
@@ -157,7 +160,7 @@
                             echo $nav(
                                 [
                                     "icon"=>"fa-user",
-                                    "href"=>"students",
+                                    "href"=>"belts",
                                     "title"=>"Faixas",
                                     "submenu"=> [
                                         [

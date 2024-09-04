@@ -6,10 +6,10 @@
                 <h3 class="profile-username text-center"><?= $belt->title; ?></h3>
                 <ul class="list-group list-group-unbordered mb-3">
                     <li class="list-group-item">
-                        <b>Qtd. de alunos</b> <a class="float-right">543</a>
+                        <b>Qtd. de alunos</b> <a class="float-right"><?= $belt->student()["activated"] ?></a>
                     </li>
                 </ul>
-                <a href="<?= url("/admin/users/user/{$belt->id}"); ?>" class="btn btn-primary btn-block"><b>Gerênciar</b></a>
+                <a href="<?= url("/admin/belts/belt/{$belt->id}"); ?>" class="btn btn-primary btn-block"><b>Gerênciar</b></a>
             </div>
         </div>
     <?php endforeach; ?>

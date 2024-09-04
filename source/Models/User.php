@@ -75,6 +75,18 @@ class User extends Model
     }
 
     /**
+     * @return array
+     */
+    public function student(): array
+    {
+        return [
+            "all" => (new Student())->find("user_id = :u", "u={$this->id}")->count(),
+            "activated" => (new Student())->find("user_id = :u AND status = :s", "u={$this->id}&s=activated")->count(),
+            "deactivated" => (new Student())->find("user_id = :u AND status = :s", "u={$this->id}&s=deactivated")->count(),
+        ];
+    }
+
+    /**
      * @return bool
      */
     public function save(): bool
