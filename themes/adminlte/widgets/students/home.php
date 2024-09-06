@@ -39,6 +39,10 @@
 "><?= $student->belt()->title ?></span>
                     </li>
                     <li class="list-group-item">
+                        <b>Status</b> 
+                        <span class="float-right"><strong class="badge bg-<?= ($student->status == 'activated') ? 'success': (($student->status == 'pending') ? 'warning' : 'danger') ?>"><?= ($student->status == 'activated') ? 'Ativo': (($student->status == 'pending') ? 'Pendente' : 'Desativado') ?></strong></span>
+                    </li>
+                    <li class="list-group-item">
                         <b>Professor</b> <a href="<?= url("/admin/users/user/{$student->user_id}") ?>" class="float-right"><?= str_limit_chars($student->teacher()->fullName(), 12)?></a>
                     </li>
                     <li class="list-group-item">

@@ -24,6 +24,17 @@ class Students extends App
 
     public function students(?array $data): void
     {
+        //search redirect
+        if (isset($data["s"])) {
+            if(!empty($data["s"])){
+                $s = str_search($data["s"]);
+                echo json_encode(["redirect" => url("/admin/users/home/{$s}/1")]);
+                return;
+            }
+            echo json_encode(["redirect" => url("/app/alunos/home")]);
+            return;
+        }
+
         if (!empty($data["action"]) && $data["action"] == "create") {
             $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
 
@@ -175,5 +186,21 @@ class Students extends App
                 ->fetch(true),
         ]);
     }
+
+
+    /**
+     * @param array $data
+     * @throws \Exception
+     */
+    public function filter(array $data): void
+    {
+        $status = (!empty($data["status"]) ? $data["status"] : "all");
+        $category = (!empty($data["belt"]) ? $data["belt"] : "all");
+
+        $redirect = ($data["filter"] == "income" ? "receber" : "pagar");
+        $json["redirect"] = url("/app/{$redirect}/{$status}/{$category}/");
+        echo json_encode($json);
+    }
+
 
 }

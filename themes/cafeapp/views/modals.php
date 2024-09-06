@@ -55,8 +55,8 @@
         </form>
     </div>
 
-    <?php if(!empty($student)): ?>
-        <div class="app_modal_box app_modal_student_belt">
+    <div class="app_modal_box app_modal_student_belt">
+        <?php if(!empty($student) && $student->status != "pending"): ?>
             <p class="title icon-user">Alterar Faixa:</p>
             <form class="app_form" action="<?= url("/app/alunos"); ?>" method="post">
                 <input type="hidden" name="action" value="update"/>
@@ -78,6 +78,10 @@
 
                 <button class="btn radius transition icon-check-square-o">Atualizar troca de Faixa</button>
             </form>
-        </div>
-    <?php endif; ?>
+        <?php else: ?>
+            <div class="message warning icon-warning">
+                o aluno ainda está em análise, tente novamente mais tarde
+            </div>
+        <?php endif; ?>
+    </div>
 </div>
