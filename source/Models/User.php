@@ -55,6 +55,18 @@ class User extends Model
     }
 
     /**
+     * @param string $document
+     * @param string $columns
+     * @return null|User
+     */
+    public function findByDocument(string $document, string $columns = "*"): ?User
+    {
+        $find = $this->find("document = :d", "d={$document}", $columns);
+        return $find->fetch();
+    }
+
+
+    /**
      * @return string
      */
     public function fullName(): string
@@ -120,6 +132,11 @@ class User extends Model
                 return false;
             }
 
+            if ($this->find("document = :d AND id != :i", "d={$this->document}&i={$userId}", "id")->fetch()) {
+                $this->message->warning("O CPF informado já está cadastrado");
+                return false;
+            }
+
             $this->update($this->safe(), "id = :id", "id={$userId}");
             if ($this->fail()) {
                 $this->message->error("Erro ao atualizar, verifique os dados");
@@ -131,6 +148,11 @@ class User extends Model
         if (empty($this->id)) {
             if ($this->findByEmail($this->email, "id")) {
                 $this->message->warning("O e-mail informado já está cadastrado");
+                return false;
+            }
+
+            if ($this->findByDocument($this->document, "id")) {
+                $this->message->warning("O CPF informado já está cadastrado");
                 return false;
             }
 

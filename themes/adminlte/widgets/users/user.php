@@ -166,50 +166,97 @@
                     <!-- /.tab-pane -->
 
                     <div class="tab-pane" id="profile">
-                    <form class="form-horizontal">
-                        <div class="form-group row">
-                        <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
-                            <input type="email" class="form-control" id="inputName" placeholder="Name">
-                        </div>
-                        </div>
-                        <div class="form-group row">
-                        <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                        <div class="col-sm-10">
-                            <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-                        </div>
-                        </div>
-                        <div class="form-group row">
-                        <label for="inputName2" class="col-sm-2 col-form-label">Name</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="inputName2" placeholder="Name">
-                        </div>
-                        </div>
-                        <div class="form-group row">
-                        <label for="inputExperience" class="col-sm-2 col-form-label">Experience</label>
-                        <div class="col-sm-10">
-                            <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                        </div>
-                        </div>
-                        <div class="form-group row">
-                        <label for="inputSkills" class="col-sm-2 col-form-label">Skills</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                        </div>
-                        </div>
-                        <div class="form-group row">
-                        <div class="offset-sm-2 col-sm-10">
-                            <div class="checkbox">
-                            <label>
-                                <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                            </label>
+                    <form class="app_form" action="<?= url("/admin/users/user/{$user->id}"); ?>" method="post">
+                        <div class="card-body">
+                            <!--ACTION SPOOFING-->
+                            <input type="hidden" name="action" value="update"/>
+                            <input type="hidden" name="level" value="1">
+                            <input type="hidden" name="status" value="confirmed">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>*Nome</label>
+                                        <input type="text"
+                                        name="first_name" value="<?= $user->first_name; ?>" class="form-control" placeholder="Primeiro nome" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>*Sobrenome:</label>
+                                        <input type="text"
+                                        name="last_name" value="<?= $user->last_name; ?>" class="form-control" placeholder="Último nome" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Genero</label>
+                                        <?php
+                                            $genre = $user->genre;
+                                            $select = function ($value) use ($genre) {
+                                                return ($genre == $value ? "selected" : "");
+                                            };
+                                        ?>
+                                        <select class="form-control" name="genre">
+                                            <option <?= $select("male"); ?> value="male">Masculino</option>
+                                            <option <?= $select("female"); ?> value="female">Feminino</option>
+                                            <option <?= $select("other"); ?>  value="other">Outros</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputFile">Foto: (600x600px)</label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                            <input type="file" name="photo" class="custom-file-input" id="exampleInputFile">
+                                            <label class="custom-file-label" for="exampleInputFile">Escolher imagens</label>
+                                            </div>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">Upload</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Nascimento</label>
+                                        <input type="date"
+                                        name="datebirth" value="<?= (!empty($user->datebirth)) ? date_fmt($user->datebirth, "Y-m-d") : null; ?>" class="form-control" placeholder="dd/mm/yyyy">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>CPF</label>
+                                        <input type="text"
+                                        name="document" class="form-control mask-doc" value="<?= $user->document; ?>" placeholder="CPF do usuário">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>*E-mail</label>
+                                        <input type="email"
+                                        name="email" value="<?= $user->email; ?>"  class="form-control" placeholder="Melhor e-mail" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Senha</label>
+                                        <input type="password"
+                                        name="password" class="form-control mask-doc" placeholder="Senha de acesso">
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        </div>
-                        <div class="form-group row">
-                        <div class="offset-sm-2 col-sm-10">
-                            <button type="submit" class="btn btn-danger">Submit</button>
-                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary">Atualizar Perfil</button>
                         </div>
                     </form>
                     </div>
