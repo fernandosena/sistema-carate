@@ -1,4 +1,22 @@
 <?php $this->layout("_admin"); ?>
+<div class="mb-4">
+    <form action="<?= url("/admin/users/home"); ?>" method="post">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <div class="form-group">
+                    <div class="input-group input-group-lg">
+                        <input type="search" value="<?= $search; ?>"  name="s"  class="form-control form-control-lg" placeholder="Pesquisar Professor:">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-lg btn-primary">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 <div class="list-box">
     <?php foreach ($users as $user):
         $userPhoto = ($user->photo() ? image($user->photo, 300, 300) :

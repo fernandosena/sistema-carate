@@ -1,4 +1,24 @@
 <?php $this->layout("_admin"); ?>
+
+<div class="mb-4">
+    <form action="<?= url() ?>" method="post">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <div class="form-group">
+                    <div class="input-group input-group-lg">
+                        <input type="search" name="s" class="form-control form-control-lg" placeholder="Digite sua pesquisa aqui">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-lg btn-primary">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
 <div class="list-box">
     <?php foreach ($students as $student):
         $studentPhoto = ($student->photo() ? image($student->photo, 300, 300) :
@@ -15,7 +35,7 @@
                 <ul class="list-group list-group-unbordered mb-3">
                     <li class="list-group-item">
                         <b>Faixa</b> 
-                        <span class="float-right badge" style="background-color: <?= $student->belt()->color ?>
+                        <span class="float-right badge texto-adaptavel" style="background-color: <?= $student->belt()->color ?>
 "><?= $student->belt()->title ?></span>
                     </li>
                     <li class="list-group-item">

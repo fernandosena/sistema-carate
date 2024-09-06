@@ -49,7 +49,7 @@
     --index-back: -1;
     --index-fold: 2;
     --index-menu: 3;
-    --index-modal: 4;
+    --index-modal: 999;
 }
 
 /*ELEMENTS*/

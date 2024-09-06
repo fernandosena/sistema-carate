@@ -6,6 +6,7 @@ use Source\Models\User;
 use Source\Support\Pager;
 use Source\Support\Thumb;
 use Source\Support\Upload;
+use Source\Models\Student;
 
 /**
  * Class Users
@@ -27,18 +28,22 @@ class Users extends Admin
     public function home(?array $data): void
     {
         //search redirect
-        if (!empty($data["s"])) {
-            $s = str_search($data["s"]);
-            echo json_encode(["redirect" => url("/admin/users/home/{$s}/1")]);
+        if (isset($data["s"])) {
+            if(!empty($data["s"])){
+                $s = str_search($data["s"]);
+                echo json_encode(["redirect" => url("/admin/users/home/{$s}/1")]);
+                return;
+            }
+            echo json_encode(["redirect" => url("/admin/users/home")]);
             return;
         }
 
         $search = null;
-        $users = (new User())->find();
+        $users = (new User())->find("level < :l", "l=5");
 
         if (!empty($data["search"]) && str_search($data["search"]) != "all") {
             $search = str_search($data["search"]);
-            $users = (new User())->find("MATCH(first_name, last_name, email) AGAINST(:s)", "s={$search}");
+            $users = (new User())->find("level < :l and MATCH(first_name, last_name, email) AGAINST(:s)", "l=5&s={$search}");
             if (!$users->count()) {
                 $this->message->info("Sua pesquisa não retornou resultados")->flash();
                 redirect("/admin/users/home");
@@ -71,6 +76,33 @@ class Users extends Admin
      * @throws \Exception
      */
     public function user(?array $data): void
+    {
+        $userId = filter_var($data["user_id"], FILTER_VALIDATE_INT);
+        $user = (new User())->findById($userId);
+
+        $head = $this->seo->render(
+            CONF_SITE_NAME . " | " . ($user ? "Detalhes de {$user->fullName()}" : "Novo Usuário"),
+            CONF_SITE_DESC,
+            url("/admin"),
+            url("/admin/assets/images/image.jpg"),
+            false
+        );
+
+        $students = (new Student())->findByTeacher($userId);
+
+        echo $this->view->render("widgets/users/detail", [
+            "app" => "users/user",
+            "head" => $head,
+            "user" => $user,
+            "students" => $students
+        ]);
+
+    }
+    /**
+     * @param array|null $data
+     * @throws \Exception
+     */
+    public function sss(?array $data): void
     {
         //create
         if (!empty($data["action"]) && $data["action"] == "create") {
@@ -205,7 +237,7 @@ class Users extends Admin
             false
         );
 
-        echo $this->view->render("widgets/users/user", [
+        echo $this->view->render("widgets/users/detail", [
             "app" => "users/user",
             "head" => $head,
             "user" => $userEdit

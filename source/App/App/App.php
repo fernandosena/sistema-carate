@@ -1,11 +1,12 @@
 <?php
 
-namespace Source\App;
+namespace Source\App\App;
 
 use Source\Core\Controller;
 use Source\Core\Session;
 use Source\Core\View;
 use Source\Models\Auth;
+use Source\Models\Belt;
 use Source\Models\CafeApp\AppCategory;
 use Source\Models\CafeApp\AppInvoice;
 use Source\Models\CafeApp\AppOrder;
@@ -28,14 +29,14 @@ use Source\Support\Upload;
 class App extends Controller
 {
     /** @var User */
-    private $user;
+    protected $user;
 
     /**
      * App constructor.
      */
     public function __construct()
     {
-        parent::__construct(__DIR__ . "/../../themes/" . CONF_VIEW_APP . "/");
+        parent::__construct(__DIR__ . "/../../../themes/" . CONF_VIEW_APP . "/");
 
         if (!$this->user = Auth::user()) {
             $this->message->warning("Efetue login para acessar o APP.")->flash();
@@ -228,71 +229,6 @@ class App extends Controller
         ]);
     }
 
-    public function students(?array $data): void
-    {
-        if (!empty($data["action"]) && $data["action"] == "create") {
-            $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
-
-            $studentCreate = new Student();
-            $studentCreate->user_id = $this->user->id;
-            $studentCreate->first_name = $data["first_name"];
-            $studentCreate->last_name = $data["last_name"];
-            $studentCreate->email = $data["email"];
-            $studentCreate->document = $data["document"];
-            $studentCreate->phone = $data["phone"];
-            $studentCreate->belts = $data["belts"];
-            $studentCreate->description = $data["description"];
-
-            //upload photo
-            if (!empty($_FILES["photo"])) {
-                $files = $_FILES["photo"];
-                $upload = new Upload();
-                $image = $upload->image($files, $studentCreate->fullName(), 600);
-
-                if (!$image) {
-                    $json["message"] = $upload->message()->render();
-                    echo json_encode($json);
-                    return;
-                }
-
-                $studentCreate->photo = $image;
-            }
-
-            if (!$studentCreate->save()) {
-                $json["message"] = $studentCreate->message()->render();
-                echo json_encode($json);
-                return;
-            }
-
-            $this->message->success("Aluno cadastrado com sucesso...")->flash();
-            // $json["redirect"] = url("/admin/users/user/{$studentCreate->id}");
-            $json["redirect"] = url("/app/alunos");
-
-            echo json_encode($json);
-            return;
-        }
-        
-        $head = $this->seo->render(
-            "Meus Alunos - " . CONF_SITE_NAME,
-            CONF_SITE_DESC,
-            url(),
-            theme("/assets/images/share.jpg"),
-            false
-        );
-
-
-        echo $this->view->render("students", [
-            "user" => $this->user,
-            "head" => $head,
-            "invoices" => (new Student())->filter($this->user, "income", ($data ?? null)),
-            "filter" => (object)[
-                "status" => ($data["status"] ?? null),
-                "category" => ($data["category"] ?? null),
-                "date" => (!empty($data["date"]) ? str_replace("-", "/", $data["date"]) : null)
-            ]
-        ]);
-    }
-
     /**
      * @param array|null $data
      */
@@ -424,6 +360,7 @@ class App extends Controller
         ]);
     }
 
+    
     /**
      * @param array $data
      */

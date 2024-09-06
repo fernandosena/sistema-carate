@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
     <?= $head; ?>
+    <?=$this->section('style')?>
 
     <link rel="stylesheet" href="<?= theme("/assets/style.css", CONF_VIEW_APP); ?>"/>
     <link rel="icon" type="image/png" href="<?= theme("/assets/images/favicon.png", CONF_VIEW_APP); ?>"/>

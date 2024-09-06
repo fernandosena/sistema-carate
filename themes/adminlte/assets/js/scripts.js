@@ -104,6 +104,36 @@ $(function () {
     $(".mask-card").mask('0000  0000  0000  0000', {reverse: true});
     $(".mask-money").mask('000.000.000.000.000,00', {reverse: true, placeholder: "0,00"});
     $(".mask-phone").mask('(00) 0 0000-0000', {placeholder: "(99) 9 9999-9999"});
+
+    $('.select2').select2()
+    
+    // Selecione os elementos onde você quer aplicar a regra (ajuste o seletor conforme necessário)
+    $('.texto-adaptavel').each(function() {
+        var elemento = $(this);
+        var bgColor = elemento.css('background-color');
+
+        // Função para calcular a luminosidade (simplificada)
+        function getLuminance(hex) {
+        // Remover o '#' e converter para um número decimal
+        var rgb = parseInt(hex.replace('#', ''), 16);
+        var r = (rgb >> 16) & 0xff;
+        var g = (rgb >> 8) & 0xff;
+        var b = rgb & 0xff;
+
+        // Fórmula de luminosidade aproximada
+        return (r * 0.299) + (g * 0.587) + (b * 0.114);
+        }
+
+        // Obter a luminosidade do fundo
+        var luminance = getLuminance(bgColor);
+
+        // Aplicar a cor do texto
+        if (luminance > 150) { // Ajuste o valor limite conforme necessário
+        elemento.css('color', 'black');
+        } else {
+        elemento.css('color', 'white');
+        }
+    });
 });
 
 // TINYMCE INIT

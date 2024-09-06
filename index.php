@@ -30,6 +30,7 @@ $route->get("/recuperar", "Web:forget");
 $route->post("/recuperar", "Web:forget");
 $route->get("/recuperar/{code}", "Web:reset");
 $route->post("/recuperar/resetar", "Web:reset");
+
 $route->get("/certificado", "Web:certificate");
 $route->post("/certificado", "Web:certificate");
 
@@ -41,28 +42,35 @@ $route->get("/obrigado/{email}", "Web:success");
 /**
  * APP
  */
+$route->namespace("Source\App\App");
 $route->group("/app");
+
 $route->get("/", "App:home");
-$route->get("/receber", "App:income");
-$route->get("/alunos", "App:students");
-$route->post("/alunos", "App:students");
-$route->get("/receber/{status}/{category}/{date}", "App:income");
-$route->get("/pagar", "App:expense");
-$route->get("/pagar/{status}/{category}/{date}", "App:expense");
-$route->get("/fixas", "App:fixed");
-$route->get("/fatura/{invoice}", "App:invoice");
 $route->get("/perfil", "App:profile");
 $route->get("/sair", "App:logout");
-
 $route->post("/dash", "App:dash");
 $route->post("/launch", "App:launch");
-$route->post("/invoice/{invoice}", "App:invoice");
 $route->post("/remove/{invoice}", "App:remove");
 $route->post("/support", "App:support");
 $route->post("/onpaid", "App:onpaid");
 $route->post("/filter", "App:filter");
 $route->post("/profile", "App:profile");
 $route->post("/wallets/{wallet}", "App:wallets");
+
+$route->get("/alunos", "Students:students");
+$route->post("/alunos", "Students:students");
+$route->get("/aluno/{id}", "Students:student");
+
+$route->get("/receber", "Income:income");
+$route->get("/receber/{status}/{category}/{date}", "Income:income");
+
+$route->get("/pagar", "Expense:expense");
+$route->get("/pagar/{status}/{category}/{date}", "Expense:expense");
+
+$route->get("/fixas", "Fixed:fixed");
+
+$route->get("/fatura/{invoice}", "Invoice:invoice");
+$route->post("/invoice/{invoice}", "Invoice:invoice");
 
 /**
  * ADMIN ROUTES

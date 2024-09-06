@@ -5,6 +5,7 @@ namespace Source\Models;
 use Source\Core\Model;
 use Source\Models\User;
 use Source\Models\Belt;
+use Source\Models\HistoricBelt;
 
 /**
  * Class Student
@@ -50,6 +51,17 @@ class Student extends Model
     }
     
     /**
+     * @param string $id
+     * @param string $columns
+     * @return null|array
+     */
+    public function findByTeacher(int $id, string $columns = "*"): ?array
+    {
+        $find = $this->find("user_id = :id", "id={$id}", $columns);
+        return $find->fetch(true);
+    }
+
+    /**
      * @return string
      */
     public function fullName(): string
@@ -69,11 +81,45 @@ class Student extends Model
     }
 
     /**
-     * @return Belt
+     * @return null|Belt
      */
-    public function belt(): Belt
+    public function belt(): ?Belt
     {
-        return (new Belt())->find("id = :id", "id={$this->belts}")->fetch();
+        if($this->belts){
+            return (new Belt())->find("id = :id", "id={$this->belts}")->fetch();
+        }
+        return null;
+    }
+
+    /**
+     * @return array
+     */
+    public function historic(): array
+    {
+        return (new HistoricBelt())->find("student_id = :id", "id={$this->id}")->order("created_at desc")->fetch(true);
+    }
+
+    /**
+     * @param string $email
+     * @param string $columns
+     * @return null|Student
+     */
+    public function findByEmail(string $email, string $columns = "*"): ?Student
+    {
+        $find = $this->find("email = :email", "email={$email}", $columns);
+        return $find->fetch();
+    }
+
+
+    /**
+     * @param string $document
+     * @param string $columns
+     * @return null|Student
+     */
+    public function findByDocument(string $document, string $columns = "*"): ?Student
+    {
+        $find = $this->find("document = :d", "d={$document}", $columns);
+        return $find->fetch();
     }
 
     /**
@@ -123,5 +169,64 @@ class Student extends Model
         }
 
         return $chartData;
+    }
+
+    /**
+     * @return bool
+     */
+    public function save(): bool
+    {
+        if (!$this->required()) {
+            $this->message->warning("Preencha todos os campos obrigatórios");
+            return false;
+        }
+
+        if (!is_email($this->email)) {
+            $this->message->warning("O e-mail informado não tem um formato válido");
+            return false;
+        }
+
+        /** Student Update */
+        if (!empty($this->id)) {
+            $studentId = $this->id;
+
+            if ($this->find("email = :e AND id != :i", "e={$this->email}&i={$studentId}", "id")->fetch()) {
+                $this->message->warning("O e-mail informado já está cadastrado");
+                return false;
+            }
+
+            if ($this->find("document = :d AND id != :i", "d={$this->document}&i={$studentId}", "id")->fetch()) {
+                $this->message->warning("O CPF informado já está cadastrado");
+                return false;
+            }
+
+            $this->update($this->safe(), "id = :id", "id={$studentId}");
+            if ($this->fail()) {
+                $this->message->error("Erro ao atualizar, verifique os dados");
+                return false;
+            }
+        }
+
+        /** Student Create */
+        if (empty($this->id)) {
+            if ($this->findByEmail($this->email, "id")) {
+                $this->message->warning("O e-mail informado já está cadastrado");
+                return false;
+            }
+
+            if ($this->findByDocument($this->document, "id")) {
+                $this->message->warning("O CPF informado já está cadastrado");
+                return false;
+            }
+
+            $studentId = $this->create($this->safe());
+            if ($this->fail()) {
+                $this->message->error("Erro ao cadastrar, verifique os dados");
+                return false;
+            }
+        }
+
+        $this->data = ($this->findById($studentId))->data();
+        return true;
     }
 }

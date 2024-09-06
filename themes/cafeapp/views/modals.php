@@ -32,7 +32,6 @@
                 ->fetch(true)
         ]);
     ?>
-
     <!--SUPPORT-->
     <div class="app_modal_box app_modal_contact">
         <p class="title icon-calendar-minus-o">Fale conosco:</p>
@@ -55,4 +54,30 @@
             <button class="btn radius transition icon-paper-plane-o">Enviar Agora</button>
         </form>
     </div>
+
+    <?php if(!empty($student)): ?>
+        <div class="app_modal_box app_modal_student_belt">
+            <p class="title icon-user">Alterar Faixa:</p>
+            <form class="app_form" action="<?= url("/app/alunos"); ?>" method="post">
+                <input type="hidden" name="action" value="update"/>
+                <label>
+                    <span class="field icon-filter">Faixa: </span>
+                    <select name="belts" required>
+                        <?php foreach ($belts as $belt): ?>
+                            <?php if($belt->id !== $student->belts): ?>
+                                <option value="<?= $belt->id; ?>">&ofcir; <?= $belt->title; ?></option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+
+                <label>
+                    <span class="field icon-text">Observação:</span>
+                    <textarea class="radius" name="description" placeholder="Aluno passou para a faixa XYZ" required></textarea>
+                </label>
+
+                <button class="btn radius transition icon-check-square-o">Atualizar troca de Faixa</button>
+            </form>
+        </div>
+    <?php endif; ?>
 </div>

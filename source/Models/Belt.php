@@ -18,6 +18,7 @@ class Belt extends Model
         parent::__construct("belts", ["id"], ["title", "color", "description"]);
     }
 
+    
     /**
      * @return array
      */

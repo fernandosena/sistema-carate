@@ -8,9 +8,16 @@
     
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <link rel="stylesheet" href="<?= theme("plugins/fontawesome-free/css/all.min.css", CONF_VIEW_ADMIN); ?>">
+    <link rel="stylesheet" data-purpose="Layout StyleSheet" title="Web Awesome" href="/css/app-wa-09b459cf485d4b1f3304947240314c05.css?vsn=d">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-duotone-solid.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-thin.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-solid.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-regular.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-light.css" >
     <link rel="stylesheet" href="<?= theme("plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css", CONF_VIEW_ADMIN); ?>">
     <link rel="stylesheet" href="<?= theme("plugins/icheck-bootstrap/icheck-bootstrap.min.css", CONF_VIEW_ADMIN); ?>">
+    <link rel="stylesheet" href="<?= theme("plugins/select2/css/select2.min.css", CONF_VIEW_ADMIN); ?>">
     <link rel="stylesheet" href="<?= theme("plugins/jqvmap/jqvmap.min.css", CONF_VIEW_ADMIN); ?>">
     <link rel="stylesheet" href="<?= theme("dist/css/adminlte.min.css", CONF_VIEW_ADMIN); ?>">
     <link rel="stylesheet" href="<?= theme("plugins/overlayScrollbars/css/OverlayScrollbars.min.css", CONF_VIEW_ADMIN); ?>">
@@ -121,7 +128,7 @@
                             );
                             echo $nav(
                                 [
-                                    "icon"=>"fa-user",
+                                    "icon"=>"fa-chalkboard-teacher",
                                     "href"=>"users",
                                     "title"=>"Professores",
                                     "submenu"=> [
@@ -140,7 +147,7 @@
                             );
                             echo $nav(
                                 [
-                                    "icon"=>"fa-user",
+                                    "icon"=>"fa-graduation-cap",
                                     "href"=>"students",
                                     "title"=>"Alunos",
                                     "submenu"=> [
@@ -159,7 +166,7 @@
                             );
                             echo $nav(
                                 [
-                                    "icon"=>"fa-user",
+                                    "icon"=>"fa-uniform-martial-arts",
                                     "href"=>"belts",
                                     "title"=>"Faixas",
                                     "submenu"=> [
@@ -269,6 +276,7 @@
     <!-- overlayScrollbars -->
     <script src="<?= theme("plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js", CONF_VIEW_ADMIN); ?>"></script>
     <script src="<?= url("/shared/scripts/jquery.form.js"); ?>"></script>
+    <script src="<?= theme("plugins/select2/js/select2.full.min.js", CONF_VIEW_ADMIN); ?>"></script>
     <!-- AdminLTE App -->
     <script src="<?= theme("dist/js/adminlte.js", CONF_VIEW_ADMIN); ?>"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
