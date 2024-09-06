@@ -90,7 +90,7 @@ class Users extends Admin
 
         $students = (new Student())->findByTeacher($userId);
 
-        echo $this->view->render("widgets/users/detail", [
+        echo $this->view->render("widgets/users/user", [
             "app" => "users/user",
             "head" => $head,
             "user" => $user,

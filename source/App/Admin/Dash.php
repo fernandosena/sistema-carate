@@ -9,6 +9,8 @@ use Source\Models\Category;
 use Source\Models\Post;
 use Source\Models\Report\Online;
 use Source\Models\User;
+use Source\Models\Belt;
+use Source\Models\Student;
 
 /**
  * Class Dash
@@ -71,6 +73,12 @@ class Dash extends Admin
         echo $this->view->render("widgets/dash/home", [
             "app" => "dash",
             "head" => $head,
+            "quantity" => [
+                "new" => (new Student())->find("status = 'pending'")->count(),
+                "teachers" => (new User())->find("level < 5")->count(),
+                "students" => (new Student())->find()->count(),
+                "belts" => (new Belt())->find()->count(),
+            ],
             "control" => (object)[
                 "subscribers" => (new AppSubscription())->find("pay_status = :s", "s=active")->count(),
                 "plans" => (new AppPlan())->find("status = :s", "s=active")->count(),

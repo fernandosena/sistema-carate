@@ -80,9 +80,10 @@ class User extends Model
     public function student(): array
     {
         return [
-            "all" => (new Student())->find("user_id = :u", "u={$this->id}")->count(),
+            "all" => (new Student())->find("user_id = :u and status != :s", "u={$this->id}&s=deactivated")->count(),
             "activated" => (new Student())->find("user_id = :u AND status = :s", "u={$this->id}&s=activated")->count(),
             "deactivated" => (new Student())->find("user_id = :u AND status = :s", "u={$this->id}&s=deactivated")->count(),
+            "pending" => (new Student())->find("user_id = :u AND status = :s", "u={$this->id}&s=pending")->count(),
         ];
     }
 
