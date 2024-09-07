@@ -61,7 +61,7 @@ class Belts extends Admin
             "app" => "belts/home",
             "head" => $head,
             "search" => $search,
-            "belts" => $belts->order("title")->limit($pager->limit())->offset($pager->offset())->fetch(true),
+            "belts" => $belts->order("age_range DESC, created_at")->limit($pager->limit())->offset($pager->offset())->fetch(true),
             "paginator" => $pager->render()
         ]);
     }
@@ -78,8 +78,8 @@ class Belts extends Admin
 
             $beltCreate = new Belt();
             $beltCreate->title = $data["title"];
-            $beltCreate->color = $data["color"];
             $beltCreate->description = $data["description"];
+            $beltCreate->age_range = $data["age_range"];
 
             if (!$beltCreate->save()) {
                 $json["message"] = $beltCreate->message()->render();
@@ -87,7 +87,7 @@ class Belts extends Admin
                 return;
             }
 
-            $this->message->success("Faixa cadastrada com sucesso...")->flash();
+            $this->message->success("Graduação cadastrada com sucesso...")->flash();
             $json["redirect"] = url("/admin/belts/belt/{$beltCreate->id}");
 
             echo json_encode($json);
@@ -100,13 +100,13 @@ class Belts extends Admin
             $beltUpdate = (new Belt())->findById($data["belt_id"]);
 
             if (!$beltUpdate) {
-                $this->message->error("Você tentou gerenciar uma faixa que não existe")->flash();
+                $this->message->error("Você tentou gerenciar uma Graduação que não existe")->flash();
                 echo json_encode(["redirect" => url("/admin/belts/home")]);
                 return;
             }
 
             $beltUpdate->title = $data["title"];
-            $beltUpdate->color = $data["color"];
+            $beltUpdate->age_range = $data["age_range"];
             $beltUpdate->description = $data["description"];
 
             if (!$beltUpdate->save()) {
@@ -115,7 +115,7 @@ class Belts extends Admin
                 return;
             }
 
-            $this->message->success("Faixa atualizada com sucesso...")->flash();
+            $this->message->success("Graduação atualizada com sucesso...")->flash();
             echo json_encode(["reload" => true]);
             return;
         }
@@ -127,7 +127,7 @@ class Belts extends Admin
         }
 
         $head = $this->seo->render(
-            CONF_SITE_NAME . " | " . ($beltEdit ? "Faixa {$beltEdit->title}" : "Nova Faixa"),
+            CONF_SITE_NAME . " | " . ($beltEdit ? "Graduação {$beltEdit->title}" : "Nova Graduação"),
             CONF_SITE_DESC,
             url("/admin"),
             url("/admin/assets/images/image.jpg"),

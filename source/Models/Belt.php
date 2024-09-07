@@ -15,7 +15,7 @@ class Belt extends Model
      */
     public function __construct()
     {
-        parent::__construct("belts", ["id"], ["title", "color", "description"]);
+        parent::__construct("belts", ["id"], ["title", "description", "age_range"]);
     }
 
     

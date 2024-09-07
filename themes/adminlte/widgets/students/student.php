@@ -6,10 +6,10 @@
             <div class="card-header">
                 <h3 class="card-title">Cadastrar Aluno</h3>
             </div>
-            <form class="app_form" action="<?= url("/admin/users/user/{$student->id}"); ?>" method="post">
+            <form class="app_form" action="<?= url("/admin/students/student"); ?>" method="post">
                 <div class="card-body">
                     <!--ACTION SPOOFING-->
-                    <input type="hidden" name="action" value="update"/>
+                    <input type="hidden" name="action" value="create"/>
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
@@ -30,7 +30,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>*Professor</label>
-                                <select class="form-control" name="genre">
+                                <select class="form-control" name="teacher">
                                     <?php 
                                         foreach($teachers as $teacher):    
                                     ?>
@@ -69,9 +69,9 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>Telefone</label>
+                                <label>*Telefone</label>
                                 <input type="tel"
-                                name="phone" class="form-control mask-phone" placeholder="">
+                                name="phone" class="form-control mask-phone" required>
                             </div>
                         </div>
                     </div>
@@ -85,9 +85,9 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>CPF</label>
+                                <label>* CPF</label>
                                 <input type="text"
-                                name="document" class="form-control mask-doc" placeholder="CPF do usuário">
+                                name="document" class="form-control mask-doc" placeholder="CPF do usuário" required>
                             </div>
                         </div>
                     </div>
@@ -104,8 +104,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Descrição</label>
-                                <textarea
-                                name="description"  class="form-control" placeholder="Descrição do aluno"></textarea>
+                                <textarea name="description" class="form-control" placeholder="Descrição do aluno"></textarea>
                             </div>
                         </div>
                     </div>
@@ -113,7 +112,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>*Faixa</label>
-                                <select class="form-control" name="status" required>
+                                <select class="form-control" name="belts" required>
                                     <?php 
                                         foreach($belts as $belt):    
                                     ?>
@@ -188,50 +187,96 @@
                             <!-- /.tab-pane -->
 
                             <div class="tab-pane" id="profile">
-                                <form class="form-horizontal">
-                                    <div class="form-group row">
-                                    <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-                                    <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="inputName" placeholder="Name">
-                                    </div>
-                                    </div>
-                                    <div class="form-group row">
-                                    <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                                    <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-                                    </div>
-                                    </div>
-                                    <div class="form-group row">
-                                    <label for="inputName2" class="col-sm-2 col-form-label">Name</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="inputName2" placeholder="Name">
-                                    </div>
-                                    </div>
-                                    <div class="form-group row">
-                                    <label for="inputExperience" class="col-sm-2 col-form-label">Experience</label>
-                                    <div class="col-sm-10">
-                                        <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                                    </div>
-                                    </div>
-                                    <div class="form-group row">
-                                    <label for="inputSkills" class="col-sm-2 col-form-label">Skills</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                                    </div>
-                                    </div>
-                                    <div class="form-group row">
-                                    <div class="offset-sm-2 col-sm-10">
-                                        <div class="checkbox">
-                                        <label>
-                                            <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                                        </label>
+                                <form class="app_form" action="<?= url("/admin/students/student/{$student->id}"); ?>" method="post">
+                                    <div class="card-body">
+                                        <!--ACTION SPOOFING-->
+                                        <input type="hidden" name="action" value="update"/>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label for="exampleInputFile">Foto: (600x600px)</label>
+                                                    <div class="input-group">
+                                                        <div class="custom-file">
+                                                        <input type="file" name="photo" class="custom-file-input" id="exampleInputFile">
+                                                        <label class="custom-file-label" for="exampleInputFile">Escolher imagens</label>
+                                                        </div>
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">Upload</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>*Nome</label>
+                                                    <input type="text"
+                                                    name="first_name" value="<?= $student->first_name; ?>" class="form-control" placeholder="Primeiro nome" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>*Sobrenome:</label>
+                                                    <input type="text"
+                                                    name="last_name" value="<?= $student->last_name; ?>" class="form-control" placeholder="Último nome" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Telefone</label>
+                                                    <input type="tel"
+                                                    name="phone" value="<?= $student->phone; ?>" class="form-control mask-phone" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>CPF</label>
+                                                    <input type="text"
+                                                    name="document" class="form-control mask-doc" value="<?= $student->document; ?>" placeholder="CPF do usuário">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label>*E-mail</label>
+                                                    <input type="email"
+                                                    name="email" value="<?= $student->email; ?>"  class="form-control" placeholder="Melhor e-mail" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label>Descrição</label>
+                                                    <textarea
+                                                    name="description"  class="form-control" placeholder="Descrição do aluno"><?= $student->description; ?></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label>*Status</label>
+                                                    <?php
+                                                        $status = $student->status;
+                                                        $select = function ($value) use ($status) {
+                                                            return ($status == $value ? "selected" : "");
+                                                        };
+                                                    ?>
+                                                    <select class="form-control" name="status" required>
+                                                        <option <?= $select("activated"); ?> value="activated">Ativo</option>
+                                                        <option <?= $select("deactivated"); ?>  value="deactivated">Desativado</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    </div>
-                                    <div class="form-group row">
-                                    <div class="offset-sm-2 col-sm-10">
-                                        <button type="submit" class="btn btn-danger">Submit</button>
-                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary">Atualizar Aluno</button>
                                     </div>
                                 </form>
                             </div>

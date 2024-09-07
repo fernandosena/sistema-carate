@@ -106,6 +106,9 @@ $(function () {
     $(".mask-phone").mask('(00) 0 0000-0000', {placeholder: "(99) 9 9999-9999"});
 
     $('.select2').select2()
+    $('#pieces').select2({
+      tags: true
+    });
     
     // Selecione os elementos onde você quer aplicar a regra (ajuste o seletor conforme necessário)
     $('.texto-adaptavel').each(function() {
@@ -135,64 +138,113 @@ $(function () {
         }
     });
 });
+function getPassword() {
+    var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ!@#$%^&*()+?><:{}[]";
+    var passwordLength = 16;
+    var password = "";
 
-// TINYMCE INIT
+    for (var i = 0; i < passwordLength; i++) {
+      var randomNumber = Math.floor(Math.random() * chars.length);
+      password += chars.substring(randomNumber, randomNumber + 1);
+    }
+    document.getElementById('password').value = password
+}
 
-tinyMCE.init({
-    selector: "textarea.mce",
-    language: 'pt_BR',
-    menubar: false,
-    theme: "modern",
-    height: 132,
-    skin: 'light',
-    entity_encoding: "raw",
-    theme_advanced_resizing: true,
-    plugins: [
-        "advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker",
-        "searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
-        "save table contextmenu directionality emoticons template paste textcolor media"
-    ],
-    toolbar: "styleselect | pastetext | removeformat |  bold | italic | underline | strikethrough | bullist | numlist | alignleft | aligncenter | alignright |  link | unlink | fsphpimage | code | fullscreen",
-    style_formats: [
-        {title: 'Normal', block: 'p'},
-        {title: 'Titulo 3', block: 'h3'},
-        {title: 'Titulo 4', block: 'h4'},
-        {title: 'Titulo 5', block: 'h5'},
-        {title: 'Código', block: 'pre', classes: 'brush: php;'}
-    ],
-    link_class_list: [
-        {title: 'None', value: ''},
-        {title: 'Blue CTA', value: 'btn btn_cta_blue'},
-        {title: 'Green CTA', value: 'btn btn_cta_green'},
-        {title: 'Yellow CTA', value: 'btn btn_cta_yellow'},
-        {title: 'Red CTA', value: 'btn btn_cta_red'}
-    ],
-    setup: function (editor) {
-        editor.addButton('fsphpimage', {
-            title: 'Enviar Imagem',
-            icon: 'image',
-            onclick: function () {
-                $('.mce_upload').fadeIn(200, function (e) {
-                    $("body").click(function (e) {
-                        if ($(e.target).attr("class") === "mce_upload") {
-                            $('.mce_upload').fadeOut(200);
-                        }
-                    });
-                }).css("display", "flex");
-            }
-        });
-    },
-    link_title: false,
-    target_list: false,
-    theme_advanced_blockformats: "h1,h2,h3,h4,h5,p,pre",
-    media_dimensions: false,
-    media_poster: false,
-    media_alt_source: false,
-    media_embed: false,
-    extended_valid_elements: "a[href|target=_blank|rel|class]",
-    imagemanager_insert_template: '<img src="{$url}" title="{$title}" alt="{$title}" />',
-    image_dimensions: false,
-    relative_urls: false,
-    remove_script_host: false,
-    paste_as_text: true
+const addressForm = document.querySelector("#address-form");
+const cepInput = document.querySelector("#cep");
+const addressInput = document.querySelector("#address");
+const cityInput = document.querySelector("#city");
+const neighborhoodInput = document.querySelector("#neighborhood");
+const regionInput = document.querySelector("#state");
+const formInputs = document.querySelectorAll("[data-input]");
+
+// Validate CEP Input
+cepInput.addEventListener("keypress", (e) => {
+  const onlyNumbers = /[0-9]|\./;
+  const key = String.fromCharCode(e.keyCode);
+
+  // allow only numbers
+  if (!onlyNumbers.test(key)) {
+    e.preventDefault();
+    return;
+  }
 });
+
+// Evento to get address
+cepInput.addEventListener("keyup", (e) => {
+  const inputValue = e.target.value;
+
+  //   Check if we have a CEP
+  if (inputValue.length === 8) {
+    getAddress(inputValue);
+  }
+});
+
+// Get address from API
+const getAddress = async (cep) => {
+  toggleLoader();
+
+  cepInput.blur();
+
+  const apiUrl = `https://viacep.com.br/ws/${cep}/json/`;
+
+  const response = await fetch(apiUrl);
+
+  const data = await response.json();
+
+  // Show error and reset form
+  if (data.erro === "true") {
+    if (!addressInput.hasAttribute("disabled")) {
+      toggleDisabled();
+    }
+
+    addressForm.reset();
+    toggleLoader();
+    alert("CEP Inválido, tente novamente.");
+    return;
+  }
+
+  // Activate disabled attribute if form is empty
+  if (addressInput.value === "") {
+    toggleDisabled();
+  }
+
+  addressInput.value = data.logradouro;
+  cityInput.value = data.localidade;
+  neighborhoodInput.value = data.bairro;
+  regionInput.value = data.uf;
+
+  toggleLoader();
+};
+
+// Add or remove disable attribute
+const toggleDisabled = () => {
+  if (regionInput.hasAttribute("disabled")) {
+    formInputs.forEach((input) => {
+      input.removeAttribute("disabled");
+    });
+  } else {
+    formInputs.forEach((input) => {
+      input.setAttribute("disabled", "disabled");
+    });
+  }
+};
+
+// Show or hide loader
+const toggleLoader = () => {
+  const loaderElement = document.querySelector(".ajax_load");
+  loaderElement.classList.toggle("hide");
+};
+
+// Show or hide message
+const toggleMessage = (msg) => {
+  const fadeElement = document.querySelector("#fade");
+  const messageElement = document.querySelector("#message");
+
+  const messageTextElement = document.querySelector("#message p");
+
+  messageTextElement.innerText = msg;
+
+  fadeElement.classList.toggle("hide");
+  messageElement.classList.toggle("hide");
+};

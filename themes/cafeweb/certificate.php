@@ -1,5 +1,10 @@
 <?php $this->layout("_theme"); ?>
 
+<?php if(!empty($document)): ?>
+    <div class="message warning icon-warning alert alert-warning alert-dismissible">
+        Nenhum certificado encontrado
+    </div>
+<?php else: ?>
 <article class="auth">
     <div class="auth_content container content">
         <header class="auth_header">
@@ -23,3 +28,4 @@
         </form>
     </div>
 </article>
+<?php endif; ?>

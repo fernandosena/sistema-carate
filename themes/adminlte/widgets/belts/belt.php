@@ -20,9 +20,11 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>*Cor:</label>
-                                <input type="color"
-                                name="color" class="form-control" placeholder="Cor" required>
+                                <label>Faixa etaria</label>
+                                <select name="age_range" class="form-control">
+                                    <option value="1">Maior que 13 anos</option>
+                                    <option value="2">Menor que 13 anos</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -36,7 +38,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Criar Faixa</button>
+                    <button type="submit" class="btn btn-primary">Criar Graduação</button>
                 </div>
             </form>
         </div>
@@ -59,9 +61,17 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label>*Cor:</label>
-                                <input type="color"
-                                name="color" value="<?= $belt->color; ?>" class="form-control" required>
+                                <label>Faixa etaria</label>
+                                <?php
+                                    $age_range = $belt->age_range;
+                                    $select = function ($value) use ($age_range) {
+                                        return ($age_range == $value ? "selected" : "");
+                                    };
+                                ?>
+                                <select name="age_range" class="form-control">
+                                    <option <?= $select("1"); ?> value="1">Maior que 13 anos</option>
+                                    <option <?= $select("2"); ?> value="2">Menor que 13 anos</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -75,7 +85,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Atualizar Faixa</button>
+                    <button type="submit" class="btn btn-primary">Atualizar Graduação</button>
                 </div>
             </form>
         </div>

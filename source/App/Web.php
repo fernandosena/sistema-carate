@@ -240,11 +240,11 @@ class Web extends Controller
             }
 
             $student = (new Student())->findByDocument($data['document']);
-            if ($student->count()) {
+            if ($student) {
                 $this->message->success("Seja bem-vindo(a) de volta")->flash();
-                $json['redirect'] = url("/app");
+                $json['redirect'] = url("/certificado/{$student->document}");
             } else {
-                $json['message'] = $student->message()->before("Ooops! ")->render();
+                $json['message'] = $this->message->warning("O CPF informado não foi encontrado")->render();
             }
 
             echo json_encode($json);
@@ -259,7 +259,8 @@ class Web extends Controller
         );
 
         echo $this->view->render("certificate", [
-            "head" => $head
+            "head" => $head,
+            "document" => ($data["document"]) ?? null
         ]);
     }
 

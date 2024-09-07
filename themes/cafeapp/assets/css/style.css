@@ -695,6 +695,34 @@ body {
 }
 
 /*LAUNCH*/
+.app_launch_table{
+    width: 100%;
+    text-align: left;
+}
+.app_launch_table th,
+.app_launch_table td{
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.02);
+    font-size: var(--font-small);
+    color: #888888;
+}
+.app_launch_table thead tr{
+    background: none;
+    font-size: 0.7em;
+    text-transform: uppercase;
+    color: #888888;
+}
+
+.app_launch_table td a{
+    text-decoration: none;
+}
+.app_launch_table td a:hover{
+    text-decoration: underline;
+}
+.app_launch_table tbody tr:nth-child(2n+1) {
+    background: rgba(0, 0, 0, 0.05);
+}
+
 .app_launch_btn {
     display: block;
     padding: 8px 16px;
@@ -1249,9 +1277,10 @@ ul.timeline > li.active:before {
     border-radius: .25rem;
 }
 .bg-warning {
+    color: #fff;
     background-color: #ffc107 !important;
 }
-.badge-success {
+.bg-success{
     color: #fff;
     background-color: #28a745;
 }

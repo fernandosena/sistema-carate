@@ -17,7 +17,7 @@ class User extends Model
      */
     public function __construct()
     {
-        parent::__construct("users", ["id"], ["first_name", "last_name", "email", "password"]);
+        parent::__construct("users", ["id"], ["first_name", "last_name", "email", "password", "document", "zip", "address", "neighborhood", "number", "phone", "graduation", "dojo"]);
     }
 
     /**
@@ -105,7 +105,7 @@ class User extends Model
     public function save(): bool
     {
         if (!$this->required()) {
-            $this->message->warning("Nome, sobrenome, email e senha são obrigatórios");
+            $this->message->warning("Preencha todos os campos obrigatórios");
             return false;
         }
 
@@ -131,10 +131,12 @@ class User extends Model
                 $this->message->warning("O e-mail informado já está cadastrado");
                 return false;
             }
-
-            if ($this->find("document = :d AND id != :i", "d={$this->document}&i={$userId}", "id")->fetch()) {
-                $this->message->warning("O CPF informado já está cadastrado");
-                return false;
+            
+            if(!empty($this->document)){
+                if ($this->find("document = :d AND id != :i", "d={$this->document}&i={$userId}", "id")->fetch()) {
+                    $this->message->warning("O CPF informado já está cadastrado");
+                    return false;
+                }
             }
 
             $this->update($this->safe(), "id = :id", "id={$userId}");
@@ -151,9 +153,11 @@ class User extends Model
                 return false;
             }
 
-            if ($this->findByDocument($this->document, "id")) {
-                $this->message->warning("O CPF informado já está cadastrado");
-                return false;
+            if(!empty($this->document)){
+                if ($this->findByDocument($this->document, "id")) {
+                    $this->message->warning("O CPF informado já está cadastrado");
+                    return false;
+                }
             }
 
             $userId = $this->create($this->safe());

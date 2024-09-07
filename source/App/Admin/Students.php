@@ -8,6 +8,7 @@ use Source\Support\Thumb;
 use Source\Support\Upload;
 use Source\Models\Student;
 use Source\Models\Belt;
+use Source\Models\HistoricBelt;
 
 /**
  * Class Students
@@ -70,6 +71,51 @@ class Students extends Admin
 
     /**
      * @param array|null $data
+     */
+    public function news(?array $data): void
+    {
+        //search redirect
+        if (!empty($data["s"])) {
+            $s = str_search($data["s"]);
+            echo json_encode(["redirect" => url("/admin/students/home/{$s}/1")]);
+            return;
+        }
+
+        $search = null;
+        $students = (new Student())->find("status = 'pending'");
+
+        if (!empty($data["search"]) && str_search($data["search"]) != "all") {
+            $search = str_search($data["search"]);
+            $students = (new Student())->find("status = 'pending' AND MATCH(first_name, last_name, email) AGAINST(:s)", "s={$search}");
+            if (!$students->count()) {
+                $this->message->info("Sua pesquisa não retornou resultados")->flash();
+                redirect("/admin/students/home");
+            }
+        }
+
+        $all = ($search ?? "all");
+        $pager = new Pager(url("/admin/students/home/{$all}/"));
+        $pager->pager($students->count(), 12, (!empty($data["page"]) ? $data["page"] : 1));
+
+        $head = $this->seo->render(
+            CONF_SITE_NAME . " | Alunos",
+            CONF_SITE_DESC,
+            url("/admin"),
+            url("/admin/assets/images/image.jpg"),
+            false
+        );
+
+        echo $this->view->render("widgets/students/home", [
+            "app" => "students/home",
+            "head" => $head,
+            "search" => $search,
+            "students" => $students->order("first_name, last_name")->limit($pager->limit())->offset($pager->offset())->fetch(true),
+            "paginator" => $pager->render()
+        ]);
+    }
+
+    /**
+     * @param array|null $data
      * @throws \Exception
      */
     public function student(?array $data): void
@@ -79,15 +125,14 @@ class Students extends Admin
             $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
 
             $studentCreate = new Student();
+            $studentCreate->user_id = $data["teacher"];
             $studentCreate->first_name = $data["first_name"];
             $studentCreate->last_name = $data["last_name"];
             $studentCreate->email = $data["email"];
-            $studentCreate->password = $data["password"];
-            $studentCreate->level = $data["level"];
-            $studentCreate->genre = $data["genre"];
-            $studentCreate->datebirth = date_fmt_back($data["datebirth"]);
-            $studentCreate->document = preg_replace("/[^0-9]/", "", $data["document"]);
-            $studentCreate->status = $data["status"];
+            $studentCreate->document = $data["document"];
+            $studentCreate->phone = $data["phone"];
+            $studentCreate->belts = $data["belts"];
+            $studentCreate->description = $data["description"];
 
             //upload photo
             if (!empty($_FILES["photo"])) {
@@ -110,6 +155,12 @@ class Students extends Admin
                 return;
             }
 
+            $hbelt = (new HistoricBelt());
+            $hbelt->student_id = $studentCreate->id;
+            $hbelt->belt_id = $data["belts"];
+            $hbelt->description = "Definido ao cadastrar aluno";
+            $hbelt->save();
+            
             $this->message->success("Aluno cadastrado com sucesso...")->flash();
             $json["redirect"] = url("/admin/students/student/{$studentCreate->id}");
 
@@ -120,10 +171,10 @@ class Students extends Admin
         //update
         if (!empty($data["action"]) && $data["action"] == "update") {
             $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
-            $studentUpdate = (new User())->findById($data["student_id"]);
+            $studentUpdate = (new Student())->findById($data["student_id"]);
 
             if (!$studentUpdate) {
-                $this->message->error("Você tentou gerenciar um usuário que não existe")->flash();
+                $this->message->error("Você tentou gerenciar um aluno que não existe")->flash();
                 echo json_encode(["redirect" => url("/admin/students/home")]);
                 return;
             }
@@ -131,11 +182,9 @@ class Students extends Admin
             $studentUpdate->first_name = $data["first_name"];
             $studentUpdate->last_name = $data["last_name"];
             $studentUpdate->email = $data["email"];
-            $studentUpdate->password = (!empty($data["password"]) ? $data["password"] : $studentUpdate->password);
-            $studentUpdate->level = $data["level"];
-            $studentUpdate->genre = $data["genre"];
-            $studentUpdate->datebirth = date_fmt_back($data["datebirth"]);
-            $studentUpdate->document = preg_replace("/[^0-9]/", "", $data["document"]);
+            $studentUpdate->document = $data["document"];
+            $studentUpdate->phone = $data["phone"];
+            $studentUpdate->description = $data["description"];
             $studentUpdate->status = $data["status"];
 
             //upload photo

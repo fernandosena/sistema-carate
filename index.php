@@ -32,6 +32,7 @@ $route->get("/recuperar/{code}", "Web:reset");
 $route->post("/recuperar/resetar", "Web:reset");
 
 $route->get("/certificado", "Web:certificate");
+$route->get("/certificado/{document}", "Web:certificate");
 $route->post("/certificado", "Web:certificate");
 
 //optin
@@ -58,6 +59,7 @@ $route->post("/wallets/{wallet}", "App:wallets");
 
 $route->get("/alunos", "Students:students");
 $route->post("/alunos", "Students:students");
+$route->post("/alunos/faixa", "Students:belt");
 $route->get("/aluno/{id}", "Students:student");
 
 $route->get("/receber", "Income:income");
@@ -89,17 +91,18 @@ $route->post("/dash/home", "Dash:home");
 $route->get("/logoff", "Dash:logoff");
 
 //users
-$route->get("/users/home", "Users:home");
-$route->post("/users/home", "Users:home");
-$route->get("/users/home/{search}/{page}", "Users:home");
-$route->get("/users/user", "Users:user");
-$route->post("/users/user", "Users:user");
-$route->get("/users/user/{user_id}", "Users:user");
-$route->post("/users/user/{user_id}", "Users:user");
+$route->get("/instructors/home", "Instructors:home");
+$route->post("/instructors/home", "Instructors:home");
+$route->get("/instructors/home/{search}/{page}", "Instructors:home");
+$route->get("/instructors/instructor", "Instructors:Instructor");
+$route->post("/instructors/instructor", "Instructors:Instructor");
+$route->get("/instructors/instructor/{instructor_id}", "Instructors:instructor");
+$route->post("/instructors/instructor/{instructor_id}", "Instructors:instructor");
 
 //student
 $route->get("/students/home", "Students:home");
 $route->post("/students/home", "Students:home");
+$route->get("/students/novos", "Students:news");
 $route->get("/students/home/{search}/{page}", "Students:home");
 $route->get("/students/student", "Students:student");
 $route->post("/students/student", "Students:student");

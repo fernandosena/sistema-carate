@@ -129,17 +129,17 @@
                             echo $nav(
                                 [
                                     "icon"=>"fa-chalkboard-teacher",
-                                    "href"=>"users",
-                                    "title"=>"Professores",
+                                    "href"=>"instructors",
+                                    "title"=>"Instrutor",
                                     "submenu"=> [
                                         [
                                             "icon"=>"fa-list",
-                                            "href"=>"users/home",
+                                            "href"=>"instructors/home",
                                             "title"=>"Listar",
                                         ],
                                         [
                                             "icon"=>"fa-user-plus",
-                                            "href"=>"users/user",
+                                            "href"=>"instructors/instructor",
                                             "title"=>"Cadastrar",
                                         ]
                                     ],
@@ -168,7 +168,7 @@
                                 [
                                     "icon"=>"fa-uniform-martial-arts",
                                     "href"=>"belts",
-                                    "title"=>"Faixas",
+                                    "title"=>"Graduações",
                                     "submenu"=> [
                                         [
                                             "icon"=>"fa-list",

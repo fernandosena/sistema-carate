@@ -106,6 +106,44 @@ class Students extends App
             ]
         ]);
     }
+
+    public function belt(array $data): void
+    {
+        $student = (new Student())->find("user_id = :user AND id = :id",
+    "user={$this->user->id}&id={$data["id"]}")->fetch();
+
+        if (!$student) {
+            $json["message"] = $this->message->error("Ooops! aluno inrormado não encontrado")->render();
+            echo json_encode($json);
+            return;
+        }
+
+        if ($student->status == "pending") {
+            $json["message"] = $this->message->warning("Ooops! aluno esta pendente, não pode ser alterado no momento. tente novamente mais tarte")->render();
+            echo json_encode($json);
+            return;
+        }
+
+        $student->belts = $data["belts"];
+        $student->status = "pending";
+
+        if (!$student->save()) {
+            $json["message"] = $student->message()->render();
+            echo json_encode($json);
+            return;
+        }
+
+        $hbelt = (new HistoricBelt());
+        $hbelt->student_id = $student->id;
+        $hbelt->belt_id = $data["belts"];
+        $hbelt->description = $data["description"];
+        $hbelt->save();
+
+        $json["message"] = $this->message->success("Pronto {$this->user->first_name}, A faixa do aluno foi atualizado com sucesso!")->render();
+        echo json_encode($json);
+        return;
+    }
+
     /**
      * @param array $data
      */

@@ -63,8 +63,6 @@
 
     <?= $this->insert("views/modals"); ?>
 </div>
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-53658515-18"></script>
 <script src="<?= theme("/assets/scripts.js", CONF_VIEW_APP); ?>"></script>
 <?= $this->section("scripts"); ?>
 
