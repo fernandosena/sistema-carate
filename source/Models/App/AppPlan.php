@@ -1,12 +1,12 @@
 <?php
 
-namespace Source\Models\CafeApp;
+namespace Source\Models\App;
 
 use Source\Core\Model;
 
 /**
  * Class AppPlan
- * @package Source\Models\CafeApp
+ * @package Source\Models\App
  */
 class AppPlan extends Model
 {

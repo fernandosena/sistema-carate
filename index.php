@@ -57,10 +57,10 @@ $route->post("/onpaid", "App:onpaid");
 $route->post("/profile", "App:profile");
 $route->post("/wallets/{wallet}", "App:wallets");
 
-$route->get("/alunos", "Students:students");
+$route->get("/alunos/{type}", "Students:students");
 $route->post("/alunos", "Students:students");
 $route->post("/alunos/faixa", "Students:belt");
-$route->get("/aluno/{id}", "Students:student");
+$route->get("/aluno/{type}/{id}", "Students:student");
 
 $route->get("/receber", "Income:income");
 $route->get("/receber/{status}/{category}/{date}", "Income:income");
@@ -100,14 +100,14 @@ $route->get("/instructors/instructor/{instructor_id}", "Instructors:instructor")
 $route->post("/instructors/instructor/{instructor_id}", "Instructors:instructor");
 
 //student
-$route->get("/students/home", "Students:home");
+$route->get("/students/{type}/home", "Students:home");
 $route->post("/students/home", "Students:home");
 $route->get("/students/novos", "Students:news");
-$route->get("/students/home/{search}/{page}", "Students:home");
-$route->get("/students/student", "Students:student");
-$route->post("/students/student", "Students:student");
-$route->get("/students/student/{student_id}", "Students:student");
-$route->post("/students/student/{student_id}", "Students:student");
+$route->get("/students/{type}/home/{search}/{page}", "Students:home");
+$route->get("/students/{type}/student", "Students:student");
+$route->post("/students/{type}/student", "Students:student");
+$route->get("/students/{type}/student/{student_id}", "Students:student");
+$route->post("/students/{type}/student/{student_id}", "Students:student");
 
 //belts
 $route->get("/belts/home", "Belts:home");

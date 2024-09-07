@@ -7,17 +7,17 @@ use Source\Core\Session;
 use Source\Core\View;
 use Source\Models\Auth;
 use Source\Models\Belt;
-use Source\Models\CafeApp\AppCategory;
-use Source\Models\CafeApp\AppInvoice;
-use Source\Models\CafeApp\AppOrder;
-use Source\Models\CafeApp\AppPlan;
-use Source\Models\CafeApp\AppSubscription;
-use Source\Models\CafeApp\AppWallet;
+use Source\Models\App\AppCategory;
+use Source\Models\App\AppInvoice;
+use Source\Models\App\AppOrder;
+use Source\Models\App\AppPlan;
+use Source\Models\App\AppSubscription;
+use Source\Models\App\AppWallet;
+use Source\Models\App\AppBlackBelt;
 use Source\Models\Post;
 use Source\Models\Report\Access;
 use Source\Models\Report\Online;
 use Source\Models\User;
-use Source\Models\Student;
 use Source\Support\Email;
 use Source\Support\Thumb;
 use Source\Support\Upload;
@@ -124,7 +124,7 @@ class App extends Controller
         );
 
         //CHART
-        $chartData = (new Student())->chartData($this->user);
+        $chartData = (new AppBlackBelt())->chartData($this->user);
         //END CHART
 
         //INCOME && EXPENSE
@@ -155,7 +155,7 @@ class App extends Controller
         //END POSTS
 
         //STUDENTS
-        $student = (new Student())->find("user_id = :id", "id={$this->user->id}")->count();
+        $student = (new AppBlackBelt())->find("user_id = :id", "id={$this->user->id}")->count();
         //END STUDENTS
 
         echo $this->view->render("home", [

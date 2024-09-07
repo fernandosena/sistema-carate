@@ -46,7 +46,7 @@
                             <b>Desde</b> <a class="float-right"><?= date_fmt($student->created_at, "d/m/y \à\s H\hi"); ?></a>
                         </li>
                     </ul>
-                    <a href="<?= url("/admin/students/student/{$student->id}"); ?>" class="btn btn-primary btn-block"><b>Gerênciar</b></a>
+                    <a href="<?= url("/admin/students/{$type}/student/{$student->id}"); ?>" class="btn btn-primary btn-block"><b>Gerênciar</b></a>
                 </div>
             </div>
         <?php endforeach; ?>

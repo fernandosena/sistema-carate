@@ -10,7 +10,7 @@ use Source\Models\Post;
 use Source\Models\Report\Access;
 use Source\Models\Report\Online;
 use Source\Models\User;
-use Source\Models\Student;
+use Source\Models\App\AppBlackBelt;
 use Source\Support\Pager;
 
 /**
@@ -239,7 +239,7 @@ class Web extends Controller
                 return;
             }
 
-            $student = (new Student())->findByDocument($data['document']);
+            $student = (new AppBlackBelt())->findByDocument($data['document']);
             if ($student) {
                 $this->message->success("Seja bem-vindo(a) de volta")->flash();
                 $json['redirect'] = url("/certificado/{$student->document}");

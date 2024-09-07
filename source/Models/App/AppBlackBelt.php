@@ -1,6 +1,6 @@
 <?php
 
-namespace Source\Models;
+namespace Source\Models\App;
 
 use Source\Core\Model;
 use Source\Models\User;
@@ -8,17 +8,17 @@ use Source\Models\Belt;
 use Source\Models\HistoricBelt;
 
 /**
- * Class Student
- * @package Source\Models
+ * Class AppBlackBelt
+ * @package Source\Models\App
  */
-class Student extends Model
+class AppBlackBelt extends Model
 {
     /**
-     * Student constructor.
+     * AppBlackBelt constructor.
      */
     public function __construct()
     {
-        parent::__construct("students", ["id"], ["first_name", "last_name", "email", "document", "zip", "address", "neighborhood", "number", "phone", "graduation"]);
+        parent::__construct("app_black_belt", ["id"], ["first_name", "last_name", "email", "document", "zip", "address", "neighborhood", "number", "phone", "graduation"]);
     }
 
     /**
@@ -102,9 +102,9 @@ class Student extends Model
     /**
      * @param string $email
      * @param string $columns
-     * @return null|Student
+     * @return null|AppBlackBelt
      */
-    public function findByEmail(string $email, string $columns = "*"): ?Student
+    public function findByEmail(string $email, string $columns = "*"): ?AppBlackBelt
     {
         $find = $this->find("email = :email", "email={$email}", $columns);
         return $find->fetch();
@@ -114,9 +114,9 @@ class Student extends Model
     /**
      * @param string $document
      * @param string $columns
-     * @return null|Student
+     * @return null|AppBlackBelt
      */
-    public function findByDocument(string $document, string $columns = "*"): ?Student
+    public function findByDocument(string $document, string $columns = "*"): ?AppBlackBelt
     {
         $find = $this->find("document = :d", "d={$document}", $columns);
         return $find->fetch();
@@ -146,7 +146,7 @@ class Student extends Model
         $chartData->categories = "'" . implode("','", $dateChart) . "'";
         $chartData->students = "0,0,0,0,0,0";
 
-        $chart = (new Student())
+        $chart = (new AppBlackBelt())
             ->find("user_id = :user AND created_at >= DATE(now() - INTERVAL 6 MONTH) GROUP BY year(created_at) ASC, month(created_at) ASC",
                 "user={$user->id}",
                 "year(created_at) AS due_year,
@@ -186,28 +186,28 @@ class Student extends Model
             return false;
         }
 
-        /** Student Update */
+        /** AppBlackBelt Update */
         if (!empty($this->id)) {
-            $studentId = $this->id;
+            $AppBlackBeltId = $this->id;
 
-            if ($this->find("email = :e AND id != :i", "e={$this->email}&i={$studentId}", "id")->fetch()) {
+            if ($this->find("email = :e AND id != :i", "e={$this->email}&i={$AppBlackBeltId}", "id")->fetch()) {
                 $this->message->warning("O e-mail informado já está cadastrado");
                 return false;
             }
 
-            if ($this->find("document = :d AND id != :i", "d={$this->document}&i={$studentId}", "id")->fetch()) {
+            if ($this->find("document = :d AND id != :i", "d={$this->document}&i={$AppBlackBeltId}", "id")->fetch()) {
                 $this->message->warning("O CPF informado já está cadastrado");
                 return false;
             }
 
-            $this->update($this->safe(), "id = :id", "id={$studentId}");
+            $this->update($this->safe(), "id = :id", "id={$AppBlackBeltId}");
             if ($this->fail()) {
                 $this->message->error("Erro ao atualizar, verifique os dados");
                 return false;
             }
         }
 
-        /** Student Create */
+        /** AppBlackBelt Create */
         if (empty($this->id)) {
             if ($this->findByEmail($this->email, "id")) {
                 $this->message->warning("O e-mail informado já está cadastrado");
@@ -219,14 +219,14 @@ class Student extends Model
                 return false;
             }
 
-            $studentId = $this->create($this->safe());
+            $AppBlackBeltId = $this->create($this->safe());
             if ($this->fail()) {
                 $this->message->error("Erro ao cadastrar, verifique os dados");
                 return false;
             }
         }
 
-        $this->data = ($this->findById($studentId))->data();
+        $this->data = ($this->findById($AppBlackBeltId))->data();
         return true;
     }
 }

@@ -20,6 +20,10 @@
                                 <div class="mt-3">
                                     <h4><?= $student->fullName() ?></h4>
                                     <p>Cadastro: <?= date_fmt($student->created_at, "d/m/y \à\s H\hi"); ?></p>
+
+                                    <?php if(!empty($type) && $type == "black"): ?>
+                                    <p>Endereço: <?= $student->address ?>, <?= $student->number ?> <?= $student->complement ?>, <?= $student->city ?> - <?= $student->state ?> - <?= $student->zip ?></p>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                             <div class="list-group list-group-flush text-center mt-4">
@@ -64,7 +68,7 @@
                                         <span><?= $student->belt()->title ?></span>
                                     </li>
                                 </ul>
-                                <button class="btn btn-primary btn-block w-50 m-auto" data-modalopen=".app_modal_student_belt">Alterar Graduação</button>
+                                <button class="btn btn-primary btn-block w-50 m-auto" data-modalopen=".app_modal_student_belt">Alterar Faixa</button>
                             </div>
                         </div>
                     </div>
@@ -75,16 +79,24 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">Descrição</th>
-                                        <th scope="col">E-mail</th>
-                                        <th scope="col">Telefone</th>
+                                        <?php if(!empty($type) && $type == "black"): ?>
+                                            <th scope="col">E-mail</th>
+                                            <th scope="col">Telefone</th>
+                                        <?php else: ?>
+                                            <th scope="col">CPF</th>
+                                        <?php endif; ?>
                                         <th scope="col">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td><?= (!empty($student->description)) ? $student->description : "--------" ?></td>
-                                        <td><?= $student->email ?></td>
-                                        <td><?= $student->phone ?></td>
+                                        <?php if(!empty($type) && $type == "black"): ?>
+                                            <td><?= $student->email ?></td>
+                                            <td><?= $student->phone ?></td>
+                                        <?php else: ?>
+                                            <td><?= $student->document ?></td>
+                                        <?php endif; ?>
                                         <td><strong class="badge bg-<?= ($student->status == 'activated') ? 'success': (($student->status == 'pending') ? 'warning' : 'danger') ?>"><?= ($student->status == 'activated') ? 'Ativo': (($student->status == 'pending') ? 'Pendente' : 'Desativado') ?></strong></span></td>
                                     </tr>
                                 </tbody>

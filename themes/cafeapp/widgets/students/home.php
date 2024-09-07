@@ -21,7 +21,9 @@
         <table class="app_launch_table">
             <thead>
                 <th>Aluno</th>
+                <?php if(!empty($type) && $type == "black"): ?>
                 <th>E-mail</th>
+                <?php endif; ?>
                 <th>Graduação</th>
                 <th>Status</th>
             </thead>
@@ -33,8 +35,11 @@
                 ?>
                     <tr>
                         <td><a title="<?= $student->fullName(); ?>"
-                        href="<?= url("/app/aluno/{$student->id}"); ?>"><?= str_limit_words($student->fullName(), 3, "...") ?></a></td>
-                        <td><?= $student->email ?></td>
+                        href="<?= url("/app/aluno/{$type}/{$student->id}"); ?>"><?= str_limit_words($student->fullName(), 3, "...") ?></a></td>
+
+                        <?php if(!empty($type) && $type == "black"): ?>
+                            <td><?= $student->email ?></td>
+                        <?php endif; ?>
                         <td><strong class="badge"><?= $student->belt()->title ?></strong></td>
                         <td><strong class="badge bg-<?= ($student->status == 'activated') ? 'success': (($student->status == 'pending') ? 'warning' : 'danger') ?>"><?= ($student->status == 'activated') ? 'Ativo': (($student->status == 'pending') ? 'Pendente' : 'Desativado') ?></strong></span></td>
                     </tr>

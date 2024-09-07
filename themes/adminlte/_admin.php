@@ -84,7 +84,10 @@
                             $nav = function ($array) use ($app) {
                                 $nav = "";
                                 if(is_array($array)){
-                                    $activeM = (explode("/", $app)[0] == explode("/", $array['href'])[0] ? "active" : null);
+                                    $ex1 = explode("/", $app);
+                                    $ex2 = explode("/", $array['href']);
+
+                                    $activeM = (($ex1[0] == $ex2[0]) && (!empty($ex2[1]) ? ($ex1[1] == $ex2[1]) : false) ? "active" : null);
                                     $urlM = url("/admin/{$array['href']}");
 
                                     $nav .= "<li class='nav-item ".(!empty($activeM) ? "menu-open" : null )."'>
@@ -102,7 +105,7 @@
                                                 $exp1 = explode("/", $app);
                                                 $exp2 = explode("/", $submenu['href']);
 
-                                                $activeS = (($exp1[0] == $exp2[0]) && ($exp1[1] == $exp2[1])) ? "active" : null;
+                                                $activeS = (($exp1[0] == $exp2[0]) && ($exp1[1] == $exp2[1]) && (!empty($exp2[2]) ? ($exp1[2] == $exp2[2]) : true)) ? "active" : null;
                                                 $urlS = url("/admin/{$submenu['href']}");
 
                                                 $nav .= "<li class='nav-item'>
@@ -148,17 +151,36 @@
                             echo $nav(
                                 [
                                     "icon"=>"fa-graduation-cap",
-                                    "href"=>"students",
-                                    "title"=>"Alunos",
+                                    "href"=>"students/black",
+                                    "title"=>"Faixas Preta",
                                     "submenu"=> [
                                         [
                                             "icon"=>"fa-list",
-                                            "href"=>"students/home",
+                                            "href"=>"students/black/home",
                                             "title"=>"Listar",
                                         ],
                                         [
                                             "icon"=>"fa-user-plus",
-                                            "href"=>"students/student",
+                                            "href"=>"students/black/student",
+                                            "title"=>"Cadastrar",
+                                        ]
+                                    ],
+                                ],
+                            );
+                            echo $nav(
+                                [
+                                    "icon"=>"fa-graduation-cap",
+                                    "href"=>"students/kyus",
+                                    "title"=>"Kyus",
+                                    "submenu"=> [
+                                        [
+                                            "icon"=>"fa-list",
+                                            "href"=>"students/kyus/home",
+                                            "title"=>"Listar",
+                                        ],
+                                        [
+                                            "icon"=>"fa-user-plus",
+                                            "href"=>"students/kyus/student",
                                             "title"=>"Cadastrar",
                                         ]
                                     ],

@@ -2,12 +2,13 @@
 
 namespace Source\App\Admin;
 
+use Source\Models\App\AppKyus;
 use Source\Models\Belt;
 use Source\Models\User;
 use Source\Support\Pager;
 use Source\Support\Thumb;
 use Source\Support\Upload;
-use Source\Models\Student;
+use Source\Models\App\AppBlackBelt;
 
 /**
  * Class Instructors
@@ -204,14 +205,17 @@ class Instructors extends Admin
             false
         );
 
-        $students = (new Student())->findByTeacher($userId);
+        $blacks = (new AppBlackBelt())->findByTeacher($userId);
+        $kyus = (new AppKyus())->findByTeacher($userId);
+        
         $graduations = (new Belt())->find("title LIKE '%dan%'")->fetch(true);
 
         echo $this->view->render("widgets/instructors/instructor", [
             "app" => "users/user",
             "head" => $head,
             "user" => $user,
-            "students" => $students,
+            "blacks" => $blacks,
+            "kyus" => $kyus,
             "graduations" => $graduations
         ]);
 

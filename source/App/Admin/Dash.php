@@ -2,15 +2,16 @@
 
 namespace Source\App\Admin;
 
+use Source\Models\App\AppKyus;
 use Source\Models\Auth;
-use Source\Models\CafeApp\AppPlan;
-use Source\Models\CafeApp\AppSubscription;
+use Source\Models\App\AppPlan;
+use Source\Models\App\AppSubscription;
 use Source\Models\Category;
 use Source\Models\Post;
 use Source\Models\Report\Online;
 use Source\Models\User;
 use Source\Models\Belt;
-use Source\Models\Student;
+use Source\Models\App\AppBlackBelt;
 
 /**
  * Class Dash
@@ -74,9 +75,9 @@ class Dash extends Admin
             "app" => "dash",
             "head" => $head,
             "quantity" => [
-                "new" => (new Student())->find("status = 'pending'")->count(),
                 "teachers" => (new User())->find("level < 5")->count(),
-                "students" => (new Student())->find()->count(),
+                "black" => (new AppBlackBelt())->find()->count(),
+                "kyus" => (new AppKyus())->find()->count(),
                 "belts" => (new Belt())->find()->count(),
             ],
             "control" => (object)[

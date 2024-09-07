@@ -2,7 +2,7 @@
 
 namespace Source\App\CafeApi;
 
-use Source\Models\CafeApp\AppInvoice;
+use Source\Models\App\AppInvoice;
 use Source\Support\Thumb;
 use Source\Support\Upload;
 

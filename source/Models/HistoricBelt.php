@@ -3,7 +3,7 @@
 namespace Source\Models;
 
 use Source\Core\Model;
-use Source\Models\Student;
+use Source\Models\App\AppBlackBelt;
 use Source\Models\Belt;
 
 /**

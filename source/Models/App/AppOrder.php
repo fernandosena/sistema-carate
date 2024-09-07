@@ -1,13 +1,13 @@
 <?php
 
-namespace Source\Models\CafeApp;
+namespace Source\Models\App;
 
 use Source\Core\Model;
 use Source\Models\User;
 
 /**
  * Class AppOrder
- * @package Source\Models\CafeApp
+ * @package Source\Models\App
  */
 class AppOrder extends Model
 {

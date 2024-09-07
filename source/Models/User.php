@@ -3,6 +3,8 @@
 namespace Source\Models;
 
 use Source\Core\Model;
+use Source\Models\App\AppBlackBelt;
+use Source\Models\App\AppKyus;
 
 /**
  * FSPHP | Class User Active Record Pattern
@@ -92,10 +94,10 @@ class User extends Model
     public function student(): array
     {
         return [
-            "all" => (new Student())->find("user_id = :u and status != :s", "u={$this->id}&s=deactivated")->count(),
-            "activated" => (new Student())->find("user_id = :u AND status = :s", "u={$this->id}&s=activated")->count(),
-            "deactivated" => (new Student())->find("user_id = :u AND status = :s", "u={$this->id}&s=deactivated")->count(),
-            "pending" => (new Student())->find("user_id = :u AND status = :s", "u={$this->id}&s=pending")->count(),
+            "all" => (new AppBlackBelt())->find("user_id = :u and status != :s", "u={$this->id}&s=deactivated")->count() + (new AppKyus())->find("user_id = :u and status != :s", "u={$this->id}&s=deactivated")->count(),
+            "activated" => (new AppBlackBelt())->find("user_id = :u AND status = :s", "u={$this->id}&s=activated")->count()+(new AppKyus())->find("user_id = :u AND status = :s", "u={$this->id}&s=activated")->count(),
+            "deactivated" => (new AppBlackBelt())->find("user_id = :u AND status = :s", "u={$this->id}&s=deactivated")->count()+(new AppKyus())->find("user_id = :u AND status = :s", "u={$this->id}&s=deactivated")->count(),
+            "pending" => (new AppBlackBelt())->find("user_id = :u AND status = :s", "u={$this->id}&s=pending")->count()+(new AppKyus())->find("user_id = :u AND status = :s", "u={$this->id}&s=pending")->count(),
         ];
     }
 

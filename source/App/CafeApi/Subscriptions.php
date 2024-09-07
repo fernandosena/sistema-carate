@@ -2,10 +2,10 @@
 
 namespace Source\App\CafeApi;
 
-use Source\Models\CafeApp\AppCreditCard;
-use Source\Models\CafeApp\AppOrder;
-use Source\Models\CafeApp\AppPlan;
-use Source\Models\CafeApp\AppSubscription;
+use Source\Models\App\AppCreditCard;
+use Source\Models\App\AppOrder;
+use Source\Models\App\AppPlan;
+use Source\Models\App\AppSubscription;
 
 /**
  * Class Subscriptions

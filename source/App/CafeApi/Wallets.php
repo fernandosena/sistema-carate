@@ -2,8 +2,8 @@
 
 namespace Source\App\CafeApi;
 
-use Source\Models\CafeApp\AppSubscription;
-use Source\Models\CafeApp\AppWallet;
+use Source\Models\App\AppSubscription;
+use Source\Models\App\AppWallet;
 use Source\Support\Pager;
 
 /**

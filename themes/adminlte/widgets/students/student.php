@@ -10,6 +10,7 @@
                 <div class="card-body">
                     <!--ACTION SPOOFING-->
                     <input type="hidden" name="action" value="create"/>
+                    <input type="hidden" name="type" value="<?= $type ?>"/>
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="form-group">
@@ -191,6 +192,7 @@
                                     <div class="card-body">
                                         <!--ACTION SPOOFING-->
                                         <input type="hidden" name="action" value="update"/>
+                                        <input type="hidden" name="type" value="<?= $type ?>"/>
                                         <input type="hidden" name="level" value="1">
                                         <input type="hidden" name="status" value="confirmed">
                                         
@@ -242,6 +244,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <?php if($type == "black"): ?>
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
@@ -339,14 +342,17 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <?php endif; ?>
                                         <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>*E-mail</label>
-                                                    <input type="email"
-                                                    name="email" value="<?= $student->email; ?>"  class="form-control" placeholder="Melhor e-mail" required>
+                                            <?php if($type == "black"): ?>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>*E-mail</label>
+                                                        <input type="email"
+                                                        name="email" value="<?= $student->email; ?>"  class="form-control" placeholder="Melhor e-mail" required>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            <?php endif; ?>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>*Graduação</label>

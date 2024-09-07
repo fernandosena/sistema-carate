@@ -2,9 +2,9 @@
 
 namespace Source\App\Admin;
 
-use Source\Models\CafeApp\AppCreditCard;
-use Source\Models\CafeApp\AppPlan;
-use Source\Models\CafeApp\AppSubscription;
+use Source\Models\App\AppCreditCard;
+use Source\Models\App\AppPlan;
+use Source\Models\App\AppSubscription;
 use Source\Support\Pager;
 
 /**

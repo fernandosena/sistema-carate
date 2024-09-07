@@ -28,7 +28,7 @@ if ($chargeNow) {
              */
             $subscribe->status = "active";
             $subscribe->next_due = date("Y-m-d", strtotime($subscribe->next_due . "+{$plan->period}"));
-            (new \Source\Models\CafeApp\AppOrder())->byCreditCard($user, $card, $subscribe, $transaction);
+            (new \Source\Models\App\AppOrder())->byCreditCard($user, $card, $subscribe, $transaction);
 
             $subject = "[PAGAMENTO CONFIRMADO] Obrigado por assinar o CaféApp";
             $body = $view->render("mail", [
@@ -47,7 +47,7 @@ if ($chargeNow) {
              * CHARGE FAIL
              */
             $subscribe->status = "past_due";
-            (new \Source\Models\CafeApp\AppOrder())->byCreditCard($user, $card, $subscribe, $transaction);
+            (new \Source\Models\App\AppOrder())->byCreditCard($user, $card, $subscribe, $transaction);
 
             $subject = "[PAGAMENTO RECUSADO] Sua conta CaféApp precisa de atenção";
             $body = $view->render("mail", [
@@ -91,7 +91,7 @@ if ($chargeDays) {
              */
             $subscribe->status = "active";
             $subscribe->next_due = date("Y-m-d", strtotime($subscribe->next_due . "+{$plan->period}"));
-            (new \Source\Models\CafeApp\AppOrder())->byCreditCard($user, $card, $subscribe, $transaction);
+            (new \Source\Models\App\AppOrder())->byCreditCard($user, $card, $subscribe, $transaction);
 
             $subject = "[PAGAMENTO CONFIRMADO] Obrigado por assinar o CaféApp";
             $body = $view->render("mail", [
@@ -111,7 +111,7 @@ if ($chargeDays) {
              */
             $subscribe->status = "canceled";
             $subscribe->pay_status = "canceled";
-            (new \Source\Models\CafeApp\AppOrder())->byCreditCard($user, $card, $subscribe, $transaction);
+            (new \Source\Models\App\AppOrder())->byCreditCard($user, $card, $subscribe, $transaction);
 
             $subject = "[ASSINATURA CANCELADA] Sua conta CaféApp agora é FREE";
             $body = $view->render("mail", [

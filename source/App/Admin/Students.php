@@ -6,7 +6,8 @@ use Source\Models\User;
 use Source\Support\Pager;
 use Source\Support\Thumb;
 use Source\Support\Upload;
-use Source\Models\Student;
+use Source\Models\App\AppBlackBelt;
+use Source\Models\App\AppKyus;
 use Source\Models\Belt;
 use Source\Models\HistoricBelt;
 
@@ -37,11 +38,21 @@ class Students extends Admin
         }
 
         $search = null;
-        $students = (new Student())->find();
+
+        if($data["type"] == "black"){
+            $students = (new AppBlackBelt())->find();
+        }else{
+            $students = (new AppKyus())->find();
+        }
 
         if (!empty($data["search"]) && str_search($data["search"]) != "all") {
             $search = str_search($data["search"]);
-            $students = (new Student())->find("MATCH(first_name, last_name, email) AGAINST(:s)", "s={$search}");
+            if($data["type"] == "black"){
+                $students = (new AppBlackBelt())->find("MATCH(first_name, last_name, email) AGAINST(:s)", "s={$search}");
+            }else{
+                $students = (new AppKyus())->find("MATCH(first_name, last_name) AGAINST(:s)", "s={$search}");
+            }
+            
             if (!$students->count()) {
                 $this->message->info("Sua pesquisa não retornou resultados")->flash();
                 redirect("/admin/students/home");
@@ -61,8 +72,9 @@ class Students extends Admin
         );
 
         echo $this->view->render("widgets/students/home", [
-            "app" => "students/home",
+            "app" => "students/{$data["type"]}/home",
             "head" => $head,
+            "type" => $data["type"],
             "search" => $search,
             "students" => $students->order("first_name, last_name")->limit($pager->limit())->offset($pager->offset())->fetch(true),
             "paginator" => $pager->render()
@@ -82,11 +94,11 @@ class Students extends Admin
         }
 
         $search = null;
-        $students = (new Student())->find("status = 'pending'");
+        $students = (new AppBlackBelt())->find("status = 'pending'");
 
         if (!empty($data["search"]) && str_search($data["search"]) != "all") {
             $search = str_search($data["search"]);
-            $students = (new Student())->find("status = 'pending' AND MATCH(first_name, last_name, email) AGAINST(:s)", "s={$search}");
+            $students = (new AppBlackBelt())->find("status = 'pending' AND MATCH(first_name, last_name, email) AGAINST(:s)", "s={$search}");
             if (!$students->count()) {
                 $this->message->info("Sua pesquisa não retornou resultados")->flash();
                 redirect("/admin/students/home");
@@ -106,7 +118,7 @@ class Students extends Admin
         );
 
         echo $this->view->render("widgets/students/home", [
-            "app" => "students/home",
+            "app" => "students/{$data["type"]}/home",
             "head" => $head,
             "search" => $search,
             "students" => $students->order("first_name, last_name")->limit($pager->limit())->offset($pager->offset())->fetch(true),
@@ -180,30 +192,49 @@ class Students extends Admin
         //update
         if (!empty($data["action"]) && $data["action"] == "update") {
             $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
-            $studentUpdate = (new Student())->findById($data["student_id"]);
+            
+            #atualizar faixa preta
+            if($data["type"] == "black"){
+                $studentUpdate = (new AppBlackBelt())->findById($data["student_id"]);
+            }else{
+                #atualizar faixa Kyus
+                $studentUpdate = (new AppKyus())->findById($data["student_id"]);
+            }
 
             if (!$studentUpdate) {
                 $this->message->error("Você tentou gerenciar um aluno que não existe")->flash();
-                echo json_encode(["redirect" => url("/admin/students/home")]);
+                echo json_encode(["redirect" => url("/admin/students/{$data["type"]}/home")]);
                 return;
             }
 
-            $studentUpdate->first_name = $data["first_name"];
-            $studentUpdate->last_name = $data["last_name"];
-            $studentUpdate->email = $data["email"];
-            $studentUpdate->datebirth = date_fmt_back($data["datebirth"]);
-            $studentUpdate->document = preg_replace("/[^0-9]/", "", $data["document"]);
-            $studentUpdate->status = $data["status"];
-            $studentUpdate->zip = preg_replace("/[^0-9]/", "", $data["zip"]);
-            $studentUpdate->state = $data["state"];
-            $studentUpdate->city = $data["city"];
-            $studentUpdate->address = $data["address"];
-            $studentUpdate->neighborhood = $data["neighborhood"];
-            $studentUpdate->number = $data["number"];
-            $studentUpdate->complement = $data["complement"];
-            $studentUpdate->phone = $data["phone"];
-            $studentUpdate->graduation = $data["graduation"];
-            $studentUpdate->description = $data["description"];
+            #cadastra faixa preta
+            if($data["type"] == "black"){
+                $studentUpdate = new AppBlackBelt();
+                $studentUpdate->first_name = $data["first_name"];
+                $studentUpdate->last_name = $data["last_name"];
+                $studentUpdate->email = $data["email"];
+                $studentUpdate->datebirth = date_fmt_back($data["datebirth"]);
+                $studentUpdate->document = preg_replace("/[^0-9]/", "", $data["document"]);
+                $studentUpdate->zip = preg_replace("/[^0-9]/", "", $data["zip"]);
+                $studentUpdate->state = $data["state"];
+                $studentUpdate->city = $data["city"];
+                $studentUpdate->address = $data["address"];
+                $studentUpdate->neighborhood = $data["neighborhood"];
+                $studentUpdate->number = $data["number"];
+                $studentUpdate->complement = $data["complement"];
+                $studentUpdate->phone = $data["phone"];
+                $studentUpdate->graduation = $data["graduation"];
+                $studentUpdate->description = $data["description"];
+            }else{
+                #cadastra faixa Kyus
+                $studentUpdate = new AppKyus();
+                $studentUpdate->first_name = $data["first_name"];
+                $studentUpdate->last_name = $data["last_name"];
+                $studentUpdate->datebirth = date_fmt_back($data["datebirth"]);
+                $studentUpdate->document = preg_replace("/[^0-9]/", "", $data["document"]);
+                $studentUpdate->graduation = $data["graduation"];
+                $studentUpdate->description = $data["description"];
+            }
 
             //upload photo
             if (!empty($_FILES["photo"])) {
@@ -264,7 +295,11 @@ class Students extends Admin
         $studentEdit = null;
         if (!empty($data["student_id"])) {
             $studentId = filter_var($data["student_id"], FILTER_VALIDATE_INT);
-            $studentEdit = (new Student())->findById($studentId);
+            if($data["type"] == "black"){
+                $studentEdit = (new AppBlackBelt())->findById($studentId);
+            }else{
+                $studentEdit = (new AppKyus())->findById($studentId);
+            }
         }
 
         $head = $this->seo->render(
@@ -278,6 +313,7 @@ class Students extends Admin
         echo $this->view->render("widgets/students/student", [
             "app" => "students/student",
             "head" => $head,
+            "type" => $data["type"],
             "student" => $studentEdit,
             "graduations" => (new Belt())->find()->order("id")->fetch(true),
             "teachers" => (new User())->find("level < :l", "l=5")->order("id")->fetch(true)

@@ -3,6 +3,7 @@
         <p class="title icon-user"><?= (!empty($student)) ? "Atualizar Faixa Preta" : "Novo Faixa Preta" ?>:</p>
         <form class="app_form" id="address-form" action="<?= url("/app/alunos"); ?>" method="post">
             <input type="hidden" name="action" value="<?= (!empty($student)) ? "update" : "create" ?>"/>
+            <input type="hidden" name="type" value="black">
             <input type="hidden" name="id" value="<?= ($student->id) ?? null ?>"/>
             <?php
                 if (!empty($student)) {
@@ -126,7 +127,7 @@
                     ?>
                     <select name="graduation">
                         <?php foreach ($graduations as $graduation): ?>
-                            <option <?= $select($graduation->id); ?> value="<?= $graduation->id ?>">&ofcir; <?= $graduation->title; ?></option>
+                            <option <?= $select($graduation->id); ?> value="<?= $graduation->id ?>">&ofcir; <?= $graduation->title; ?> - <?= $graduation->description; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </label>

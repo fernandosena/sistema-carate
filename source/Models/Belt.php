@@ -3,6 +3,8 @@
 namespace Source\Models;
 
 use Source\Core\Model;
+use Source\Models\App\AppBlackBelt;
+use Source\Models\App\AppKyus;
 
 /**
  * Class Belt
@@ -25,9 +27,9 @@ class Belt extends Model
     public function student(): array
     {
         return [
-            "all" => (new Student())->find("graduation = :b AND status != :s", "b={$this->id}&s=deactivated")->count(),
-            "activated" => (new Student())->find("graduation = :b AND status = :s", "b={$this->id}&s=activated")->count(),
-            "deactivated" => (new Student())->find("graduation = :b AND status = :s", "b={$this->id}&s=deactivated")->count(),
+            "all" => (new AppBlackBelt())->find("graduation = :b AND status != :s", "b={$this->id}&s=deactivated")->count()+(new AppKyus())->find("graduation = :b AND status != :s", "b={$this->id}&s=deactivated")->count(),
+            "activated" => (new AppBlackBelt())->find("graduation = :b AND status = :s", "b={$this->id}&s=activated")->count()+(new AppKyus())->find("graduation = :b AND status = :s", "b={$this->id}&s=activated")->count(),
+            "deactivated" => (new AppBlackBelt())->find("graduation = :b AND status = :s", "b={$this->id}&s=deactivated")->count()+(new AppKyus())->find("graduation = :b AND status = :s", "b={$this->id}&s=deactivated")->count(),
         ];
     }
 }

@@ -4,7 +4,8 @@ namespace Source\App\App;
 
 use Source\Models\HistoricBelt;
 use Source\Support\Upload;
-use Source\Models\Student;
+use Source\Models\App\AppBlackBelt;
+use Source\Models\App\AppKyus;
 use Source\Models\Belt;
 
 /**
@@ -35,26 +36,39 @@ class Students extends App
             return;
         }
 
-        if (!empty($data["action"]) && $data["action"] == "create") {
+        if (!empty($data["action"]) && !empty($data["type"]) && $data["action"] == "create") {
             $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
 
-            $studentCreate = new Student();
-            $studentCreate->user_id = $this->user->id;
-            $studentCreate->first_name = $data["first_name"];
-            $studentCreate->last_name = $data["last_name"];
-            $studentCreate->email = $data["email"];
-            $studentCreate->datebirth = date_fmt_back($data["datebirth"]);
-            $studentCreate->document = preg_replace("/[^0-9]/", "", $data["document"]);
-            $studentCreate->zip = preg_replace("/[^0-9]/", "", $data["zip"]);
-            $studentCreate->state = $data["state"];
-            $studentCreate->city = $data["city"];
-            $studentCreate->address = $data["address"];
-            $studentCreate->neighborhood = $data["neighborhood"];
-            $studentCreate->number = $data["number"];
-            $studentCreate->complement = $data["complement"];
-            $studentCreate->phone = $data["phone"];
-            $studentCreate->graduation = $data["graduation"];
-            $studentCreate->description = $data["description"];
+            #cadastra faixa preta
+            if($data["type"] == "black"){
+                $studentCreate = new AppBlackBelt();
+                $studentCreate->user_id = $this->user->id;
+                $studentCreate->first_name = $data["first_name"];
+                $studentCreate->last_name = $data["last_name"];
+                $studentCreate->email = $data["email"];
+                $studentCreate->datebirth = date_fmt_back($data["datebirth"]);
+                $studentCreate->document = preg_replace("/[^0-9]/", "", $data["document"]);
+                $studentCreate->zip = preg_replace("/[^0-9]/", "", $data["zip"]);
+                $studentCreate->state = $data["state"];
+                $studentCreate->city = $data["city"];
+                $studentCreate->address = $data["address"];
+                $studentCreate->neighborhood = $data["neighborhood"];
+                $studentCreate->number = $data["number"];
+                $studentCreate->complement = $data["complement"];
+                $studentCreate->phone = $data["phone"];
+                $studentCreate->graduation = $data["graduation"];
+                $studentCreate->description = $data["description"];
+            }else{
+                #cadastra faixa Kyus
+                $studentCreate = new AppKyus();
+                $studentCreate->user_id = $this->user->id;
+                $studentCreate->first_name = $data["first_name"];
+                $studentCreate->last_name = $data["last_name"];
+                $studentCreate->datebirth = date_fmt_back($data["datebirth"]);
+                $studentCreate->document = preg_replace("/[^0-9]/", "", $data["document"]);
+                $studentCreate->graduation = $data["graduation"];
+                $studentCreate->description = $data["description"];
+            }
 
             //upload photo
             if (!empty($_FILES["photo"])) {
@@ -80,7 +94,7 @@ class Students extends App
             $hbelt = (new HistoricBelt());
             $hbelt->student_id = $studentCreate->id;
             $hbelt->graduation_id = $data["graduation"];
-            $hbelt->description = "Definido ao cadastrar aluno";
+            $hbelt->description = "Definido ao cadastrar aluno - (Cadastrado por: {$studentCreate->email})";
             $hbelt->save();
 
             $this->message->success("Aluno cadastrado com sucesso...")->flash();
@@ -90,7 +104,7 @@ class Students extends App
         }
         
         if ((!empty($data["action"]) && $data["action"] == "update") && !empty($data["id"])) {
-            $student = (new Student())->find("user_id = :user AND id = :id",
+            $student = (new AppBlackBelt())->find("user_id = :user AND id = :id",
                 "user={$this->user->id}&id={$data["id"]}")->fetch();
 
             if (!$student) {
@@ -154,10 +168,21 @@ class Students extends App
             false
         );
 
+        if($data["type"] == "black"){
+            $students = (new AppBlackBelt())->find("user_id = :user",
+                "user={$this->user->id}}")->fetch(true);
+            $type = "black";
+        }else{
+            $students = (new AppKyus())->find("user_id = :user",
+                "user={$this->user->id}")->fetch(true);
+            $type = "kyus";
+        }
+
         echo $this->view->render("widgets/students/home", [
             "user" => $this->user,
             "head" => $head,
-            "students" => (new Student())->filter($this->user, "income", ($data ?? null)),
+            "type" => $type,
+            "students" => $students,
             "belts" => (new Belt())
                 ->find()
                 ->order("title")
@@ -172,7 +197,7 @@ class Students extends App
 
     public function belt(array $data): void
     {
-        $student = (new Student())->find("user_id = :user AND id = :id",
+        $student = (new AppBlackBelt())->find("user_id = :user AND id = :id",
     "user={$this->user->id}&id={$data["id"]}")->fetch();
 
         if (!$student) {
@@ -212,63 +237,63 @@ class Students extends App
      */
     public function student(array $data): void
     {
-        if (!empty($data["update"]) && !empty($data["id"])) {
-            $student = (new Student())->find("user_id = :user AND id = :id",
-                "user={$this->user->id}&id={$data["id"]}")->fetch();
+        // if (!empty($data["update"]) && !empty($data["id"])) {
+        //     $student = (new AppBlackBelt())->find("user_id = :user AND id = :id",
+        //         "user={$this->user->id}&id={$data["id"]}")->fetch();
 
-            if (!$student) {
-                $json["message"] = $this->message->error("Ooops! Não foi possível carregar a fatura {$this->user->first_name}. Você pode tentar novamente.")->render();
-                echo json_encode($json);
-                return;
-            }
+        //     if (!$student) {
+        //         $json["message"] = $this->message->error("Ooops! Não foi possível carregar a fatura {$this->user->first_name}. Você pode tentar novamente.")->render();
+        //         echo json_encode($json);
+        //         return;
+        //     }
 
-            $student->first_name = $data["first_name"];
-            $student->last_name = $data["last_name"];
-            $student->email = $data["email"];
-            $student->datebirth = date_fmt_back($data["datebirth"]);
-            $student->document = preg_replace("/[^0-9]/", "", $data["document"]);
-            $student->zip = preg_replace("/[^0-9]/", "", $data["zip"]);
-            $student->state = $data["state"];
-            $student->city = $data["city"];
-            $student->address = $data["address"];
-            $student->neighborhood = $data["neighborhood"];
-            $student->number = $data["number"];
-            $student->complement = $data["complement"];
-            $student->phone = $data["phone"];
-            $student->graduation = $data["graduation"];
-            $student->description = $data["description"];
+        //     $student->first_name = $data["first_name"];
+        //     $student->last_name = $data["last_name"];
+        //     $student->email = $data["email"];
+        //     $student->datebirth = date_fmt_back($data["datebirth"]);
+        //     $student->document = preg_replace("/[^0-9]/", "", $data["document"]);
+        //     $student->zip = preg_replace("/[^0-9]/", "", $data["zip"]);
+        //     $student->state = $data["state"];
+        //     $student->city = $data["city"];
+        //     $student->address = $data["address"];
+        //     $student->neighborhood = $data["neighborhood"];
+        //     $student->number = $data["number"];
+        //     $student->complement = $data["complement"];
+        //     $student->phone = $data["phone"];
+        //     $student->graduation = $data["graduation"];
+        //     $student->description = $data["description"];
 
-            //upload photo
-            if (!empty($_FILES["photo"])) {
-                $files = $_FILES["photo"];
-                $upload = new Upload();
-                $image = $upload->image($files, $student->fullName(), 600);
+        //     //upload photo
+        //     if (!empty($_FILES["photo"])) {
+        //         $files = $_FILES["photo"];
+        //         $upload = new Upload();
+        //         $image = $upload->image($files, $student->fullName(), 600);
 
-                if (!$image) {
-                    $json["message"] = $upload->message()->render();
-                    echo json_encode($json);
-                    return;
-                }
+        //         if (!$image) {
+        //             $json["message"] = $upload->message()->render();
+        //             echo json_encode($json);
+        //             return;
+        //         }
 
-                $student->photo = $image;
-            }
+        //         $student->photo = $image;
+        //     }
 
-            if (!$student->save()) {
-                $json["message"] = $student->message()->render();
-                echo json_encode($json);
-                return;
-            }
+        //     if (!$student->save()) {
+        //         $json["message"] = $student->message()->render();
+        //         echo json_encode($json);
+        //         return;
+        //     }
 
-            $hbelt = (new HistoricBelt());
-            $hbelt->student_id = $student->id;
-            $hbelt->graduation_id = $data["graduation"];
-            $hbelt->description = $data["description"];
-            $hbelt->save();
+        //     $hbelt = (new HistoricBelt());
+        //     $hbelt->student_id = $student->id;
+        //     $hbelt->graduation_id = $data["graduation"];
+        //     $hbelt->description = $data["description"];
+        //     $hbelt->save();
 
-            $json["message"] = $this->message->success("Pronto {$this->user->first_name}, O aluno foi atualizado com sucesso!")->render();
-            echo json_encode($json);
-            return;
-        }
+        //     $json["message"] = $this->message->success("Pronto {$this->user->first_name}, O aluno foi atualizado com sucesso!")->render();
+        //     echo json_encode($json);
+        //     return;
+        // }
 
         $head = $this->seo->render(
             "Aluno - " . CONF_SITE_NAME,
@@ -277,9 +302,15 @@ class Students extends App
             theme("/assets/images/share.jpg"),
             false
         );
+        
 
-        $student = (new Student())->find("user_id = :user AND id = :id",
-            "user={$this->user->id}&id={$data["id"]}")->fetch();
+        if($data["type"] == "black"){
+            $student = (new AppBlackBelt())->find("user_id = :user AND id = :id",
+                "user={$this->user->id}&id={$data["id"]}")->fetch();
+        }else{
+            $student = (new AppKyus())->find("user_id = :user AND id = :id",
+                    "user={$this->user->id}&id={$data["id"]}")->fetch();
+        }
 
         if (!$student) {
             $this->message->error("Ooops! Você tentou acessar um aluno que não existe")->flash();
@@ -289,6 +320,7 @@ class Students extends App
         echo $this->view->render("widgets/students/detail", [
             "head" => $head,
             "student" => $student,
+            "type" => $data["type"],
             "belts" => (new Belt())
                 ->find()
                 ->order("title")

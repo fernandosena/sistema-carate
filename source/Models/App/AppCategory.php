@@ -1,12 +1,12 @@
 <?php
 
-namespace Source\Models\CafeApp;
+namespace Source\Models\App;
 
 use Source\Core\Model;
 
 /**
  * Class AppCategory
- * @package Source\Models\CafeApp
+ * @package Source\Models\App
  */
 class AppCategory extends Model
 {
