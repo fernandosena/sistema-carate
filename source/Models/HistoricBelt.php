@@ -17,7 +17,7 @@ class HistoricBelt extends Model
      */
     public function __construct()
     {
-        parent::__construct("historic_belts", ["id"], ["student_id", "belt_id", "description"]);
+        parent::__construct("historic_belts", ["id"], ["student_id", "graduation_id", "description"]);
     }
 
     /**
@@ -32,7 +32,7 @@ class HistoricBelt extends Model
         string $description,
     ): HistoricBelt {
         $this->student_id = $student->id;
-        $this->belt_id = $belt->id;
+        $this->graduation_id = $belt->id;
         $this->description = $description;
         return $this;
     }

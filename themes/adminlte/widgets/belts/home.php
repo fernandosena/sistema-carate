@@ -7,7 +7,7 @@
                     <h3 class="m-auto d-block profile-username badge text-center"><?= $belt->title; ?></h3>
                     <ul class="list-group list-group-unbordered mb-3">
                         <li class="list-group-item">
-                            <b>Qtd. de alunos</b> <a class="float-right"><?= $belt->student()["activated"] ?></a>
+                            <b>Qtd. de alunos</b> <a class="float-right"><?= $belt->student()["all"] ?></a>
                         </li>
                     </ul>
                     <a href="<?= url("/admin/belts/belt/{$belt->id}"); ?>" class="btn btn-primary btn-block"><b>Gerênciar</b></a>

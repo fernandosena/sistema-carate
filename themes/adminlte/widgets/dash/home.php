@@ -20,12 +20,12 @@
         <div class="small-box bg-warning">
             <div class="inner">
                 <h3><?= $quantity["teachers"] ?></h3>
-                <p>Professores</p>
+                <p>Instrutores</p>
             </div>
             <div class="icon">
                 <i class="ion ion-person"></i>
             </div>
-            <a href="<?= url("admin/users/home") ?>" class="small-box-footer">Ver todos <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="<?= url("admin/instructors/home") ?>" class="small-box-footer">Ver todos <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <!-- ./col -->
@@ -48,7 +48,7 @@
         <div class="small-box bg-danger">
         <div class="inner">
             <h3><?= $quantity["belts"] ?></h3>
-            <p>Faixas</p>
+            <p>Graduações</p>
         </div>
         <div class="icon">
             <i class="ion ion-person-add"></i>

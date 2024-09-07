@@ -43,9 +43,17 @@ class Students extends App
             $studentCreate->first_name = $data["first_name"];
             $studentCreate->last_name = $data["last_name"];
             $studentCreate->email = $data["email"];
-            $studentCreate->document = $data["document"];
+            $studentCreate->datebirth = date_fmt_back($data["datebirth"]);
+            $studentCreate->document = preg_replace("/[^0-9]/", "", $data["document"]);
+            $studentCreate->zip = preg_replace("/[^0-9]/", "", $data["zip"]);
+            $studentCreate->state = $data["state"];
+            $studentCreate->city = $data["city"];
+            $studentCreate->address = $data["address"];
+            $studentCreate->neighborhood = $data["neighborhood"];
+            $studentCreate->number = $data["number"];
+            $studentCreate->complement = $data["complement"];
             $studentCreate->phone = $data["phone"];
-            $studentCreate->belts = $data["belts"];
+            $studentCreate->graduation = $data["graduation"];
             $studentCreate->description = $data["description"];
 
             //upload photo
@@ -71,18 +79,73 @@ class Students extends App
 
             $hbelt = (new HistoricBelt());
             $hbelt->student_id = $studentCreate->id;
-            $hbelt->belt_id = $data["belts"];
+            $hbelt->graduation_id = $data["graduation"];
             $hbelt->description = "Definido ao cadastrar aluno";
             $hbelt->save();
 
             $this->message->success("Aluno cadastrado com sucesso...")->flash();
-            // $json["redirect"] = url("/admin/users/user/{$studentCreate->id}");
             $json["redirect"] = url("/app/alunos");
-
             echo json_encode($json);
             return;
         }
         
+        if ((!empty($data["action"]) && $data["action"] == "update") && !empty($data["id"])) {
+            $student = (new Student())->find("user_id = :user AND id = :id",
+                "user={$this->user->id}&id={$data["id"]}")->fetch();
+
+            if (!$student) {
+                $json["message"] = $this->message->error("Ooops! Não foi possível carregar a fatura {$this->user->first_name}. Você pode tentar novamente.")->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $student->first_name = $data["first_name"];
+            $student->last_name = $data["last_name"];
+            $student->email = $data["email"];
+            $student->datebirth = date_fmt_back($data["datebirth"]);
+            $student->document = preg_replace("/[^0-9]/", "", $data["document"]);
+            $student->zip = preg_replace("/[^0-9]/", "", $data["zip"]);
+            $student->state = $data["state"];
+            $student->city = $data["city"];
+            $student->address = $data["address"];
+            $student->neighborhood = $data["neighborhood"];
+            $student->number = $data["number"];
+            $student->complement = $data["complement"];
+            $student->phone = $data["phone"];
+            $student->description = $data["description"];
+
+            //upload photo
+            if (!empty($_FILES["photo"])) {
+                $files = $_FILES["photo"];
+                $upload = new Upload();
+                $image = $upload->image($files, $student->fullName(), 600);
+
+                if (!$image) {
+                    $json["message"] = $upload->message()->render();
+                    echo json_encode($json);
+                    return;
+                }
+
+                $student->photo = $image;
+            }
+
+            if (!$student->save()) {
+                $json["message"] = $student->message()->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $hbelt = (new HistoricBelt());
+            $hbelt->student_id = $student->id;
+            $hbelt->graduation_id = $data["graduation"];
+            $hbelt->description = $data["description"];
+            $hbelt->save();
+
+            $json["message"] = $this->message->success("Pronto {$this->user->first_name}, O aluno foi atualizado com sucesso!")->render();
+            echo json_encode($json);
+            return;
+        }
+
         $head = $this->seo->render(
             "Meus Alunos - " . CONF_SITE_NAME,
             CONF_SITE_DESC,
@@ -124,7 +187,7 @@ class Students extends App
             return;
         }
 
-        $student->belts = $data["belts"];
+        $student->graduation = $data["graduation"];
         $student->status = "pending";
 
         if (!$student->save()) {
@@ -135,7 +198,7 @@ class Students extends App
 
         $hbelt = (new HistoricBelt());
         $hbelt->student_id = $student->id;
-        $hbelt->belt_id = $data["belts"];
+        $hbelt->graduation_id = $data["graduation"];
         $hbelt->description = $data["description"];
         $hbelt->save();
 
@@ -149,7 +212,6 @@ class Students extends App
      */
     public function student(array $data): void
     {
-
         if (!empty($data["update"]) && !empty($data["id"])) {
             $student = (new Student())->find("user_id = :user AND id = :id",
                 "user={$this->user->id}&id={$data["id"]}")->fetch();
@@ -163,8 +225,17 @@ class Students extends App
             $student->first_name = $data["first_name"];
             $student->last_name = $data["last_name"];
             $student->email = $data["email"];
-            $student->document = $data["document"];
+            $student->datebirth = date_fmt_back($data["datebirth"]);
+            $student->document = preg_replace("/[^0-9]/", "", $data["document"]);
+            $student->zip = preg_replace("/[^0-9]/", "", $data["zip"]);
+            $student->state = $data["state"];
+            $student->city = $data["city"];
+            $student->address = $data["address"];
+            $student->neighborhood = $data["neighborhood"];
+            $student->number = $data["number"];
+            $student->complement = $data["complement"];
             $student->phone = $data["phone"];
+            $student->graduation = $data["graduation"];
             $student->description = $data["description"];
 
             //upload photo
@@ -190,7 +261,7 @@ class Students extends App
 
             $hbelt = (new HistoricBelt());
             $hbelt->student_id = $student->id;
-            $hbelt->belt_id = $data["belts"];
+            $hbelt->graduation_id = $data["graduation"];
             $hbelt->description = $data["description"];
             $hbelt->save();
 
@@ -225,7 +296,6 @@ class Students extends App
         ]);
     }
 
-
     /**
      * @param array $data
      * @throws \Exception
@@ -239,6 +309,4 @@ class Students extends App
         $json["redirect"] = url("/app/{$redirect}/{$status}/{$category}/");
         echo json_encode($json);
     }
-
-
 }

@@ -125,13 +125,22 @@ class Students extends Admin
             $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
 
             $studentCreate = new Student();
-            $studentCreate->user_id = $data["teacher"];
+            $studentCreate->user_id = $data["teacher"]; 
             $studentCreate->first_name = $data["first_name"];
             $studentCreate->last_name = $data["last_name"];
             $studentCreate->email = $data["email"];
-            $studentCreate->document = $data["document"];
+            $studentCreate->datebirth = date_fmt_back($data["datebirth"]);
+            $studentCreate->document = preg_replace("/[^0-9]/", "", $data["document"]);
+            $studentCreate->status = $data["status"];
+            $studentCreate->zip = preg_replace("/[^0-9]/", "", $data["zip"]);
+            $studentCreate->state = $data["state"];
+            $studentCreate->city = $data["city"];
+            $studentCreate->address = $data["address"];
+            $studentCreate->neighborhood = $data["neighborhood"];
+            $studentCreate->number = $data["number"];
+            $studentCreate->complement = $data["complement"];
             $studentCreate->phone = $data["phone"];
-            $studentCreate->belts = $data["belts"];
+            $studentCreate->graduation = $data["graduation"];
             $studentCreate->description = $data["description"];
 
             //upload photo
@@ -157,7 +166,7 @@ class Students extends Admin
 
             $hbelt = (new HistoricBelt());
             $hbelt->student_id = $studentCreate->id;
-            $hbelt->belt_id = $data["belts"];
+            $hbelt->graduation_id = $data["graduation"];
             $hbelt->description = "Definido ao cadastrar aluno";
             $hbelt->save();
             
@@ -182,10 +191,19 @@ class Students extends Admin
             $studentUpdate->first_name = $data["first_name"];
             $studentUpdate->last_name = $data["last_name"];
             $studentUpdate->email = $data["email"];
-            $studentUpdate->document = $data["document"];
-            $studentUpdate->phone = $data["phone"];
-            $studentUpdate->description = $data["description"];
+            $studentUpdate->datebirth = date_fmt_back($data["datebirth"]);
+            $studentUpdate->document = preg_replace("/[^0-9]/", "", $data["document"]);
             $studentUpdate->status = $data["status"];
+            $studentUpdate->zip = preg_replace("/[^0-9]/", "", $data["zip"]);
+            $studentUpdate->state = $data["state"];
+            $studentUpdate->city = $data["city"];
+            $studentUpdate->address = $data["address"];
+            $studentUpdate->neighborhood = $data["neighborhood"];
+            $studentUpdate->number = $data["number"];
+            $studentUpdate->complement = $data["complement"];
+            $studentUpdate->phone = $data["phone"];
+            $studentUpdate->graduation = $data["graduation"];
+            $studentUpdate->description = $data["description"];
 
             //upload photo
             if (!empty($_FILES["photo"])) {
@@ -208,6 +226,7 @@ class Students extends Admin
             }
 
             if (!$studentUpdate->save()) {
+                var_dump($studentUpdate->fail());
                 $json["message"] = $studentUpdate->message()->render();
                 echo json_encode($json);
                 return;
@@ -260,7 +279,7 @@ class Students extends Admin
             "app" => "students/student",
             "head" => $head,
             "student" => $studentEdit,
-            "belts" => (new Belt())->find()->order("id")->fetch(true),
+            "graduations" => (new Belt())->find()->order("id")->fetch(true),
             "teachers" => (new User())->find("level < :l", "l=5")->order("id")->fetch(true)
         ]);
     }

@@ -34,7 +34,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="top-status">
-                                <h5>Faixa</h5>
+                                <h5>Graduação</h5>
                                 <ul>
                                     <li style="overflow: hidden;">
                                     <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +64,7 @@
                                         <span><?= $student->belt()->title ?></span>
                                     </li>
                                 </ul>
-                                <button class="btn btn-primary btn-block w-50 m-auto" data-modalopen=".app_modal_student_belt">Alterar Faixa</button>
+                                <button class="btn btn-primary btn-block w-50 m-auto" data-modalopen=".app_modal_student_belt">Alterar Graduação</button>
                             </div>
                         </div>
                     </div>
@@ -93,11 +93,11 @@
                     </div>
                     <div class="card mt-4">
                         <div class="card-body">
-                            <h4>Trajetória de faixas</h4>
+                            <h4>Trajetória de graduação</h4>
                                 <ul class="timeline">
                                     <?php $c=0; foreach($student->historic() as $historic):?>
                                         <li <?= ($c == 0) ? 'class="active"': null?>>
-                                            <h6><?= $historic->findBelt($historic->belt_id)->title ?></h6>
+                                            <h6><?= $historic->findBelt($historic->graduation_id)->title ?></h6>
                                             <p class="mb-0 text-muted"><?= $historic->description ?></p>
                                             <o class="text-muted"><?= date_fmt($historic->created_at, "d/m/y \à\s H\hi"); ?></p>
                                         </li>

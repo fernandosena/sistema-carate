@@ -25,9 +25,9 @@ class Belt extends Model
     public function student(): array
     {
         return [
-            "all" => (new Student())->find("belts = :b", "b={$this->id}")->count(),
-            "activated" => (new Student())->find("belts = :b AND status = :s", "b={$this->id}&s=activated")->count(),
-            "deactivated" => (new Student())->find("belts = :b AND status = :s", "b={$this->id}&s=deactivated")->count(),
+            "all" => (new Student())->find("graduation = :b AND status != :s", "b={$this->id}&s=deactivated")->count(),
+            "activated" => (new Student())->find("graduation = :b AND status = :s", "b={$this->id}&s=activated")->count(),
+            "deactivated" => (new Student())->find("graduation = :b AND status = :s", "b={$this->id}&s=deactivated")->count(),
         ];
     }
 }

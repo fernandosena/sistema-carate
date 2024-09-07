@@ -26,8 +26,8 @@
         ]);
 
         $this->insert("views/student", [
-            "categories" => (new \Source\Models\Belt())
-                ->find()
+            "graduations" => (new \Source\Models\Belt())
+                ->find("title LIKE '%dan%'")
                 ->order("title")
                 ->fetch(true)
         ]);
@@ -57,13 +57,13 @@
 
     <div class="app_modal_box app_modal_student_belt">
         <?php if(!empty($student) && $student->status != "pending"): ?>
-            <p class="title icon-user">Alterar Faixa:</p>
+            <p class="title icon-user">Alterar Graduação:</p>
             <form class="app_form" action="<?= url("/app/alunos/faixa"); ?>" method="post">
                 <input type="hidden" name="action" value="update"/>
                 <input type="hidden" name="id" value="<?= $student->id ?>"/>
                 <label>
-                    <span class="field icon-filter">Faixa: </span>
-                    <select name="belts" required>
+                    <span class="field icon-filter">Graduação: </span>
+                    <select name="graduation" required>
                         <?php foreach ($belts as $belt): ?>
                             <?php if($belt->id !== $student->belts): ?>
                                 <option value="<?= $belt->id; ?>">&ofcir; <?= $belt->title; ?></option>

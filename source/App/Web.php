@@ -262,7 +262,7 @@ class Web extends Controller
             "head" => $head,
             "document" => ($data["document"]) ?? null
         ]);
-    }
+    }   
 
     /**
      * SITE LOGIN

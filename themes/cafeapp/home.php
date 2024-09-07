@@ -13,7 +13,7 @@
         <section class="app_main_right">
             <ul class="app_widget_shortcuts">
                 <li class="income radius transition" data-modalopen=".app_modal_student">
-                    <p class="icon-plus-circle">Cadastrar Aluno</p>
+                    <p class="icon-plus-circle">Cadastrar Faixa Preta</p>
                 </li>
             </ul>
 

@@ -32,16 +32,15 @@
                     <h3 class="profile-username text-center"><?= $student->fullName(); ?></h3>
                     <ul class="list-group list-group-unbordered mb-3">
                         <li class="list-group-item">
-                            <b>Faixa</b> 
-                            <span class="float-right badge texto-adaptavel" style="background-color: <?= $student->belt()->color ?>
-    "><?= $student->belt()->title ?></span>
+                            <b>Graduação</b> 
+                            <span class="float-right badge"><?= $student->belt()->title ?></span>
                         </li>
                         <li class="list-group-item">
                             <b>Status</b> 
                             <span class="float-right"><strong class="badge bg-<?= ($student->status == 'activated') ? 'success': (($student->status == 'pending') ? 'warning' : 'danger') ?>"><?= ($student->status == 'activated') ? 'Ativo': (($student->status == 'pending') ? 'Pendente' : 'Desativado') ?></strong></span>
                         </li>
                         <li class="list-group-item">
-                            <b>Professor</b> <a href="<?= url("/admin/users/user/{$student->user_id}") ?>" class="float-right"><?= str_limit_chars($student->teacher()->fullName(), 12)?></a>
+                            <b>Professor</b> <a href="<?= url("/admin/instructors/instructor/{$student->user_id}") ?>" class="float-right"><?= str_limit_chars($student->teacher()->fullName(), 12)?></a>
                         </li>
                         <li class="list-group-item">
                             <b>Desde</b> <a class="float-right"><?= date_fmt($student->created_at, "d/m/y \à\s H\hi"); ?></a>

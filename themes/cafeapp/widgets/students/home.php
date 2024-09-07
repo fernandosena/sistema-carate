@@ -22,7 +22,7 @@
             <thead>
                 <th>Aluno</th>
                 <th>E-mail</th>
-                <th>Faixa</th>
+                <th>Graduação</th>
                 <th>Status</th>
             </thead>
             <tbody>
@@ -35,7 +35,7 @@
                         <td><a title="<?= $student->fullName(); ?>"
                         href="<?= url("/app/aluno/{$student->id}"); ?>"><?= str_limit_words($student->fullName(), 3, "...") ?></a></td>
                         <td><?= $student->email ?></td>
-                        <td><strong class="badge texto-adaptavel" style="background-color: <?= $student->belt()->color ?>"><?= $student->belt()->title ?></strong></td>
+                        <td><strong class="badge"><?= $student->belt()->title ?></strong></td>
                         <td><strong class="badge bg-<?= ($student->status == 'activated') ? 'success': (($student->status == 'pending') ? 'warning' : 'danger') ?>"><?= ($student->status == 'activated') ? 'Ativo': (($student->status == 'pending') ? 'Pendente' : 'Desativado') ?></strong></span></td>
                     </tr>
                 <?php endforeach; ?>

@@ -18,7 +18,7 @@ class Student extends Model
      */
     public function __construct()
     {
-        parent::__construct("student", ["id"], ["user_id", "first_name", "last_name", "email", "phone", "belts", "document"]);
+        parent::__construct("students", ["id"], ["first_name", "last_name", "email", "document", "zip", "address", "neighborhood", "number", "phone", "graduation"]);
     }
 
     /**
@@ -85,16 +85,16 @@ class Student extends Model
      */
     public function belt(): ?Belt
     {
-        if($this->belts){
-            return (new Belt())->find("id = :id", "id={$this->belts}")->fetch();
+        if($this->graduation){
+            return (new Belt())->find("id = :id", "id={$this->graduation}")->fetch();
         }
         return null;
     }
 
     /**
-     * @return array
+     * @return null|array
      */
-    public function historic(): array
+    public function historic(): ?array
     {
         return (new HistoricBelt())->find("student_id = :id", "id={$this->id}")->order("created_at desc")->fetch(true);
     }
