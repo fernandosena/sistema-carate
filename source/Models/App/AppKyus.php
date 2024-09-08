@@ -96,15 +96,15 @@ class AppKyus extends Model
      */
     public function historic(): ?array
     {
-        return (new HistoricBelt())->find("student_id = :id", "id={$this->id}")->order("created_at desc")->fetch(true);
+        return (new HistoricBelt())->find("kyus_id = :id", "id={$this->id}")->order("created_at desc")->fetch(true);
     }
 
     /**
      * @param string $email
      * @param string $columns
-     * @return null|AppBlackBelt
+     * @return null|AppKyus
      */
-    public function findByEmail(string $email, string $columns = "*"): ?AppBlackBelt
+    public function findByEmail(string $email, string $columns = "*"): ?AppKyus
     {
         $find = $this->find("email = :email", "email={$email}", $columns);
         return $find->fetch();
@@ -114,9 +114,9 @@ class AppKyus extends Model
     /**
      * @param string $document
      * @param string $columns
-     * @return null|AppBlackBelt
+     * @return null|AppKyus
      */
-    public function findByDocument(string $document, string $columns = "*"): ?AppBlackBelt
+    public function findByDocument(string $document, string $columns = "*"): ?AppKyus
     {
         $find = $this->find("document = :d", "d={$document}", $columns);
         return $find->fetch();

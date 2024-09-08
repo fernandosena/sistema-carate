@@ -89,10 +89,10 @@ class Instructors extends Admin
             $userCreate->last_name = $data["last_name"];
             $userCreate->email = $data["email"];
             $userCreate->password = $data["password"];
-            $userCreate->level = $data["level"];
+            $userCreate->level = 1;
             $userCreate->datebirth = date_fmt_back($data["datebirth"]);
             $userCreate->document = preg_replace("/[^0-9]/", "", $data["document"]);
-            $userCreate->status = $data["status"];
+            $userCreate->status = "confirmed";
             $userCreate->zip = preg_replace("/[^0-9]/", "", $data["zip"]);
             $userCreate->state = $data["state"];
             $userCreate->city = $data["city"];
@@ -147,10 +147,8 @@ class Instructors extends Admin
             $userUpdate->last_name = $data["last_name"];
             $userUpdate->email = $data["email"];
             $userUpdate->password = (!empty($data["password"]) ? $data["password"] : $userUpdate->password);
-            $userUpdate->level = $data["level"];
             $userUpdate->datebirth = date_fmt_back($data["datebirth"]);
             $userUpdate->document = preg_replace("/[^0-9]/", "", $data["document"]);
-            $userUpdate->status = $data["status"];
             $userUpdate->zip = preg_replace("/[^0-9]/", "", $data["zip"]);
             $userUpdate->state = $data["state"];
             $userUpdate->city = $data["city"];
@@ -214,9 +212,13 @@ class Instructors extends Admin
             "app" => "users/user",
             "head" => $head,
             "user" => $user,
+            "form" => [
+                "url" => url("admin/instructors/instructor/{$user->id}"),
+                "graduations" => $graduations,
+                "data" => $user
+            ],
             "blacks" => $blacks,
             "kyus" => $kyus,
-            "graduations" => $graduations
         ]);
 
     }

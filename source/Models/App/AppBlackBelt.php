@@ -96,7 +96,7 @@ class AppBlackBelt extends Model
      */
     public function historic(): ?array
     {
-        return (new HistoricBelt())->find("student_id = :id", "id={$this->id}")->order("created_at desc")->fetch(true);
+        return (new HistoricBelt())->find("black_belt_id = :id", "id={$this->id}")->order("created_at desc")->fetch(true);
     }
 
     /**

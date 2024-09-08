@@ -2,9 +2,15 @@
 
 <div class="app_launch_header">
     <div class="app_launch_form_filter app_form"></div>
-    <div class="app_launch_btn income radius transition icon-plus-circle"
-         data-modalopen=".app_modal_student"> Cadastrar Aluno
-    </div>
+    <?php if($type == "black"): ?>
+        <div class="app_launch_btn income radius transition icon-plus-circle"
+            data-modalopen=".app_modal_student"> Cadastrar Faixa Preta
+        </div>
+    <?php else: ?>
+        <div class="app_launch_btn income radius transition icon-plus-circle"
+            data-modalopen=".app_modal_student_kyus"> Cadastrar Kyus
+        </div>
+    <?php endif; ?>
 </div>
 
 <section class="app_launch_box">

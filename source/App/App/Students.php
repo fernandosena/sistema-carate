@@ -92,13 +92,19 @@ class Students extends App
             }
 
             $hbelt = (new HistoricBelt());
-            $hbelt->student_id = $studentCreate->id;
+
+            if($data["type"] == "black"){
+                $hbelt->black_belt_id = $studentCreate->id;
+            }else{
+                $hbelt->kyus_id = $studentCreate->id;
+            }
+
             $hbelt->graduation_id = $data["graduation"];
-            $hbelt->description = "Definido ao cadastrar aluno - (Cadastrado por: {$studentCreate->email})";
+            $hbelt->description = "Definido ao cadastrar aluno - (Cadastrado por: {$this->user->email})";
             $hbelt->save();
 
             $this->message->success("Aluno cadastrado com sucesso...")->flash();
-            $json["redirect"] = url("/app/alunos");
+            $json["redirect"] = url("/app/alunos/{$data["type"]}");
             echo json_encode($json);
             return;
         }
@@ -150,7 +156,13 @@ class Students extends App
             }
 
             $hbelt = (new HistoricBelt());
-            $hbelt->student_id = $student->id;
+
+            if($data["type"] == "black"){
+                $hbelt->black_belt_id = $student->id;
+            }else{
+                $hbelt->kyus_id = $student->id;
+            }
+
             $hbelt->graduation_id = $data["graduation"];
             $hbelt->description = $data["description"];
             $hbelt->save();
@@ -222,7 +234,13 @@ class Students extends App
         }
 
         $hbelt = (new HistoricBelt());
-        $hbelt->student_id = $student->id;
+
+        if($data["type"] == "black"){
+            $hbelt->black_belt_id = $student->id;
+        }else{
+            $hbelt->kyus_id = $student->id;
+        }
+        
         $hbelt->graduation_id = $data["graduation"];
         $hbelt->description = $data["description"];
         $hbelt->save();

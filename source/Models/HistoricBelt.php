@@ -17,7 +17,7 @@ class HistoricBelt extends Model
      */
     public function __construct()
     {
-        parent::__construct("historic_belts", ["id"], ["student_id", "graduation_id", "description"]);
+        parent::__construct("historic_belts", ["id"], ["graduation_id", "description"]);
     }
 
     /**
