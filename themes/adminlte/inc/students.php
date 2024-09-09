@@ -259,6 +259,6 @@
     </div>
     <div class="card-footer">
         <button type="submit" class="btn btn-primary">
-        <?= (!empty($form["data"]->dojo) ? "Atualizar" : "Criar") ?> Usuário</button>
+        <?= (!empty($form["data"]) ? "Atualizar" : "Criar") ?> Usuário</button>
     </div>
 </form>

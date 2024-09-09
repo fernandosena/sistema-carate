@@ -307,6 +307,48 @@ class Students extends Admin
             return;
         }
 
+        //update graduation
+        if (!empty($data["action"]) && $data["action"] == "update_graduation") {
+            $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
+            
+            $historic = (new HistoricBelt())->findById($data["historic_id"]);
+
+            if (!$historic) {
+                $this->message->error("Você tentou gerênciar um historico que não existe")->flash();
+                echo json_encode(["redirect" => url("/admin/students/{$data["type"]}/home")]);
+                return;
+            }
+
+            #atualizar faixa preta
+            if($data["type"] == "black"){
+                $studentUpdate = (new AppBlackBelt())->findById($historic->black_belt_id);
+            }else{
+                #atualizar faixa Kyus
+                $studentUpdate = (new AppKyus())->findById($historic->kyus_id);
+            }
+            
+            if($data["type_action"] == "approved"){
+                $studentUpdate->graduation = $historic->graduation_id;
+                $studentUpdate->status = "activated";
+                if($studentUpdate->save()){
+                    $historic->status = "approved";
+                    $historic->save();
+                }
+                $this->message->success("Graduação aprovada com sucesso...")->flash();
+            }else{
+                $studentUpdate->graduation = $historic->graduation_id;
+                $studentUpdate->status = "activated";
+                if($studentUpdate->save()){
+                    $historic->status = "disapprove";
+                    $historic->save();
+                }
+                $this->message->success("Graduação reprovada com sucesso...")->flash();
+            }
+
+            echo json_encode(["reload" => true]);
+            return;
+        }
+
         $studentEdit = null;
         if (!empty($data["student_id"])) {
             $studentId = filter_var($data["student_id"], FILTER_VALIDATE_INT);

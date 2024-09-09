@@ -68,12 +68,13 @@
             <form class="app_form" action="<?= url("/app/alunos/faixa"); ?>" method="post">
                 <input type="hidden" name="action" value="update"/>
                 <input type="hidden" name="id" value="<?= $student->id ?>"/>
+                <input type="hidden" name="type" value="<?= $type ?>">
                 <label>
                     <span class="field icon-filter">Graduação: </span>
                     <select name="graduation" required>
                         <?php foreach ($belts as $belt): ?>
                             <?php if($belt->id !== $student->belts): ?>
-                                <option value="<?= $belt->id; ?>">&ofcir; <?= $belt->title; ?></option>
+                                <option value="<?= $belt->id; ?>">&ofcir; <?= $belt->title; ?> - <?= $belt->description; ?></option>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </select>
@@ -84,7 +85,7 @@
                     <textarea class="radius" name="description" placeholder="Aluno passou para a faixa XYZ" required></textarea>
                 </label>
 
-                <button class="btn radius transition icon-check-square-o">Atualizar troca de Faixa</button>
+                <button class="btn radius transition icon-check-square-o">Atualizar troca de Graduação</button>
             </form>
         <?php else: ?>
             <div class="message warning icon-warning">

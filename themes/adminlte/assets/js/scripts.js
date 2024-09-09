@@ -109,6 +109,55 @@ $(function () {
     $('#pieces').select2({
       tags: true
     });
+
+    $("[data-post]").click(function (e) {
+      e.preventDefault();
+
+      var clicked = $(this);
+      var data = clicked.data();
+      var load = $(".ajax_load");
+
+      if (data.confirm) {
+          var deleteConfirm = confirm(data.confirm);
+          if (!deleteConfirm) {
+              return;
+          }
+      }
+
+      $.ajax({
+          url: data.post,
+          type: "POST",
+          data: data,
+          dataType: "json",
+          beforeSend: function () {
+              load.fadeIn(200).css("display", "flex");
+          },
+          success: function (response) {
+              //redirect
+              if (response.redirect) {
+                  window.location.href = response.redirect;
+              } else {
+                  load.fadeOut(200);
+              }
+
+              //reload
+              if (response.reload) {
+                  window.location.reload();
+              } else {
+                  load.fadeOut(200);
+              }
+
+              //message
+              if (response.message) {
+                  ajaxMessage(response.message, ajaxResponseBaseTime);
+              }
+          },
+          error: function () {
+              ajaxMessage(ajaxResponseRequestError, 5);
+              load.fadeOut();
+          }
+      });
+  });
     
     // Selecione os elementos onde você quer aplicar a regra (ajuste o seletor conforme necessário)
     $('.texto-adaptavel').each(function() {

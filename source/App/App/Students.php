@@ -209,8 +209,13 @@ class Students extends App
 
     public function belt(array $data): void
     {
-        $student = (new AppBlackBelt())->find("user_id = :user AND id = :id",
-    "user={$this->user->id}&id={$data["id"]}")->fetch();
+        if($data["type"] == "black"){
+            $student = (new AppBlackBelt())->find("user_id = :user AND id = :id",
+        "user={$this->user->id}&id={$data["id"]}")->fetch();
+        }else{
+            $student = (new AppKyus())->find("user_id = :user AND id = :id",
+        "user={$this->user->id}&id={$data["id"]}")->fetch();
+        }
 
         if (!$student) {
             $json["message"] = $this->message->error("Ooops! aluno inrormado não encontrado")->render();
@@ -224,7 +229,6 @@ class Students extends App
             return;
         }
 
-        $student->graduation = $data["graduation"];
         $student->status = "pending";
 
         if (!$student->save()) {
@@ -234,7 +238,6 @@ class Students extends App
         }
 
         $hbelt = (new HistoricBelt());
-
         if($data["type"] == "black"){
             $hbelt->black_belt_id = $student->id;
         }else{
@@ -245,7 +248,7 @@ class Students extends App
         $hbelt->description = $data["description"];
         $hbelt->save();
 
-        $json["message"] = $this->message->success("Pronto {$this->user->first_name}, A faixa do aluno foi atualizado com sucesso!")->render();
+        $json["message"] = $this->message->success("Pronto {$this->user->first_name}, A Graduação do aluno foi atualizado com sucesso!")->render();
         echo json_encode($json);
         return;
     }
@@ -277,14 +280,22 @@ class Students extends App
             redirect("/app");
         }
 
+        if($data["type"] == "black"){
+            $belts = (new Belt())
+                ->find("title LIKE '%dan%'")
+                ->order("title")
+                ->fetch(true);
+        }else{
+            $belts = (new Belt())
+            ->find("title NOT LIKE '%dan%'")
+                ->order("title")
+                ->fetch(true);
+        }
         echo $this->view->render("widgets/students/detail", [
             "head" => $head,
             "student" => $student,
             "type" => $data["type"],
-            "belts" => (new Belt())
-                ->find()
-                ->order("title")
-                ->fetch(true),
+            "belts" => $belts
         ]);
     }
 

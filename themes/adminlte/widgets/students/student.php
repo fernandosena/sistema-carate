@@ -47,12 +47,31 @@
                             <div class="active tab-pane" id="students">
                                 <ul class="timeline">
                                     <?php $c=0; foreach($form["data"]->historic() as $historic):?>
-                                        <li <?= ($c == 0) ? 'class="active"': null?>>
-                                            <h6><?= $historic->findBelt($historic->graduation_id)->title ?></h6>
+                                        <?php  if($historic->status == "approved" && $c == 0){$c = 1;} ?>
+                                        <li <?= ($c == 1) ? 'class="active"': null?>>
+                                            <h6><?= $historic->findBelt($historic->graduation_id)->title ?><?= ($historic->status == "pending") ? " - <span class='badge bg-warning'>Em Análise</span>" : (($historic->status == "disapprove") ? " - <span class='badge bg-danger'>Reprovado</span>" : null) ; ?></h6>
                                             <p class="mb-0 text-muted"><?= $historic->description ?></p>
                                             <o class="text-muted"><?= date_fmt($historic->created_at, "d/m/y \à\s H\hi"); ?></p>
+
+                                            <?php if($historic->status == "pending"): ?>
+                                                <a href="#" class="btn bg-success"
+                                                data-post="<?= $form["url"] ?>"
+                                                data-action="update_graduation"
+                                                data-type_action="approved"
+                                                data-confirm="ATENÇÃO: Tem certeza que deseja APROVAR essa o graduação?"
+                                                data-historic_id="<?= $historic->id; ?>"><i class="fa-solid fa-circle-check"></i> Aprovar</a>
+
+                                                <a href="#" class="btn bg-danger"
+                                                data-post="<?= $form["url"] ?>"
+                                                data-action="update_graduation"
+                                                data-type_action="disapprove"
+                                                data-confirm="ATENÇÃO: Tem certeza que deseja REPROVAR essa o graduação?"
+                                                data-historic_id="<?= $historic->id; ?>"><i class="fa-sharp fa-solid fa-xmark"></i> Reprovar</a>
+                                            <?php endif; ?>
                                         </li>
-                                    <?php $c++;endforeach; ?>
+                                    <?php 
+                                        if($c == 1){$c = 2;}
+                                        endforeach; ?>
                                 </ul>
                             </div>
                             <!-- /.tab-pane -->
