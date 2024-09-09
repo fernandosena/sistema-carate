@@ -73,7 +73,8 @@
                             <?php endif; ?>
                         </div>
                         <div class="info">
-                            <a href="#" class="d-block"><?= str_limit_words(user()->fullName(), 3); ?></a>
+                            <?php $idUser = user()->id; ?>
+                            <a href="<?= url("/admin/instructors/instructor/{$idUser}") ?>" class="d-block"><?= str_limit_words(user()->fullName(), 3); ?></a>
                         </div>
                     </div>
 
