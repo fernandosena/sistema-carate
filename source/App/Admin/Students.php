@@ -230,7 +230,6 @@ class Students extends Admin
                 $studentUpdate->email = $data["email"];
                 $studentUpdate->datebirth = date_fmt_back($data["datebirth"]);
                 $studentUpdate->document = preg_replace("/[^0-9]/", "", $data["document"]);
-                $studentUpdate->status = $data["status"];
                 $studentUpdate->zip = preg_replace("/[^0-9]/", "", $data["zip"]);
                 $studentUpdate->state = $data["state"];
                 $studentUpdate->city = $data["city"];
@@ -241,6 +240,7 @@ class Students extends Admin
                 $studentUpdate->phone = $data["phone"];
                 $studentUpdate->graduation = $data["graduation"];
                 $studentUpdate->description = $data["description"];
+                $studentUpdate->status = $data["status"];
             }else{
                 #atualizar faixa Kyus
                 $studentUpdate->user_id = $data["teacher"]; 

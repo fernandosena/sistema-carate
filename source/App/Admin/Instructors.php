@@ -92,7 +92,6 @@ class Instructors extends Admin
             $userCreate->level = 1;
             $userCreate->datebirth = date_fmt_back($data["datebirth"]);
             $userCreate->document = preg_replace("/[^0-9]/", "", $data["document"]);
-            $userCreate->status = "confirmed";
             $userCreate->zip = preg_replace("/[^0-9]/", "", $data["zip"]);
             $userCreate->state = $data["state"];
             $userCreate->city = $data["city"];
@@ -103,6 +102,7 @@ class Instructors extends Admin
             $userCreate->phone = $data["phone"];
             $userCreate->graduation = $data["graduation"];
             $userCreate->dojo = implode(",", $data["dojo"]);
+            $userCreate->status = $data["status"];
 
             //upload photo
             if (!empty($_FILES["photo"])) {
@@ -125,7 +125,7 @@ class Instructors extends Admin
                 return;
             }
 
-            $this->message->success("Usuário cadastrado com sucesso...")->flash();
+            $this->message->success("Instrutor cadastrado com sucesso...")->flash();
             $json["redirect"] = url("/admin/instructors/instructor/{$userCreate->id}");
 
             echo json_encode($json);
@@ -138,7 +138,7 @@ class Instructors extends Admin
             $userUpdate = (new User())->findById($data["instructor_id"]);
 
             if (!$userUpdate) {
-                $this->message->error("Você tentou gerenciar um usuário que não existe")->flash();
+                $this->message->error("Você tentou gerenciar um instrutor que não existe")->flash();
                 echo json_encode(["redirect" => url("/admin/instructors/home")]);
                 return;
             }
@@ -159,6 +159,7 @@ class Instructors extends Admin
             $userUpdate->phone = $data["phone"];
             $userUpdate->graduation = $data["graduation"];
             $userUpdate->dojo = implode(",", $data["dojo"]);
+            $userUpdate->status = $data["status"];
 
             //upload photo
             if (!empty($_FILES["photo"])) {
