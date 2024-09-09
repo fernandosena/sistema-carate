@@ -31,7 +31,7 @@
                     <input class="radius mask-doc" placeholder="CPF do usuário" type="text" name="document" value="<?= ($student->document) ?? null ?>" required/>
                 </label>
                 <label>
-                    <span class="field icon-user">Nascimento:</span>
+                    <span class="field icon-heartbeat">Nascimento:</span>
                     <input type="date"
                     name="datebirth" class="radius" value="<?= (!empty($student->datebirth)) ? date_fmt($student->datebirth, "Y-m-d") : null; ?>" placeholder="dd/mm/yyyy" required/>
                 </label>

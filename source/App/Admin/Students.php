@@ -280,32 +280,30 @@ class Students extends Admin
                 return;
             }
 
+            if($data["type"] == "black"){
+                $hbelt = (new HistoricBelt());
+                $find = $hbelt->find("black_belt_id = :id AND graduation_id = :gid", "id={$studentUpdate->id}&gid={$data["graduation"]}")->count();
+                
+                if(!$find){
+                    $hbelt->black_belt_id = $studentUpdate->id;
+                    $hbelt->graduation_id = $data["graduation"];
+                    $hbelt->description = "Alteração de graduação realizada pelo administrador";
+                    $hbelt->save();
+                }
+            }else{
+                $hbelt = (new HistoricBelt());
+                $find = $hbelt->find("kyus_id = :id AND graduation_id = :gid", "id={$studentUpdate->id}&gid={$data["graduation"]}")->count();
+
+                if(!$find){
+                    $hbelt->kyus_id = $studentUpdate->id;
+                    $hbelt->graduation_id = $data["graduation"];
+                    $hbelt->description = "Alteração de graduação realizada pelo administrador";
+                    $hbelt->save();
+                }
+            }
+
             $this->message->success("Aluno atualizado com sucesso...")->flash();
             echo json_encode(["reload" => true]);
-            return;
-        }
-
-        //delete
-        if (!empty($data["action"]) && $data["action"] == "delete") {
-            $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
-            $userDelete = (new User())->findById($data["student_id"]);
-
-            if (!$userDelete) {
-                $this->message->error("Você tentnou deletar um usuário que não existe")->flash();
-                echo json_encode(["redirect" => url("/admin/students/home")]);
-                return;
-            }
-
-            if ($userDelete->photo && file_exists(__DIR__ . "/../../../" . CONF_UPLOAD_DIR . "/{$userDelete->photo}")) {
-                unlink(__DIR__ . "/../../../" . CONF_UPLOAD_DIR . "/{$userDelete->photo}");
-                (new Thumb())->flush($userDelete->photo);
-            }
-
-            $userDelete->destroy();
-
-            $this->message->success("O Aluno foi excluído com sucesso...")->flash();
-            echo json_encode(["redirect" => url("/admin/students/home")]);
-
             return;
         }
 

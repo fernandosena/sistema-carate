@@ -31,25 +31,25 @@
                     <input class="radius mask-doc" placeholder="CPF do usuário" type="text" name="document" value="<?= ($student->document) ?? null ?>" required/>
                 </label>
                 <label>
-                    <span class="field icon-user">Nascimento:</span>
+                    <span class="field icon-heartbeat">Nascimento:</span>
                     <input type="date"
                     name="datebirth" class="radius" value="<?= (!empty($student->datebirth)) ? date_fmt($student->datebirth, "Y-m-d") : null; ?>" placeholder="dd/mm/yyyy" required/>
                 </label>
             </div>
             <div class="label_group">
                 <label>
-                    <span class="field icon-user">CEP:</span>
+                    <span class="field icon-map-marker">CEP:</span>
                     <input class="radius" id="cep" name="zip" value="<?= $student->zip; ?>" placeholder="CEP" required maxlength="8" minlength="8"/>
                 </label>
                 <label>
-                    <span class="field icon-user">Estado:</span>
+                    <span class="field icon-map-marker">Estado:</span>
                     <?php
                         $state = $student->state;
                         $select = function ($value) use ($state) {
                             return ($state == $value ? "selected" : "");
                         };
                     ?>
-                    <select class="radius"  <?= (!empty($student)) ? null : "disabled" ?> name="state" id="state" required data-input>
+                    <select class="radius" <?= (!empty($student)) ? null : "disabled" ?> name="state" id="state" required data-input>
                         <option selected>Estado</option>
                         <option <?= $select("AC")?> value="AC">Acre</option>
                         <option <?= $select("AL")?> value="AL">Alagoas</option>
@@ -83,28 +83,28 @@
             </div>
             <div class="label_group">
                 <label>
-                    <span class="field icon-user">Cidade:</span>
+                    <span class="field icon-map-marker">Cidade:</span>
                     <input id="city" type="text"
                     name="city" class="radius"  <?= (!empty($student)) ? null : "disabled" ?> value="<?= $student->city ?>" placeholder="Cidade" required data-input>
                 </label>
                 <label>
-                    <span class="field icon-user">Endereço:</span>
+                    <span class="field icon-map-marker">Endereço:</span>
                     <input id="address" type="text" name="address" class="radius" value="<?= $student->address ?>" placeholder="Endereço"  <?= (!empty($student)) ? null : "disabled" ?> required data-input>
                 </label>
             </div>
             <div class="label_group">
                 <label>
-                    <span class="field icon-user">Bairro:</span>
+                    <span class="field icon-map-marker">Bairro:</span>
                     <input type="text" name="neighborhood" value="<?= $student->neighborhood ?>" id="neighborhood" class="radius"  <?= (!empty($student)) ? null : "disabled" ?> placeholder="Complemento" required data-input>
                 </label>
                 <label>
-                    <span class="field icon-user">Nº:</span>
+                    <span class="field icon-map-marker">Número:</span>
                     <input type="text" name="number" value="<?= $student->number ?>" class="radius" placeholder="Nº" <?= (!empty($student)) ? null : "disabled" ?> required data-input>
                 </label>
             </div>
             <div class="label_group">
                 <label>
-                    <span class="field icon-user">Complemento:</span>
+                    <span class="field icon-map-marker">Complemento:</span>
                     <input type="text" name="complement"  <?= (!empty($student)) ? null : "disabled" ?> value="<?= $student->complement ?>" class="radius" placeholder="Complemento" data-input>
                 </label>
                 <label>
