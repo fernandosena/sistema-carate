@@ -14,6 +14,7 @@ use Source\Models\App\AppPlan;
 use Source\Models\App\AppSubscription;
 use Source\Models\App\AppWallet;
 use Source\Models\App\AppBlackBelt;
+use Source\Models\App\AppKyus;
 use Source\Models\Post;
 use Source\Models\Report\Access;
 use Source\Models\Report\Online;
@@ -155,7 +156,7 @@ class App extends Controller
         //END POSTS
 
         //STUDENTS
-        $student = (new AppBlackBelt())->find("user_id = :id", "id={$this->user->id}")->count();
+        $student = (new AppBlackBelt())->find("user_id = :id", "id={$this->user->id}")->count()+(new AppKyus())->find("user_id = :id", "id={$this->user->id}")->count();
         //END STUDENTS
 
         echo $this->view->render("home", [
