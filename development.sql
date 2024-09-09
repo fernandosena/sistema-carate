@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql:3306
--- Tempo de geração: 08/09/2024 às 02:45
+-- Tempo de geração: 09/09/2024 às 17:14
 -- Versão do servidor: 5.7.44
--- Versão do PHP: 8.2.22
+-- Versão do PHP: 8.2.23
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,20 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `development`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `aap_certificate`
+--
+
+CREATE TABLE `aap_certificate` (
+  `id` int(11) NOT NULL,
+  `type` varchar(50) NOT NULL,
+  `html` text NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -329,6 +343,7 @@ CREATE TABLE `historic_belts` (
   `kyus_id` int(11) DEFAULT NULL,
   `graduation_id` int(10) UNSIGNED NOT NULL,
   `description` text NOT NULL,
+  `status` varchar(255) NOT NULL DEFAULT 'pending',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -441,7 +456,6 @@ CREATE TABLE `users` (
   `datebirth` date NOT NULL,
   `document` varchar(11) NOT NULL,
   `photo` varchar(255) DEFAULT NULL,
-  `status` varchar(50) NOT NULL DEFAULT 'registered' COMMENT 'registered, confirmed',
   `zip` varchar(255) NOT NULL,
   `state` varchar(255) NOT NULL,
   `city` varchar(255) NOT NULL,
@@ -452,6 +466,9 @@ CREATE TABLE `users` (
   `phone` varchar(255) NOT NULL,
   `graduation` int(11) NOT NULL,
   `dojo` varchar(255) NOT NULL,
+  `renewal_data` date DEFAULT NULL,
+  `account_status` varchar(255) NOT NULL DEFAULT 'registered' COMMENT 'registered, confirmed',
+  `status` varchar(255) NOT NULL DEFAULT 'activated' COMMENT 'activated, deactivated, pending',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -460,12 +477,18 @@ CREATE TABLE `users` (
 -- Despejando dados para a tabela `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `level`, `forget`, `datebirth`, `document`, `photo`, `status`, `zip`, `state`, `city`, `address`, `neighborhood`, `number`, `complement`, `phone`, `graduation`, `dojo`, `created_at`, `updated_at`) VALUES
-(1, 'Administrador', 'Sistema', 'admin@sistema.com.br', '$2y$10$0EV3OMItJWnOZsgVnyRTY.TOI0dBv89coCjrmbBTJIe8YBcofs.yW', 5, NULL, '1999-06-09', '1111111', NULL, 'confirmed', '00000', '000000', '000000', '00000', '00000', '00000', NULL, '000000', 1, 'teste', '2024-09-08 02:45:25', NULL);
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `level`, `forget`, `datebirth`, `document`, `photo`, `zip`, `state`, `city`, `address`, `neighborhood`, `number`, `complement`, `phone`, `graduation`, `dojo`, `renewal_data`, `account_status`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Administrador', 'Sistema', 'admin@sistema.com.br', '$2y$10$0EV3OMItJWnOZsgVnyRTY.TOI0dBv89coCjrmbBTJIe8YBcofs.yW', 5, NULL, '1999-06-09', '1111111', NULL, '00000', '000000', '000000', '00000', '00000', '00000', NULL, '000000', 1, 'teste', NULL, 'registered', 'confirmed', '2024-09-08 02:45:25', NULL);
 
 --
 -- Índices para tabelas despejadas
 --
+
+--
+-- Índices de tabela `aap_certificate`
+--
+ALTER TABLE `aap_certificate`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Índices de tabela `address`
@@ -621,6 +644,12 @@ ALTER TABLE `users` ADD FULLTEXT KEY `full_text` (`first_name`,`last_name`,`emai
 --
 
 --
+-- AUTO_INCREMENT de tabela `aap_certificate`
+--
+ALTER TABLE `aap_certificate`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de tabela `address`
 --
 ALTER TABLE `address`
@@ -684,7 +713,7 @@ ALTER TABLE `app_wallets`
 -- AUTO_INCREMENT de tabela `belts`
 --
 ALTER TABLE `belts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT de tabela `categories`
