@@ -85,7 +85,7 @@
                             return ($state == $value ? "selected" : "");
                         };
                     ?>
-                    <select class="form-control" name="state" id="state" required data-input>
+                    <select class="form-control" name="state" id="state" <?= !empty($form["data"]) ? null: "disabled" ?> required data-input>
                         <option value="" selected>Estado</option>
                         <option <?= $select("AC")?> value="AC">Acre</option>
                         <option <?= $select("AL")?> value="AL">Alagoas</option>
@@ -199,14 +199,14 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label>Graduação</label>
+                    <label>*Graduação</label>
                     <?php
                         $graduation = $form["data"]->graduation;
                         $select = function ($value) use ($graduation) {
                             return ($graduation == $value ? "selected" : "");
                         };
                     ?>
-                    <select class="form-control" name="graduation">
+                    <select class="form-control" required name="graduation">
                         <?php foreach($form["graduations"] as $graduation): ?>
                             <option <?= $select($graduation->id); ?> value="<?= $graduation->id ?>"><?= $graduation->title ?> - <?= $graduation->description ?></option>
                         <?php endforeach;   ?>
