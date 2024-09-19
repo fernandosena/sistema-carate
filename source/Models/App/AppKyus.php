@@ -18,7 +18,7 @@ class AppKyus extends Model
      */
     public function __construct()
     {
-        parent::__construct("app_kyus", ["id"], ["user_id", "first_name", "last_name", "datebirth", "document", "graduation"]);
+        parent::__construct("app_kyus", ["id"], ["user_id", "dojo_id", "first_name", "last_name", "datebirth", "document", "graduation"]);
     }
     
     /**

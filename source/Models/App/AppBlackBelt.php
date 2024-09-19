@@ -18,7 +18,7 @@ class AppBlackBelt extends Model
      */
     public function __construct()
     {
-        parent::__construct("app_black_belt", ["id"], ["first_name", "last_name", "email", "document", "zip", "address", "neighborhood", "number", "phone", "graduation"]);
+        parent::__construct("app_black_belt", ["id"], ["user_id", "dojo_id", "first_name", "last_name", "email", "document", "zip", "address", "neighborhood", "number", "phone", "graduation"]);
     }
 
     /**

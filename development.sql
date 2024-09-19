@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql:3306
--- Tempo de geração: 09/09/2024 às 17:14
+-- Tempo de geração: 19/09/2024 às 13:11
 -- Versão do servidor: 5.7.44
 -- Versão do PHP: 8.2.23
 
@@ -60,6 +60,7 @@ CREATE TABLE `address` (
 CREATE TABLE `app_black_belt` (
   `id` int(11) UNSIGNED NOT NULL,
   `user_id` int(11) UNSIGNED NOT NULL,
+  `dojo_id` int(10) UNSIGNED NOT NULL,
   `first_name` varchar(255) NOT NULL DEFAULT '',
   `last_name` varchar(255) NOT NULL DEFAULT '',
   `email` varchar(255) NOT NULL DEFAULT '',
@@ -150,6 +151,7 @@ CREATE TABLE `app_invoices` (
 CREATE TABLE `app_kyus` (
   `id` int(11) UNSIGNED NOT NULL,
   `user_id` int(11) UNSIGNED NOT NULL,
+  `dojo_id` int(10) UNSIGNED NOT NULL,
   `first_name` varchar(255) NOT NULL DEFAULT '',
   `last_name` varchar(255) NOT NULL DEFAULT '',
   `photo` varchar(255) DEFAULT NULL,
@@ -421,6 +423,14 @@ CREATE TABLE `report_access` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Despejando dados para a tabela `report_access`
+--
+
+INSERT INTO `report_access` (`id`, `users`, `views`, `pages`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, '2024-09-09 17:35:17', '2024-09-09 17:35:17'),
+(2, 1, 1, 2, '2024-09-14 14:15:27', '2024-09-14 14:15:28');
 
 -- --------------------------------------------------------
 
@@ -761,7 +771,7 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT de tabela `report_access`
 --
 ALTER TABLE `report_access`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `report_online`
