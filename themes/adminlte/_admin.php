@@ -23,10 +23,15 @@
     <link rel="stylesheet" href="<?= theme("plugins/overlayScrollbars/css/OverlayScrollbars.min.css", CONF_VIEW_ADMIN); ?>">
     <link rel="stylesheet" href="<?= theme("plugins/daterangepicker/daterangepicker.css", CONF_VIEW_ADMIN); ?>">
     <link rel="stylesheet" href="<?= theme("plugins/summernote/summernote-bs4.min.css", CONF_VIEW_ADMIN); ?>">
+
+    <link rel="stylesheet" href="<?= theme("plugins/datatables-bs4/css/dataTables.bootstrap4.min.css", CONF_VIEW_ADMIN); ?>">
+    <link rel="stylesheet" href="<?= theme("plugins/datatables-responsive/css/responsive.bootstrap4.min.css", CONF_VIEW_ADMIN); ?>">
+    <link rel="stylesheet" href="<?= theme("plugins/datatables-buttons/css/buttons.bootstrap4.min.css", CONF_VIEW_ADMIN); ?>">
+
     <link rel="stylesheet" href="<?= url("shared/styles/load.css"); ?>">
     <link rel="stylesheet" href="<?= theme("assets/css/style.css", CONF_VIEW_ADMIN); ?>">
 </head>
-    <body class="hold-transition sidebar-mini layout-fixed">
+    <body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
         <div class="ajax_load" style="z-index: 999;">
             <div class="ajax_load_box">
                 <div class="ajax_load_box_circle"></div>
@@ -296,6 +301,20 @@
     <script src="<?= theme("plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js", CONF_VIEW_ADMIN); ?>"></script>
     <!-- Summernote -->
     <script src="<?= theme("plugins/summernote/summernote-bs4.min.js", CONF_VIEW_ADMIN); ?>"></script>
+
+    <script src="<?= theme("plugins/datatables/jquery.dataTables.min.js", CONF_VIEW_ADMIN); ?>"></script>
+    <script src="<?= theme("plugins/datatables-bs4/js/dataTables.bootstrap4.min.js", CONF_VIEW_ADMIN); ?>"></script>
+    <script src="<?= theme("plugins/datatables-responsive/js/dataTables.responsive.min.js", CONF_VIEW_ADMIN); ?>"></script>
+    <script src="<?= theme("plugins/datatables-responsive/js/responsive.bootstrap4.min.js", CONF_VIEW_ADMIN); ?>"></script>
+    <script src="<?= theme("plugins/datatables-buttons/js/dataTables.buttons.min.js", CONF_VIEW_ADMIN); ?>"></script>
+    <script src="<?= theme("plugins/datatables-buttons/js/buttons.bootstrap4.min.js", CONF_VIEW_ADMIN); ?>"></script>
+    <script src="<?= theme("plugins/jszip/jszip.min.js", CONF_VIEW_ADMIN); ?>"></script>
+    <script src="<?= theme("plugins/pdfmake/pdfmake.min.js", CONF_VIEW_ADMIN); ?>"></script>
+    <script src="<?= theme("plugins/pdfmake/vfs_fonts.js", CONF_VIEW_ADMIN); ?>"></script>
+    <script src="<?= theme("plugins/datatables-buttons/js/buttons.html5.min.js", CONF_VIEW_ADMIN); ?>"></script>
+    <script src="<?= theme("plugins/datatables-buttons/js/buttons.print.min.js", CONF_VIEW_ADMIN); ?>"></script>
+    <script src="<?= theme("plugins/datatables-buttons/js/buttons.colVis.min.js", CONF_VIEW_ADMIN); ?>"></script>
+
     <!-- overlayScrollbars -->
     <script src="<?= theme("plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js", CONF_VIEW_ADMIN); ?>"></script>
     <script src="<?= url("/shared/scripts/jquery.form.js"); ?>"></script>

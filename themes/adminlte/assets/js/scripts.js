@@ -186,6 +186,48 @@ $(function () {
         elemento.css('color', 'white');
         }
     });
+
+    $("#example1").DataTable({
+      "responsive": true,
+      "lengthChange": false,
+      "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+      "language": {
+        "search": "Pequisar",
+        "searchPlaceholder": "Digite a sua pesquisa aqui...",
+        "zeroRecords":    "Nenhum registro correspondente encontrado",
+        "emptyTable":     "Não há dados disponíveis na tabela",
+        "info":           "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+        "infoEmpty":      "Mostrando 0 a 0 de 0 entradas",
+        "infoFiltered":   "(filtrado do total de _MAX_ entradas)",
+        "loadingRecords": "Carregando...",
+        "buttons": {
+          "copy": 'Copiar',
+          "copyTitle": 'Dados copiados',
+          "copySuccess": {
+            _: '%d linhas copiadas',
+            1: '1 linha copiada'
+          },
+          "copyKeys": 'Pressione Ctrl+C para copiar os dados para a área de transferência',
+          "csv": 'CSV',
+          "excel": 'Excel',
+          "pdf": 'PDF',
+          "print": 'Imprimir',
+          "colvis": 'Colunas'
+        },
+        "paginate": {
+          "first":      "Primeiro",
+          "last":       "Último",
+          "next":       "Próximo",
+          "previous":   "Anterior"
+        },
+        "aria": {
+          "orderable":  "Ordenar por esta coluna",
+          "orderableReverse": "Ordem inversa desta coluna"
+        }
+      }
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    
 });
 function getPassword() {
     var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ!@#$%^&*()+?><:{}[]";

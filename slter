@@ -1,3 +1,0 @@
-ALTER TABLE `app_kyus` ADD `dojo_id` INT UNSIGNED NOT NULL AFTER `user_id`;
-
-ALTER TABLE `app_black_belt` ADD `dojo_id` INT UNSIGNED NOT NULL AFTER `user_id`;

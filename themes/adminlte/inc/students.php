@@ -25,6 +25,7 @@
                     <div class="form-group">
                         <label>*Professor</label>
                         <select class="form-control" name="teacher">
+                            <option value="" select>=== Selecione um professor ===</option>
                             <?php 
                                 foreach($form["teachers"] as $teacher):    
                             ?>
@@ -223,6 +224,23 @@
                                     <option value="<?= $dojo ?>" selected><?= $dojo ?></option>
                                 <?php endforeach; ?>
                             <?php endif; ?>
+                        </select>
+                    </div>
+                </div>
+            <?php else: ?>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>*Dojo</label>
+                        <?php
+                            $dojo = $form["data"]->dojo;
+                            $select = function ($value) use ($dojo) {
+                                return ($dojo == $value ? "selected" : "");
+                            };
+                        ?>
+                        <select class="form-control" required name="dojo">
+                            <?php foreach($form["dojo"] as $dojo): ?>
+                                <option <?= $select($dojo->id); ?> value="<?= $graduation->id ?>"><?= $graduation->title ?> - <?= $graduation->description ?></option>
+                            <?php endforeach;   ?>
                         </select>
                     </div>
                 </div>

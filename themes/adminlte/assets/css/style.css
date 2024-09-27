@@ -10,6 +10,9 @@ ul.timeline {
     list-style-type: none;
     position: relative;
 }
+.img-table{
+    width: 50px;
+}
 ul.timeline:before {
     content: ' ';
     background: #d4d9df;

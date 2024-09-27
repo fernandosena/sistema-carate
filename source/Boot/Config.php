@@ -10,8 +10,8 @@ define("CONF_DB_NAME", "development");
 /**
  * PROJECT URLs
  */
-define("CONF_URL_BASE", "http://localhost/carate");
-define("CONF_URL_TEST", "http://localhost/carate");
+define("CONF_URL_BASE", "http://localhost/sistema-carate");
+define("CONF_URL_TEST", "http://localhost/sistema-carate");
 
 /**
  * SITE
