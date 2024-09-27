@@ -79,7 +79,6 @@ class Instructors extends Admin
      */
     public function instructor(?array $data): void
     {
-        
         //create
         if (!empty($data["action"]) && $data["action"] == "create") {
             $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
@@ -158,8 +157,32 @@ class Instructors extends Admin
             $userUpdate->complement = $data["complement"];
             $userUpdate->phone = $data["phone"];
             $userUpdate->graduation = $data["graduation"];
-            $userUpdate->dojo = implode(",", $data["dojo"]);
             $userUpdate->status = $data["status"];
+
+            if(!empty($userUpdate->dojo) && !empty($data["dojo"])){
+                if($userUpdate->dojo != $data["dojo"]){
+                    $dojodb = explode(",", $userUpdate->dojo);
+
+                    $diferenca1 = implode(",", array_diff($dojodb, $data["dojo"]));
+
+
+                    $appKyus = (new AppKyus())->find("user_id = :id AND dojo_id IN (:dojo)", "id=$userUpdate->id, &dojo=$diferenca1");
+                    if($appKyus->count()){
+                        $json["message"] = $this->message->warning("Não foi possivel atualizar pois já existe Kyus cadastrados no dojo retirado")->render();
+                        echo json_encode($json);
+                        return;
+                    }
+
+                    $appBlackBelt = (new AppBlackBelt())->find("user_id = :id AND dojo_id IN (:dojo)", "id=$userUpdate->id, &dojo=$diferenca1");
+                    if($appBlackBelt->count()){
+                        $json["message"] = $this->message->warning("Não foi possivel atualizar pois já existe Faixas pretas cadastrados no dojo retirado")->render();
+                        echo json_encode($json);
+                        return;
+                    }
+
+                    $userUpdate->dojo = implode(",", $data["dojo"]);
+                }
+            }
 
             //upload photo
             if (!empty($_FILES["photo"])) {
