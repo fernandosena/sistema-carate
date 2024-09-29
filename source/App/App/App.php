@@ -6,7 +6,6 @@ use Source\Core\Controller;
 use Source\Core\Session;
 use Source\Core\View;
 use Source\Models\Auth;
-use Source\Models\Belt;
 use Source\Models\App\AppCategory;
 use Source\Models\App\AppInvoice;
 use Source\Models\App\AppOrder;
@@ -156,7 +155,7 @@ class App extends Controller
         //END POSTS
 
         //STUDENTS
-        $student = (new AppBlackBelt())->find("user_id = :id", "id={$this->user->id}")->count()+(new AppKyus())->find("user_id = :id", "id={$this->user->id}")->count();
+        $student = (new AppBlackBelt())->find("user_id = :id", "id={$this->user->id}")->count();
         //END STUDENTS
 
         echo $this->view->render("home", [
@@ -555,11 +554,6 @@ class App extends Controller
         if (!empty($data["update"])) {
             list($d, $m, $y) = explode("/", $data["datebirth"]);
             $user = (new User())->findById($this->user->id);
-            $user->first_name = $data["first_name"];
-            $user->last_name = $data["last_name"];
-            $user->genre = $data["genre"];
-            $user->datebirth = "{$y}-{$m}-{$d}";
-            $user->document = preg_replace("/[^0-9]/", "", $data["document"]);
 
             if (!empty($_FILES["photo"])) {
                 $file = $_FILES["photo"];
@@ -575,16 +569,6 @@ class App extends Controller
                     echo json_encode($json);
                     return;
                 }
-            }
-
-            if (!empty($data["password"])) {
-                if (empty($data["password_re"]) || $data["password"] != $data["password_re"]) {
-                    $json["message"] = $this->message->warning("Para alterar sua senha, informa e repita a nova senha!")->render();
-                    echo json_encode($json);
-                    return;
-                }
-
-                $user->password = $data["password"];
             }
 
             if (!$user->save()) {

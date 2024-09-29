@@ -18,7 +18,7 @@ class AppBlackBelt extends Model
      */
     public function __construct()
     {
-        parent::__construct("app_black_belt", ["id"], ["user_id", "dojo_id", "first_name", "last_name", "email", "document", "zip", "address", "neighborhood", "number", "phone", "graduation"]);
+        parent::__construct("app_students", ["id"], ["user_id", "dojo", "first_name", "last_name", "email", "document", "zip", "state", "city", "address", "neighborhood", "number", "phone", "graduation", "type"]);
     }
 
     /**
@@ -57,7 +57,7 @@ class AppBlackBelt extends Model
      */
     public function findByTeacher(int $id, string $columns = "*"): ?array
     {
-        $find = $this->find("user_id = :id", "id={$id}", $columns);
+        $find = $this->find("user_id = :id AND type='black'", "id={$id}", $columns);
         return $find->fetch(true);
     }
 
@@ -118,6 +118,7 @@ class AppBlackBelt extends Model
      */
     public function findByDocument(string $document, string $columns = "*"): ?AppBlackBelt
     {
+        $document = preg_replace("/[^0-9]/", "", $document);
         $find = $this->find("document = :d", "d={$document}", $columns);
         return $find->fetch();
     }
@@ -176,9 +177,17 @@ class AppBlackBelt extends Model
      */
     public function save(): bool
     {
+        $this->type = "black";
         if (!$this->required()) {
             $this->message->warning("Preencha todos os campos obrigatórios");
             return false;
+        }
+
+        if(!empty($this->email)){
+            if (!is_email($this->email)) {
+                $this->message->warning("O e-mail informado não tem um formato válido");
+                return false;
+            }
         }
 
         if (!is_email($this->email)) {

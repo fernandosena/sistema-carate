@@ -36,7 +36,7 @@
             "graduations" => (new \Source\Models\Belt())
                 ->find("title NOT LIKE '%dan%'")
                 ->order("title")
-                ->fetch(true)
+                ->fetch(true),
         ]);
     ?>
     <!--SUPPORT-->

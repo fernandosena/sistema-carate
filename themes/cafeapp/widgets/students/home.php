@@ -31,6 +31,7 @@
                 <th>E-mail</th>
                 <?php endif; ?>
                 <th>Graduação</th>
+                <th>Dojo</th>
                 <th>Status</th>
             </thead>
             <tbody>
@@ -47,7 +48,9 @@
                             <td><?= $student->email ?></td>
                         <?php endif; ?>
                         <td><strong class="badge"><?= $student->belt()->title ?></strong></td>
+                        <td><?= $student->dojo ?></td>
                         <td><strong class="badge bg-<?= ($student->status == 'activated') ? 'success': (($student->status == 'pending') ? 'warning' : 'danger') ?>"><?= ($student->status == 'activated') ? 'Ativo': (($student->status == 'pending') ? 'Pendente' : 'Desativado') ?></strong></span></td>
+                        <td><?= $student->dojo ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

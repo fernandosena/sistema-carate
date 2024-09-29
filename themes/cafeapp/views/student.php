@@ -127,12 +127,26 @@
                     ?>
                     <select name="graduation">
                         <?php foreach ($graduations as $graduation): ?>
-                            <option <?= $select($graduation->id); ?> value="<?= $graduation->id ?>">&ofcir; <?= $graduation->title; ?> - <?= $graduation->description; ?></option>
+                            <option <?= $select($graduation->id); ?> value="<?= $graduation->id ?>">&ofcir; <?= $graduation->title; ?></option>
                         <?php endforeach; ?>
                     </select>
                 </label>
             <?php endif; ?>
 
+            <label>
+                <span class="field icon-filter">Dojo:</span>
+                <?php
+                    $dojo = $student->dojo;
+                    $select = function ($value) use ($dojo) {
+                        return ($dojo == $value ? "selected" : "");
+                    };
+                ?>
+                <select name="dojo">
+                    <?php foreach (explode(",", user()->dojo) as $dojo): ?>
+                        <option <?= $select($dojo); ?> value="<?= $dojo ?>">&ofcir; <?= $dojo; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
             <label>
                 <span class="field icon-text">Observação:</span>
                 <textarea class="radius" name="description" placeholder="Aluno tranferido da escola xyz"><?= ($student->description) ?? null ?></textarea>

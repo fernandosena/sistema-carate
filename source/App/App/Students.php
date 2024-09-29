@@ -58,6 +58,7 @@ class Students extends App
                 $studentCreate->phone = $data["phone"];
                 $studentCreate->graduation = $data["graduation"];
                 $studentCreate->description = $data["description"];
+                $studentCreate->dojo = $data["dojo"];
             }else{
                 #cadastra faixa Kyus
                 $studentCreate = new AppKyus();
@@ -68,6 +69,11 @@ class Students extends App
                 $studentCreate->document = preg_replace("/[^0-9]/", "", $data["document"]);
                 $studentCreate->graduation = $data["graduation"];
                 $studentCreate->description = $data["description"];
+                $studentCreate->dojo = $data["dojo"];
+
+                if(!empty($data["mother_name"])){
+                    $studentCreate->mother_name = $data["mother_name"];
+                }
             }
 
             //upload photo
@@ -133,6 +139,7 @@ class Students extends App
             $student->complement = $data["complement"];
             $student->phone = $data["phone"];
             $student->description = $data["description"];
+            $student->dojo = $data["dojo"];
 
             //upload photo
             if (!empty($_FILES["photo"])) {
@@ -181,11 +188,11 @@ class Students extends App
         );
 
         if($data["type"] == "black"){
-            $students = (new AppBlackBelt())->find("user_id = :user",
+            $students = (new AppBlackBelt())->find("user_id = :user AND type = 'black'",
                 "user={$this->user->id}}")->fetch(true);
             $type = "black";
         }else{
-            $students = (new AppKyus())->find("user_id = :user",
+            $students = (new AppKyus())->find("user_id = :user AND type = 'kyus'",
                 "user={$this->user->id}")->fetch(true);
             $type = "kyus";
         }

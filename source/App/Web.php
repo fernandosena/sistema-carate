@@ -3,6 +3,7 @@
 namespace Source\App;
 
 use Source\Core\Controller;
+use Source\Models\App\AppKyus;
 use Source\Models\Auth;
 use Source\Models\Category;
 use Source\Models\Faq\Question;
@@ -239,11 +240,25 @@ class Web extends Controller
                 return;
             }
 
-            $student = (new AppBlackBelt())->findByDocument($data['document']);
-            if ($student) {
-                $this->message->success("Seja bem-vindo(a) de volta")->flash();
-                $json['redirect'] = url("/certificado/{$student->document}");
-            } else {
+            $user = (new User())->findByDocument($data['document']);
+            if ($user) {
+                $this->message->success("Seja bem-vindo(a) ao seu certificado")->flash();
+                $json['redirect'] = url("/certificado/{$user->document}");
+            }
+
+            $black = (new AppBlackBelt())->findByDocument($data['document']);
+            if ($black) {
+                $this->message->success("Seja bem-vindo(a) ao seu certificado")->flash();
+                $json['redirect'] = url("/certificado/{$black->document}");
+            } 
+
+            $kyus = (new AppKyus())->findByDocument($data['document']);
+            if ($kyus) {
+                $this->message->success("Seja bem-vindo(a) ao seu certificado")->flash();
+                $json['redirect'] = url("/certificado/{$kyus->document}");
+            } 
+
+            if(empty($user) and empty($black) and empty($kyus)){
                 $json['message'] = $this->message->warning("O CPF informado não foi encontrado")->render();
             }
 

@@ -18,7 +18,7 @@ class AppKyus extends Model
      */
     public function __construct()
     {
-        parent::__construct("app_kyus", ["id"], ["user_id", "dojo_id", "first_name", "last_name", "datebirth", "document", "graduation"]);
+        parent::__construct("app_students", ["id"], ["user_id", "dojo", "first_name", "last_name", "datebirth", "document", "graduation"]);
     }
     
     /**
@@ -57,7 +57,7 @@ class AppKyus extends Model
      */
     public function findByTeacher(int $id, string $columns = "*"): ?array
     {
-        $find = $this->find("user_id = :id", "id={$id}", $columns);
+        $find = $this->find("user_id = :id AND type='kyus'", "id={$id}", $columns);
         return $find->fetch(true);
     }
 
@@ -118,6 +118,7 @@ class AppKyus extends Model
      */
     public function findByDocument(string $document, string $columns = "*"): ?AppKyus
     {
+        $document = preg_replace("/[^0-9]/", "", $document);
         $find = $this->find("document = :d", "d={$document}", $columns);
         return $find->fetch();
     }
@@ -190,6 +191,7 @@ class AppKyus extends Model
                 return false;
             }
 
+            $this->type = "kyus";
             $this->update($this->safe(), "id = :id", "id={$AppBlackBeltId}");
             if ($this->fail()) {
                 $this->message->error("Erro ao atualizar, verifique os dados");
@@ -204,6 +206,7 @@ class AppKyus extends Model
                 return false;
             }
 
+            $this->type = "kyus";
             $AppBlackBeltId = $this->create($this->safe());
             if ($this->fail()) {
                 $this->message->error("Erro ao cadastrar, verifique os dados");

@@ -25,15 +25,19 @@
                     <input class="radius" type="text" name="last_name" value="<?= ($student->last_name) ?? null ?>" placeholder="Ex: Silva" required/>
                 </label>
             </div>
+            <label>
+                <span class="field icon-heartbeat">Nascimento:</span>
+                <input type="date"
+                name="datebirth" id="dataNascimento" class="radius" value="<?= (!empty($student->datebirth)) ? date_fmt($student->datebirth, "Y-m-d") : null; ?>" placeholder="dd/mm/yyyy" required/>
+            </label>
             <div class="label_group">
-                <label>
-                    <span class="field icon-briefcase">CPF:</span>
-                    <input class="radius mask-doc" placeholder="CPF do usuário" type="text" name="document" value="<?= ($student->document) ?? null ?>" required/>
+                <label class="mother-name" style="display: none">
+                    <span class="field icon-briefcase">Nome da Mãe:</span>
+                    <input class="radius" placeholder="Nome da Mãe" type="text" name="mother_name" value="<?= ($student->mother_name) ?? null ?>"/>
                 </label>
                 <label>
-                    <span class="field icon-heartbeat">Nascimento:</span>
-                    <input type="date"
-                    name="datebirth" class="radius" value="<?= (!empty($student->datebirth)) ? date_fmt($student->datebirth, "Y-m-d") : null; ?>" placeholder="dd/mm/yyyy" required/>
+                    <span class="field icon-briefcase">CPF:</span>
+                    <input class="radius mask-doc document" placeholder="CPF do usuário" type="text" name="document" value="<?= ($student->document) ?? null ?>" required/>
                 </label>
             </div>
             <?php if (empty($student)): ?>
@@ -53,6 +57,20 @@
                 </label>
             <?php endif; ?>
 
+            <label>
+                <span class="field icon-filter">Dojo:</span>
+                <?php
+                    $dojo = $student->dojo;
+                    $select = function ($value) use ($dojo) {
+                        return ($dojo == $value ? "selected" : "");
+                    };
+                ?>
+                <select name="dojo">
+                    <?php foreach (explode(",", user()->dojo) as $dojo): ?>
+                        <option <?= $select($dojo); ?> value="<?= $dojo ?>">&ofcir; <?= $dojo; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </label>
             <label>
                 <span class="field icon-text">Observação:</span>
                 <textarea class="radius" name="description" placeholder="Aluno tranferido da escola xyz"><?= ($student->description) ?? null ?></textarea>

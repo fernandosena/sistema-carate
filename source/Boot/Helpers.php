@@ -220,7 +220,6 @@ function user(): ?\Source\Models\User
 {
     return \Source\Models\Auth::user();
 }
-
 /**
  * @return \Source\Core\Session
  */

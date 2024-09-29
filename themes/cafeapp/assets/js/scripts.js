@@ -322,6 +322,28 @@ $(function () {
             window.location.reload();
         });
     });
+
+    $('#dataNascimento').on('change', function() {
+        // Obtém a data de nascimento digitada
+        const dataNascimento = new Date($(this).val());
+        const hoje = new Date();
+    
+        // Calcula a idade
+        let idade = hoje.getFullYear() - dataNascimento.getFullYear();
+        const m = hoje.getMonth() - dataNascimento.getMonth();
+        if (m < 0 || (m === 0 && hoje.getDate() < dataNascimento.getDate())){
+          idade--;
+        }
+        
+        if(idade < 18){
+            $(".mother-name").show();
+            $(".document").attr('placeholder', 'CPF da mãe');
+        }else{
+            $(".mother-name").val('');
+            $(".mother-name").hide();
+            $(".document").attr('placeholder', 'CPF do usuário');
+        }
+    });
 });
 
 

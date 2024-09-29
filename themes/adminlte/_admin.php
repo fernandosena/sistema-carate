@@ -104,6 +104,7 @@
                                                         ".(!empty($array["submenu"]) ? "
                                                         <i class='right fas fa-angle-left'></i>" : null) ."
                                                     </p>
+                                                    ".((!empty($array["badge"]) && !empty($array["badgeText"])) ? "<span class='badge badge-".$array["badge"]." right'>".$array["badgeText"]."</span>" : null)."
                                                 </a>";
                                         if(!empty($array["submenu"])){
                                             $nav .= "<ul class='nav nav-treeview'>";
@@ -135,6 +136,15 @@
                                     "title"=>"Dashboard",
                                 ],
                             );
+                            echo '<li class="nav-header">Lista</li>';
+                            echo $nav(
+                                [
+                                    "icon"=>"fa-refresh",
+                                    "href"=>"renewals",
+                                    "title"=>"Renovações",
+                                ],
+                            );
+                            echo '<li class="nav-header">Gerênciar</li>';
                             echo $nav(
                                 [
                                     "icon"=>"fa-chalkboard-teacher",
@@ -211,6 +221,7 @@
                                     ],
                                 ],
                             );
+                            echo '<li class="nav-header">Sistema</li>';
                             echo $nav(
                                 [
                                     "icon"=>"fa-sign-out",
