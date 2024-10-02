@@ -166,14 +166,14 @@ class Instructors extends Admin
                     $diferenca1 = implode(",", array_diff($dojodb, $data["dojo"]));
 
 
-                    $appKyus = (new AppKyus())->find("user_id = :id AND dojo_id IN (:dojo)", "id=$userUpdate->id, &dojo=$diferenca1");
+                    $appKyus = (new AppKyus())->find("user_id = :id AND dojo IN (:dojo)", "id=$userUpdate->id, &dojo=$diferenca1");
                     if($appKyus->count()){
                         $json["message"] = $this->message->warning("Não foi possivel atualizar pois já existe Kyus cadastrados no dojo retirado")->render();
                         echo json_encode($json);
                         return;
                     }
 
-                    $appBlackBelt = (new AppBlackBelt())->find("user_id = :id AND dojo_id IN (:dojo)", "id=$userUpdate->id, &dojo=$diferenca1");
+                    $appBlackBelt = (new AppBlackBelt())->find("user_id = :id AND dojo IN (:dojo)", "id=$userUpdate->id, &dojo=$diferenca1");
                     if($appBlackBelt->count()){
                         $json["message"] = $this->message->warning("Não foi possivel atualizar pois já existe Faixas pretas cadastrados no dojo retirado")->render();
                         echo json_encode($json);

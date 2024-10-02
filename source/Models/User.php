@@ -7,9 +7,9 @@ use Source\Models\App\AppBlackBelt;
 use Source\Models\App\AppKyus;
 
 /**
- * FSPHP | Class User Active Record Pattern
+ * Class User Active Record Pattern
  *
- * @author Robson V. Leite <cursos@upinside.com.br>
+ * @author Fernando C. Sena <fernandocarvalho.sena@gmail.com>
  * @package Source\Models
  */
 class User extends Model
@@ -67,7 +67,6 @@ class User extends Model
         $find = $this->find("document = :d", "d={$document}", $columns);
         return $find->fetch();
     }
-
 
     /**
      * @return string
@@ -136,6 +135,13 @@ class User extends Model
             }
             
             if(!empty($this->document)){
+                if ((new AppBlackBelt())->find("document = :d", "d={$this->document}", "id")->fetch()) {
+                    $this->message->warning("O CPF informado já está cadastrado");
+                    return false;
+                }
+            }
+
+            if(!empty($this->document)){
                 if ($this->find("document = :d AND id != :i", "d={$this->document}&i={$userId}", "id")->fetch()) {
                     $this->message->warning("O CPF informado já está cadastrado");
                     return false;
@@ -158,6 +164,13 @@ class User extends Model
 
             if(!empty($this->document)){
                 if ($this->findByDocument($this->document, "id")) {
+                    $this->message->warning("O CPF informado já está cadastrado");
+                    return false;
+                }
+            }
+
+            if(!empty($this->document)){
+                if ((new AppBlackBelt())->find("document = :d", "d={$this->document}", "id")->fetch()) {
                     $this->message->warning("O CPF informado já está cadastrado");
                     return false;
                 }

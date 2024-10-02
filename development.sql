@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql:3306
--- Tempo de geração: 19/09/2024 às 13:11
+-- Tempo de geração: 02/10/2024 às 14:29
 -- Versão do servidor: 5.7.44
--- Versão do PHP: 8.2.23
+-- Versão do PHP: 8.2.24
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -50,37 +50,6 @@ CREATE TABLE `address` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estrutura para tabela `app_black_belt`
---
-
-CREATE TABLE `app_black_belt` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `user_id` int(11) UNSIGNED NOT NULL,
-  `dojo_id` int(10) UNSIGNED NOT NULL,
-  `first_name` varchar(255) NOT NULL DEFAULT '',
-  `last_name` varchar(255) NOT NULL DEFAULT '',
-  `email` varchar(255) NOT NULL DEFAULT '',
-  `datebirth` date NOT NULL,
-  `document` varchar(11) NOT NULL,
-  `photo` varchar(255) DEFAULT NULL,
-  `status` varchar(50) NOT NULL DEFAULT 'pending',
-  `zip` varchar(255) NOT NULL,
-  `state` varchar(255) NOT NULL,
-  `city` varchar(255) NOT NULL,
-  `address` varchar(255) NOT NULL,
-  `neighborhood` varchar(255) NOT NULL,
-  `number` varchar(255) NOT NULL,
-  `complement` varchar(255) DEFAULT NULL,
-  `phone` varchar(255) NOT NULL,
-  `graduation` int(11) NOT NULL,
-  `description` text,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -145,28 +114,6 @@ CREATE TABLE `app_invoices` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `app_kyus`
---
-
-CREATE TABLE `app_kyus` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `user_id` int(11) UNSIGNED NOT NULL,
-  `dojo_id` int(10) UNSIGNED NOT NULL,
-  `first_name` varchar(255) NOT NULL DEFAULT '',
-  `last_name` varchar(255) NOT NULL DEFAULT '',
-  `photo` varchar(255) DEFAULT NULL,
-  `datebirth` date NOT NULL,
-  `document` varchar(11) NOT NULL,
-  `graduation` int(11) NOT NULL,
-  `description` text,
-  `status` varchar(50) NOT NULL DEFAULT 'pending',
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
 -- Estrutura para tabela `app_orders`
 --
 
@@ -198,6 +145,50 @@ CREATE TABLE `app_plans` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `app_students`
+--
+
+CREATE TABLE `app_students` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `user_id` int(11) UNSIGNED NOT NULL,
+  `dojo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `last_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `datebirth` date NOT NULL,
+  `mother_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `document` varchar(11) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `photo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `status` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
+  `zip` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `state` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `city` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `neighborhood` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `number` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `complement` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `graduation` int(11) NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_renewal_data` date DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `app_students`
+--
+
+INSERT INTO `app_students` (`id`, `user_id`, `dojo`, `first_name`, `last_name`, `email`, `datebirth`, `mother_name`, `document`, `photo`, `status`, `zip`, `state`, `city`, `address`, `neighborhood`, `number`, `complement`, `phone`, `graduation`, `description`, `type`, `last_renewal_data`, `created_at`, `updated_at`) VALUES
+(1, 2, 'teste1', 'Fernano', 'Sena', 'fernandosenna2020@gmail.com', '1999-02-25', NULL, '99999999999', NULL, 'pending', '05207130', 'SP', 'São Paulo', 'Rua Magalhães Lemos', 'Vila Caiúba', '111', '', '(11) 1 1111-1111', 24, '', 'black', NULL, '2024-10-01 12:46:01', NULL),
+(2, 2, 'teste1', 'FERNANDO', 'DE SENA', '', '1999-02-25', NULL, '99999999998', NULL, 'pending', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 14, '', 'kyus', NULL, '2024-10-01 12:49:38', NULL),
+(3, 2, 'teste1', 'Usuario2', 'teseste', 'fernandocarvalho.sena2@gmail.com', '1999-02-25', NULL, '88888888888', NULL, 'pending', '05207130', 'SP', 'São Paulo', 'Rua Magalhães Lemos', 'Vila Caiúba', '199', '', '(11) 1 1111-1111', 24, '', 'black', NULL, '2024-10-01 17:06:49', NULL),
+(4, 2, 'teste1', 'Mario', 'usuario', 'fernandocarvalho.sena3@gmail.com', '1999-02-25', NULL, '77777777777', NULL, 'pending', '05207130', 'SP', 'São Paulo', 'Rua Magalhães Lemos', 'Vila Caiúba', '111111', '', '(11) 1 1111-1111', 24, '', 'black', NULL, '2024-10-01 17:07:40', NULL);
 
 -- --------------------------------------------------------
 
@@ -234,6 +225,13 @@ CREATE TABLE `app_wallets` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Despejando dados para a tabela `app_wallets`
+--
+
+INSERT INTO `app_wallets` (`id`, `user_id`, `wallet`, `free`, `created_at`, `updated_at`) VALUES
+(1, 2, 'Minha Carteira', 1, '2024-10-01 11:47:55', '2024-10-01 11:47:55');
 
 -- --------------------------------------------------------
 
@@ -350,6 +348,16 @@ CREATE TABLE `historic_belts` (
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Despejando dados para a tabela `historic_belts`
+--
+
+INSERT INTO `historic_belts` (`id`, `black_belt_id`, `kyus_id`, `graduation_id`, `description`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, NULL, 24, 'Definido ao cadastrar aluno - (Cadastrado por: fernandocarvalho.sena@gmail.com)', 'pending', '2024-10-01 12:46:01', NULL),
+(2, NULL, 2, 14, 'Definido ao cadastrar aluno - (Cadastrado por: fernandocarvalho.sena@gmail.com)', 'pending', '2024-10-01 12:49:38', NULL),
+(3, 3, NULL, 24, 'Definido ao cadastrar aluno - (Cadastrado por: fernandocarvalho.sena@gmail.com)', 'pending', '2024-10-01 17:06:49', NULL),
+(4, 4, NULL, 24, 'Definido ao cadastrar aluno - (Cadastrado por: fernandocarvalho.sena@gmail.com)', 'pending', '2024-10-01 17:07:40', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -430,7 +438,8 @@ CREATE TABLE `report_access` (
 
 INSERT INTO `report_access` (`id`, `users`, `views`, `pages`, `created_at`, `updated_at`) VALUES
 (1, 1, 1, 1, '2024-09-09 17:35:17', '2024-09-09 17:35:17'),
-(2, 1, 1, 2, '2024-09-14 14:15:27', '2024-09-14 14:15:28');
+(2, 1, 1, 2, '2024-09-14 14:15:27', '2024-09-14 14:15:28'),
+(3, 3, 6, 177, '2024-10-01 10:46:02', '2024-10-01 17:10:28');
 
 -- --------------------------------------------------------
 
@@ -476,7 +485,7 @@ CREATE TABLE `users` (
   `phone` varchar(255) NOT NULL,
   `graduation` int(11) NOT NULL,
   `dojo` varchar(255) NOT NULL,
-  `renewal_data` date DEFAULT NULL,
+  `last_renewal_data` date DEFAULT NULL,
   `account_status` varchar(255) NOT NULL DEFAULT 'registered' COMMENT 'registered, confirmed',
   `status` varchar(255) NOT NULL DEFAULT 'activated' COMMENT 'activated, deactivated, pending',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -487,8 +496,9 @@ CREATE TABLE `users` (
 -- Despejando dados para a tabela `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `level`, `forget`, `datebirth`, `document`, `photo`, `zip`, `state`, `city`, `address`, `neighborhood`, `number`, `complement`, `phone`, `graduation`, `dojo`, `renewal_data`, `account_status`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Administrador', 'Sistema', 'admin@sistema.com.br', '$2y$10$0EV3OMItJWnOZsgVnyRTY.TOI0dBv89coCjrmbBTJIe8YBcofs.yW', 5, NULL, '1999-06-09', '1111111', NULL, '00000', '000000', '000000', '00000', '00000', '00000', NULL, '000000', 1, 'teste', NULL, 'registered', 'confirmed', '2024-09-08 02:45:25', NULL);
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `level`, `forget`, `datebirth`, `document`, `photo`, `zip`, `state`, `city`, `address`, `neighborhood`, `number`, `complement`, `phone`, `graduation`, `dojo`, `last_renewal_data`, `account_status`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Administrador', 'Sistema', 'admin@sistema.com.br', '$2y$10$0EV3OMItJWnOZsgVnyRTY.TOI0dBv89coCjrmbBTJIe8YBcofs.yW', 5, NULL, '1999-06-09', '1111111', NULL, '00000', '000000', '000000', '00000', '00000', '00000', NULL, '000000', 1, 'teste', NULL, 'registered', 'confirmed', '2024-09-08 02:45:25', NULL),
+(2, 'Fernando', 'Sena', 'fernandocarvalho.sena@gmail.com', '$2y$10$KFkTkbDuR/1l7UVpENdSS.gwgKVL2VDLw4SohMkAeN6.E7PtbwxVG', 1, NULL, '1999-02-05', '12687939498', NULL, '05207130', 'SP', 'São Paulo', 'Rua Magalhães Lemos', 'Vila Caiúba', '111', '', '(11) 9 4363-2003', 24, 'teste1,teste2', NULL, 'registered', 'activated', '2024-10-01 11:08:54', '2024-10-01 12:38:36');
 
 --
 -- Índices para tabelas despejadas
@@ -506,14 +516,6 @@ ALTER TABLE `aap_certificate`
 ALTER TABLE `address`
   ADD PRIMARY KEY (`id`),
   ADD KEY `addr_user` (`user_id`);
-
---
--- Índices de tabela `app_black_belt`
---
-ALTER TABLE `app_black_belt`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
-ALTER TABLE `app_black_belt` ADD FULLTEXT KEY `full_text` (`first_name`,`last_name`,`email`);
 
 --
 -- Índices de tabela `app_categories`
@@ -540,13 +542,6 @@ ALTER TABLE `app_invoices`
   ADD KEY `app_invoice` (`invoice_of`);
 
 --
--- Índices de tabela `app_kyus`
---
-ALTER TABLE `app_kyus`
-  ADD PRIMARY KEY (`id`);
-ALTER TABLE `app_kyus` ADD FULLTEXT KEY `full_text` (`first_name`,`last_name`);
-
---
 -- Índices de tabela `app_orders`
 --
 ALTER TABLE `app_orders`
@@ -560,6 +555,14 @@ ALTER TABLE `app_orders`
 --
 ALTER TABLE `app_plans`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `app_students`
+--
+ALTER TABLE `app_students`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
+ALTER TABLE `app_students` ADD FULLTEXT KEY `full_text` (`first_name`,`last_name`,`email`);
 
 --
 -- Índices de tabela `app_subscriptions`
@@ -666,12 +669,6 @@ ALTER TABLE `address`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de tabela `app_black_belt`
---
-ALTER TABLE `app_black_belt`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de tabela `app_categories`
 --
 ALTER TABLE `app_categories`
@@ -690,12 +687,6 @@ ALTER TABLE `app_invoices`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de tabela `app_kyus`
---
-ALTER TABLE `app_kyus`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de tabela `app_orders`
 --
 ALTER TABLE `app_orders`
@@ -708,6 +699,12 @@ ALTER TABLE `app_plans`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de tabela `app_students`
+--
+ALTER TABLE `app_students`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT de tabela `app_subscriptions`
 --
 ALTER TABLE `app_subscriptions`
@@ -717,7 +714,7 @@ ALTER TABLE `app_subscriptions`
 -- AUTO_INCREMENT de tabela `app_wallets`
 --
 ALTER TABLE `app_wallets`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de tabela `belts`
@@ -747,7 +744,7 @@ ALTER TABLE `faq_questions`
 -- AUTO_INCREMENT de tabela `historic_belts`
 --
 ALTER TABLE `historic_belts`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `mail_queue`
@@ -771,7 +768,7 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT de tabela `report_access`
 --
 ALTER TABLE `report_access`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `report_online`
@@ -783,7 +780,7 @@ ALTER TABLE `report_online`
 -- AUTO_INCREMENT de tabela `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restrições para tabelas despejadas

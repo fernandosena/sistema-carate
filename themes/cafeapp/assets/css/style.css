@@ -731,7 +731,6 @@ body {
     font-weight: var(--weight-bold);
     font-size: var(--font-small);
 }
-
 .app_launch_btn:hover {
     background-color: #333333;
     color: #ffffff;
@@ -740,6 +739,11 @@ body {
 .app_launch_btn.income {
     border-color: var(--color-green);
     color: var(--color-green);
+}
+
+.app_launch_btn.green {
+    background-color: var(--color-green);
+    color: #ffffff;
 }
 
 .app_launch_btn.income:hover {

@@ -5,9 +5,9 @@ namespace Source\Core;
 use League\Plates\Engine;
 
 /**
- * FSPHP | Class View
+ * Class View
  *
- * @author Robson V. Leite <cursos@upinside.com.br>
+ * @author Fernando C. Sena <fernandocarvalho.sena@gmail.com>
  * @package Source\Core
  */
 class View

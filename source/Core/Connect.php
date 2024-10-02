@@ -3,9 +3,9 @@
 namespace Source\Core;
 
 /**
- * FSPHP | Class Connect [ Singleton Pattern ]
+ * Class Connect [ Singleton Pattern ]
  *
- * @author Robson V. Leite <cursos@upinside.com.br>
+ * @author Fernando C. Sena <fernandocarvalho.sena@gmail.com>
  * @package Source\Core
  */
 class Connect

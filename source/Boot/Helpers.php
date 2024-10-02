@@ -15,6 +15,15 @@ function is_email(string $email): bool
     return filter_var($email, FILTER_VALIDATE_EMAIL);
 }
 
+function verify_renewal_data($date): bool|string
+{
+    if(!empty($date)){
+        return "Renovação atualizada";
+    }
+
+    return False;
+}
+
 /**
  * @param string $password
  * @return bool

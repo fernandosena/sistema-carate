@@ -191,6 +191,13 @@ class AppKyus extends Model
                 return false;
             }
 
+            if(!empty($this->document)){
+                if ((new User())->find("document = :d", "d={$this->document}", "id")->fetch()) {
+                    $this->message->warning("O CPF informado já está cadastrado");
+                    return false;
+                }
+            }
+
             $this->type = "kyus";
             $this->update($this->safe(), "id = :id", "id={$AppBlackBeltId}");
             if ($this->fail()) {
@@ -204,6 +211,13 @@ class AppKyus extends Model
             if ($this->findByDocument($this->document, "id")) {
                 $this->message->warning("O CPF informado já está cadastrado");
                 return false;
+            }
+
+            if(!empty($this->document)){
+                if ((new User())->find("document = :d", "d={$this->document}", "id")->fetch()) {
+                    $this->message->warning("O CPF informado já está cadastrado");
+                    return false;
+                }
             }
 
             $this->type = "kyus";

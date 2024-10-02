@@ -36,6 +36,20 @@ class Students extends App
             return;
         }
 
+        if (!empty($data["action"]) && $data["action"] == "payment") {
+            $user_id = $data["user_id"];
+            $student_id = $data["student_id"];
+
+            $user = (new User())->findById($user_id);
+            if(!$user){
+                echo json_encode([
+                    "message" => $this->message->warning("Usuario informado não existe")->render()
+                ]);
+                return;
+            }
+            return;
+        }
+
         if (!empty($data["action"]) && !empty($data["type"]) && $data["action"] == "create") {
             $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
 

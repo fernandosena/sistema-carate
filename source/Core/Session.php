@@ -5,9 +5,9 @@ namespace Source\Core;
 use Source\Support\Message;
 
 /**
- * FSPHP | Class Session
+ * Class Session
  *
- * @author Robson V. Leite <cursos@upinside.com.br>
+ * @author Fernando C. Sena <fernandocarvalho.sena@gmail.com>
  * @package Source\Core
  */
 class Session

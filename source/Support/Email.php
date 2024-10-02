@@ -7,9 +7,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Source\Core\Connect;
 
 /**
- * FSPHP | Class Email
+ * Class Email
  *
- * @author Robson V. Leite <cursos@upinside.com.br>
+ * @author Fernando C. Sena <fernandocarvalho.sena@gmail.com>
  * @package Source\Core
  */
 class Email

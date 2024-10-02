@@ -33,6 +33,7 @@
                 <th>Graduação</th>
                 <th>Dojo</th>
                 <th>Status</th>
+                <th>Renovação</th>
             </thead>
             <tbody>
                 <?php
@@ -50,7 +51,22 @@
                         <td><strong class="badge"><?= $student->belt()->title ?></strong></td>
                         <td><?= $student->dojo ?></td>
                         <td><strong class="badge bg-<?= ($student->status == 'activated') ? 'success': (($student->status == 'pending') ? 'warning' : 'danger') ?>"><?= ($student->status == 'activated') ? 'Ativo': (($student->status == 'pending') ? 'Pendente' : 'Desativado') ?></strong></span></td>
-                        <td><?= $student->dojo ?></td>
+                        <td>
+                            <?php
+                                $verify = verify_renewal_data($student->last_renewal_data);
+                                if(!$verify){
+                            ?>
+                            <a href="#" class="btn bg-success"
+                            data-post="<?= url("app/alunos") ?>"
+                            data-action="payment"
+                            data-user_id="<?= $student->id; ?>"
+                            data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Realizar Pagamento</a>
+                            <?php
+                                }else{
+                                    echo $verify;
+                                }
+                            ?>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

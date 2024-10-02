@@ -209,6 +209,13 @@ class AppBlackBelt extends Model
                 return false;
             }
 
+            if(!empty($this->document)){
+                if ((new User())->find("document = :d", "d={$this->document}", "id")->fetch()) {
+                    $this->message->warning("O CPF informado já está cadastrado");
+                    return false;
+                }
+            }
+
             $this->update($this->safe(), "id = :id", "id={$AppBlackBeltId}");
             if ($this->fail()) {
                 $this->message->error("Erro ao atualizar, verifique os dados");
@@ -226,6 +233,13 @@ class AppBlackBelt extends Model
             if ($this->findByDocument($this->document, "id")) {
                 $this->message->warning("O CPF informado já está cadastrado");
                 return false;
+            }
+
+            if(!empty($this->document)){
+                if ((new User())->find("document = :d", "d={$this->document}", "id")->fetch()) {
+                    $this->message->warning("O CPF informado já está cadastrado");
+                    return false;
+                }
             }
 
             $AppBlackBeltId = $this->create($this->safe());
