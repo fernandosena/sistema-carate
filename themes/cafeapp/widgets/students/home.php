@@ -53,17 +53,21 @@
                         <td><strong class="badge bg-<?= ($student->status == 'activated') ? 'success': (($student->status == 'pending') ? 'warning' : 'danger') ?>"><?= ($student->status == 'activated') ? 'Ativo': (($student->status == 'pending') ? 'Pendente' : 'Desativado') ?></strong></span></td>
                         <td>
                             <?php
-                                $verify = verify_renewal_data($student->last_renewal_data);
-                                if(!$verify){
+                                $verify = verify_renewal_data($student->renewal, $student->last_renewal_data);
+                                if($verify){
                             ?>
-                            <a href="#" class="btn bg-success"
-                            data-post="<?= url("app/alunos") ?>"
-                            data-action="payment"
-                            data-user_id="<?= $student->id; ?>"
-                            data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Realizar Pagamento</a>
+                                <a href="#" class="btn bg-success"
+                                data-post="<?= url("app/alunos") ?>"
+                                data-action="payment"
+                                data-user_id="<?= user()->id; ?>"
+                                data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> <?= $verify ?></a>
                             <?php
                                 }else{
-                                    echo $verify;
+                                    if($student->renewal == "pending"){
+                                        echo "Em analise";
+                                    }else{
+                                        echo "Usuário atualizado";
+                                    }
                                 }
                             ?>
                         </td>

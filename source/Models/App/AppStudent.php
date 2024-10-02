@@ -18,7 +18,7 @@ class AppStudent extends Model
      */
     public function __construct()
     {
-        parent::__construct("app_students", ["id"], ["user_id", "dojo", "first_name", "last_name", "email", "document", "zip", "state", "city", "address", "neighborhood", "number", "phone", "graduation", "type"]);
+        parent::__construct("app_students", ["id"], ["user_id", "dojo", "first_name", "last_name", "document", "graduation", "type"]);
     }
 
     /**

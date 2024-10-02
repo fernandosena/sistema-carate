@@ -15,10 +15,37 @@ function is_email(string $email): bool
     return filter_var($email, FILTER_VALIDATE_EMAIL);
 }
 
-function verify_renewal_data($date): bool|string
+function verify_multa_data($data)
 {
-    if(!empty($date)){
-        return "Renovação atualizada";
+    $data_obj = new DateTime($data);
+
+    // Obtém o mês e o dia da data
+    $mes = $data_obj->format('m');
+
+    if (($mes >= 1 && $mes <= 2)) {
+        $multa = 0;
+    } elseif (($mes >= 3 && $mes <= 4)) {
+        $multa = 0.5;
+    } else {
+        $multa = 1;
+    }
+
+    return $multa;
+}
+
+function verify_renewal_data($renewal, $last_renewal_data): bool|string
+{
+    if(!empty($last_renewal_data)){
+        $timestamp = strtotime($last_renewal_data);
+        $ano = date("Y", $timestamp);
+
+        if($ano < date('Y')){
+            $multa = verify_multa_data($last_renewal_data);
+            if($multa){
+                return "Realizar Pagamento: Multa de ".($multa*100)."%";
+            }
+            return "Realizar Pagamento";
+        }
     }
 
     return False;

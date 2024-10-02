@@ -8,6 +8,7 @@ use Source\Support\Thumb;
 use Source\Support\Upload;
 use Source\Models\App\AppBlackBelt;
 use Source\Models\App\AppKyus;
+use Source\Models\App\AppStudent;
 use Source\Models\Belt;
 use Source\Models\HistoricBelt;
 
@@ -204,6 +205,40 @@ class Students extends Admin
             return;
         }
 
+        if (!empty($data["action"]) && $data["action"] == "payment") {
+            $user_id = $data["user_id"];
+            $student_id = $data["student_id"];
+
+            $user = (new User())->findById(id: $user_id);
+            if(!$user){
+                echo json_encode([
+                    "message" => $this->message->warning("Usuario informado não existe")->render()
+                ]);
+                return;
+            }
+
+            $student = (new AppStudent())->findById($student_id);
+            if(!$student){
+                echo json_encode([
+                    "message" => $this->message->warning("Estudante informado não existe")->render()
+                ]);
+                return;
+            }
+
+            $student->renewal = 'approved';
+
+            if(!$student->save()){
+                echo json_encode([
+                    "message" => $this->message->error("Erro ao atualizar usuario")->render()
+                ]);
+                return;
+            }
+
+            echo json_encode([
+                "renewal" => true
+            ]);
+            return;
+        }
         //update
         if (!empty($data["action"]) && $data["action"] == "update") {
             $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);

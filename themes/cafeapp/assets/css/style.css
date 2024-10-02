@@ -24,7 +24,10 @@ body {
     margin-bottom: var(--area-normal);
     cursor: pointer;
 }
-
+.btn{
+    padding: 5px;
+    border-radius: 10px;
+}
 .app_form .field {
     display: block;
     margin-bottom: 5px;

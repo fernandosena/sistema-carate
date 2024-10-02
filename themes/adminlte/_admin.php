@@ -141,7 +141,7 @@
                                 [
                                     "icon"=>"fa-refresh",
                                     "href"=>"renewals",
-                                    "title"=>"Renovações",
+                                    "title"=>"Renovações"
                                 ],
                             );
                             echo '<li class="nav-header">Gerênciar</li>';

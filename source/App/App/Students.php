@@ -6,7 +6,9 @@ use Source\Models\HistoricBelt;
 use Source\Support\Upload;
 use Source\Models\App\AppBlackBelt;
 use Source\Models\App\AppKyus;
+use Source\Models\User;
 use Source\Models\Belt;
+use Source\Models\App\AppStudent;
 
 /**
  * Class Students
@@ -47,6 +49,28 @@ class Students extends App
                 ]);
                 return;
             }
+
+            $student = (new AppStudent())->findById($student_id);
+            if(!$student){
+                echo json_encode([
+                    "message" => $this->message->warning("Estudante informado não existe")->render()
+                ]);
+                return;
+            }
+
+            $student->renewal = 'pending';
+            $student->last_renewal_data = date("Y-m-d");
+
+            if(!$student->save()){
+                echo json_encode([
+                    "message" => $this->message->error("Erro ao atualizar usuario")->render()
+                ]);
+                return;
+            }
+
+            echo json_encode([
+                "renewal" => true
+            ]);
             return;
         }
 

@@ -3,6 +3,7 @@
 namespace Source\App\Admin;
 
 use Source\Models\App\AppBlackBelt;
+use Source\Models\App\AppStudent;
 use Source\Models\Belt;
 use Source\Support\Pager;
 use Source\Support\Thumb;
@@ -27,7 +28,7 @@ class Renewals extends Admin
      */
     public function home(?array $data): void
     {
-        $list = (new AppBlackBelt())->find();
+        $list = (new AppStudent())->find()->fetch(true);
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Faixas",
             CONF_SITE_DESC,
@@ -39,7 +40,7 @@ class Renewals extends Admin
         echo $this->view->render("widgets/renewals/home", [
             "app" => "renewals/home",
             "head" => $head,
-            "list" => $list,
+            "students" => $list,
         ]);
     }
 }

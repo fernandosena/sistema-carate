@@ -41,7 +41,7 @@ $(function () {
             },
             success: function (response) {
                 if(response.renewal){
-                    clicked.replaceWith('Pagamento já realizado');
+                    clicked.replaceWith('Em analise');
                 }
 
                 //redirect
