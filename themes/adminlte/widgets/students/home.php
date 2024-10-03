@@ -28,23 +28,11 @@
                                             <img class="profile-user-img img-fluid img-circle" src="<?= $studentPhoto; ?>" alt="<?= $student->fullName(); ?>">
                                         </td>
                                         <td><h3 class="profile-username text-center"><?= $student->fullName(); ?></h3></td>
-                                        <ul class="list-group list-group-unbordered mb-3">
-                                            <li class="list-group-item">
-                                                <b>Graduação</b> 
-                                                <span class="float-right badge"><?= $student->belt()->title ?></span>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <b>Status</b> 
-                                                <span class="float-right"><strong class="badge bg-<?= ($student->status == 'activated') ? 'success': (($student->status == 'pending') ? 'warning' : 'danger') ?>"><?= ($student->status == 'activated') ? 'Ativo': (($student->status == 'pending') ? 'Pendente' : 'Desativado') ?></strong></span>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <b>Professor</b> <a href="<?= url("/admin/instructors/instructor/{$student->user_id}") ?>" class="float-right"><?= str_limit_chars($student->teacher()->fullName(), 12)?></a>
-                                            </li>
-                                            <li class="list-group-item">
-                                                <b>Desde</b> <a class="float-right"><?= date_fmt($student->created_at, "d/m/y \à\s H\hi"); ?></a>
-                                            </li>
-                                        </ul>
+                                        <td><?= date_fmt($student->created_at, "d/m/y \à\s H\hi"); ?>
+                                        </td>
+                                        <td>
                                         <a href="<?= url("/admin/students/{$type}/student/{$student->id}"); ?>" class="btn btn-primary btn-block"><b>Gerênciar</b></a>
+                                        </td>
                                     </tr>
                                 <?php endforeach; ?>
                                 </tbody>

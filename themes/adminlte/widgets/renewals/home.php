@@ -16,27 +16,51 @@
                                         <th>Professor</th>
                                         <th>CPF</th>
                                         <th>Pagamento</th>
+                                        <th>Multa</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($students as $student): ?>
+                                        <?php 
+                                            $renewal_data = verify_renewal_data($student->renewal, $student->last_renewal_data);
+                                            if($renewal_data):
+                                        ?>
                                         <tr>
                                             <td><a href="<?= url("admin/students/$student->type/student/{$student->id}") ?>"><?= $student->fullName(); ?></a></td>
                                             <td><a href="<?= url("admin/instructors/instructor/{$student->user_id}") ?>"><?= $student->teacher()->fullName() ?></a></td>
                                             <td><?= $student->document ?> </td>
-                                            <td>
-                                            <?php if($student->renewal == "pending"): ?>
-                                                <a href="#" class="btn bg-success"
-                                                data-postbtn="<?= url("admin/students/$student->type/student") ?>"
-                                                data-action="payment"
-                                                data-user_id="<?= user()->id; ?>"
-                                                data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Aprovar</a>
-                                            <?php elseif($student->renewal == "approved"):  ?>
-                                                <strong class="badge bg-success">Pagamento realizado</strong>
-                                            <?php else: ?>
-                                                <strong class="badge bg-warning">Aguardando envio</strong>
-                                            <?php endif; ?>
+                                                <?php if($student->renewal == "pending"): ?>
+                                                    <a href="#" class="btn bg-success"
+                                                    data-postbtn="<?= url("admin/students/$student->type/student") ?>"
+                                                    data-action="payment"
+                                                    data-user_id="<?= user()->id; ?>"
+                                                    data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Aprovar</a>
+                                                <?php elseif($student->renewal == "approved"):  ?>
+                                                    <strong class="badge bg-success">Pagamento realizado</strong>
+                                                <?php else: ?>
+                                                    <strong class="badge bg-warning">Aguardando envio</strong>
+                                                <?php endif; ?>
+                                                <th>
+                                                    <?php 
+                                                        $multa = verify_multa_renewal_data($student->renewal, $student->last_renewal_data);
+                                                        if(!empty($multa)){
+                                                            ?>
+                                                                <strong class="badge bg-danger">
+                                                                    <?php 
+                                                                        $multa = $multa *100;
+                                                                        echo "Multa de {$multa}%";
+                                                                    ?>
+                                                                </strong>
+                                                            <?php
+                                                        }else{
+                                                            ?>
+                                                                <strong class="badge bg-success">Sem multa</strong>
+                                                            <?php
+                                                        }
+                                                    ?>
+                                                </th>
                                         </tr>
+                                        <?php endif; ?>
                                     <?php endforeach; ?>
                                 </tbody>
                                 <tfoot>
@@ -45,6 +69,7 @@
                                         <th>Professor</th>
                                         <th>CPF</th>
                                         <th>Pagamento</th>
+                                        <th>Multa</th>
                                     </tr>
                                 </tfoot>
                             </table>

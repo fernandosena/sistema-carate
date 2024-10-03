@@ -58,21 +58,3 @@
     </div>
     <!-- ./col -->
 </div>
-<div class="row">
-    <div class="div col-md-6">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <i class="ion ion-clipboard mr-1"></i> Avisos
-                </h3>
-            </div>
-
-            <div class="card-body">
-                <div class="alert alert-info alert-dismissible">
-                    <h5><i class="icon fas fa-info"></i> Alerta!</h5>
-                    Nenhum aviso encontrado
-                </div>
-            </div>
-        </div>
-    </div>
-</div>

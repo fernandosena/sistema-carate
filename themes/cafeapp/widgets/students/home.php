@@ -60,7 +60,7 @@
                                 data-post="<?= url("app/alunos") ?>"
                                 data-action="payment"
                                 data-user_id="<?= user()->id; ?>"
-                                data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> <?= $verify ?></a>
+                                data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Realizar o Pagamento</a>
                             <?php
                                 }else{
                                     if($student->renewal == "pending"){

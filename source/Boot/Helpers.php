@@ -42,9 +42,23 @@ function verify_renewal_data($renewal, $last_renewal_data): bool|string
         if($ano < date('Y')){
             $multa = verify_multa_data($last_renewal_data);
             if($multa){
-                return "Realizar Pagamento: Multa de ".($multa*100)."%";
+                return true;
             }
-            return "Realizar Pagamento";
+            return true;
+        }
+    }
+
+    return False;
+}
+function verify_multa_renewal_data($renewal, $last_renewal_data): bool|string
+{
+    if(!empty($last_renewal_data)){
+        $timestamp = strtotime($last_renewal_data);
+        $ano = date("Y", $timestamp);
+
+        if($ano < date('Y')){
+            $multa = verify_multa_data($last_renewal_data);
+            return $multa;
         }
     }
 

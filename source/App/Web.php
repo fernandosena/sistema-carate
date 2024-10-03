@@ -241,7 +241,27 @@ class Web extends Controller
                 return;
             }
 
-            $json['redirect'] = url("/certificado/{$data['document']}");
+
+            $document = preg_replace("/[^0-9]/", "", $data['document']);
+
+            $user = (new User())->findByDocument($document);
+            if(!$user){
+                $user = (new AppStudent())->findByDocument($document);
+            }
+
+            if(!$user){
+                $json['message'] = $this->message->warning("Usuário não encontrado")->render();
+                echo json_encode($json);
+                return;
+            }
+
+            if(verify_renewal_data($user->renewal, $user->last_renewal_data)){
+                $json['message'] = $this->message->warning("Usuário pendente para regularização")->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $json['redirect'] = url("/certificado/{$document}");
             echo json_encode($json);
             return;
         }
@@ -262,11 +282,15 @@ class Web extends Controller
             }
 
             if(!$user){
-                $json['message'] = $this->message->warning("Usuário não encontrado")->render();
-                echo json_encode($json);
-                return;
+                $this->message->warning("Usuário não encontrado")->flash();
+                redirect("/certificado");
             }
             
+            if(verify_renewal_data($user->renewal, $user->last_renewal_data)){
+                $this->message->warning("Usuário pendente")->flash();
+                redirect("/certificado");
+            }
+
             $date = "01 de Fevereiro de ".date('Y', strtotime('+1 year'));
             if(!empty($user->type)){
                 if($user->type == "black"){

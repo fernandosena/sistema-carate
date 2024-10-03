@@ -59,7 +59,6 @@ class Students extends App
             }
 
             $student->renewal = 'pending';
-            $student->last_renewal_data = date("Y-m-d");
 
             if(!$student->save()){
                 echo json_encode([
