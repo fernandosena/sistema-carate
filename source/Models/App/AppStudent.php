@@ -87,7 +87,7 @@ class AppStudent extends Model
      * @param string $columns
      * @return null|AppBlackBelt
      */
-    public function findByDocument(string $document, string $columns = "*"): ?AppBlackBelt
+    public function findByDocument(string $document, string $columns = "*"): ?AppStudent
     {
         $document = preg_replace("/[^0-9]/", "", $document);
         $find = $this->find("document = :d", "d={$document}", $columns);

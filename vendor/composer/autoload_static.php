@@ -39,6 +39,10 @@ class ComposerStaticInit81ff5e2843da8a9fe25b697e67c025f4
         array (
             'ImageMimeTypeGuesser\\' => 21,
         ),
+        'F' => 
+        array (
+            'Fpdf\\' => 5,
+        ),
         'C' => 
         array (
             'CoffeeCode\\Uploader\\' => 20,
@@ -77,6 +81,10 @@ class ComposerStaticInit81ff5e2843da8a9fe25b697e67c025f4
         'ImageMimeTypeGuesser\\' => 
         array (
             0 => __DIR__ . '/..' . '/rosell-dk/image-mime-type-guesser/src',
+        ),
+        'Fpdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/fpdf/fpdf/src/Fpdf',
         ),
         'CoffeeCode\\Uploader\\' => 
         array (

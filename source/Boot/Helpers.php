@@ -286,6 +286,24 @@ function theme(string $path = null, string $theme = CONF_VIEW_THEME): string
     return CONF_URL_BASE . "/themes/{$theme}";
 }
 
+
+function path(string $path = null, string $theme = CONF_VIEW_THEME): string
+{
+    if (strpos($_SERVER['HTTP_HOST'], "localhost")) {
+        if ($path) {
+            return __DIR__ . "/../../themes/{$theme}/" . ($path[0] == "/" ? mb_substr($path, 1) : $path);
+        }
+
+        return __DIR__. "/../../themes/{$theme}";
+    }
+
+    if ($path) {
+        return __DIR__ . "/../../themes/{$theme}/" . ($path[0] == "/" ? mb_substr($path, 1) : $path);
+    }
+
+    return __DIR__ . "/../../themes/{$theme}";
+}
+
 /**
  * @param string $image
  * @param int $width

@@ -141,7 +141,19 @@
                                 [
                                     "icon"=>"fa-refresh",
                                     "href"=>"renewals",
-                                    "title"=>"Renovações"
+                                    "title"=>"Renovações",
+                                    "submenu"=> [
+                                        [
+                                            "icon"=>"fa-refresh",
+                                            "href"=>"renewals",
+                                            "title"=>"Alunos",
+                                        ],
+                                        [
+                                            "icon"=>"fa-refresh",
+                                            "href"=>"renewals",
+                                            "title"=>"Instrutores",
+                                        ]
+                                    ],
                                 ],
                             );
                             echo '<li class="nav-header">Gerênciar</li>';

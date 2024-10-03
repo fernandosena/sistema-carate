@@ -4,6 +4,7 @@ namespace Source\App;
 
 use Source\Core\Controller;
 use Source\Models\App\AppKyus;
+use Source\Models\App\AppStudent;
 use Source\Models\Auth;
 use Source\Models\Category;
 use Source\Models\Faq\Question;
@@ -11,7 +12,7 @@ use Source\Models\Post;
 use Source\Models\Report\Access;
 use Source\Models\Report\Online;
 use Source\Models\User;
-use Source\Models\App\AppBlackBelt;
+use Source\Support\Certificate;
 use Source\Support\Pager;
 
 /**
@@ -240,28 +241,7 @@ class Web extends Controller
                 return;
             }
 
-            $user = (new User())->findByDocument($data['document']);
-            if ($user) {
-                $this->message->success("Seja bem-vindo(a) ao seu certificado")->flash();
-                $json['redirect'] = url("/certificado/{$user->document}");
-            }
-
-            $black = (new AppBlackBelt())->findByDocument($data['document']);
-            if ($black) {
-                $this->message->success("Seja bem-vindo(a) ao seu certificado")->flash();
-                $json['redirect'] = url("/certificado/{$black->document}");
-            } 
-
-            $kyus = (new AppKyus())->findByDocument($data['document']);
-            if ($kyus) {
-                $this->message->success("Seja bem-vindo(a) ao seu certificado")->flash();
-                $json['redirect'] = url("/certificado/{$kyus->document}");
-            } 
-
-            if(empty($user) and empty($black) and empty($kyus)){
-                $json['message'] = $this->message->warning("O CPF informado não foi encontrado")->render();
-            }
-
+            $json['redirect'] = url("/certificado/{$data['document']}");
             echo json_encode($json);
             return;
         }
@@ -273,9 +253,59 @@ class Web extends Controller
             theme("/assets/images/share.jpg")
         );
 
+        if(!empty($data['document'])){
+            $document = preg_replace("/[^0-9]/", "", $data['document']);
+
+            $user = (new User())->findByDocument($document);
+            if(!$user){
+                $user = (new AppStudent())->findByDocument($document);
+            }
+
+            if(!$user){
+                $json['message'] = $this->message->warning("Usuário não encontrado")->render();
+                echo json_encode($json);
+                return;
+            }
+            
+            $date = "01 de Fevereiro de ".date('Y', strtotime('+1 year'));
+            if(!empty($user->type)){
+                if($user->type == "black"){
+                    $model = "certificado_faixa_preta.jpg";
+                }else{
+                    $model = "certificado_kyu.jpg";
+                    $date = "MEMBRO ATIVO 2025";
+                }
+            }else{
+                $model = "certificado_instrutor.jpg";
+            }
+
+            $certificate = (new Certificate(
+                $user->fullname(),
+                $date,
+                $user->document,
+                path("assets/images/$model")
+            ));
+
+            if(!empty($user->type)){
+                if($user->type == "kyus"){
+                    $model = "certificado_kyu.jpg";
+                    $certificate->setColorName(30);
+                    $certificate->setColorName(255, 255, 255);
+                    $certificate->setXYName(20,110);
+    
+                    $certificate->setSizeDate(25);
+                    $certificate->setColorDate(100, 100, 100);
+                    $certificate->setXYDate(20,80);
+                    $certificate->setDateMultiCell(265, 10);
+                }
+            }
+            
+            $certificate->render();
+        }
+
         echo $this->view->render("certificate", [
             "head" => $head,
-            "document" => ($data["document"]) ?? null
+            "document" => null
         ]);
     }   
 

@@ -13,6 +13,7 @@ return array(
     'MatthiasMullie\\Minify\\' => array($vendorDir . '/matthiasmullie/minify/src'),
     'League\\Plates\\' => array($vendorDir . '/league/plates/src'),
     'ImageMimeTypeGuesser\\' => array($vendorDir . '/rosell-dk/image-mime-type-guesser/src'),
+    'Fpdf\\' => array($vendorDir . '/fpdf/fpdf/src/Fpdf'),
     'CoffeeCode\\Uploader\\' => array($vendorDir . '/coffeecode/uploader/src'),
     'CoffeeCode\\Router\\' => array($vendorDir . '/coffeecode/router/src'),
     'CoffeeCode\\Paginator\\' => array($vendorDir . '/coffeecode/paginator/src'),

@@ -32,6 +32,7 @@
     "coffeecode/cropper": "2.*",
     "coffeecode/optimizer": "2.*",
     "coffeecode/paginator": "2.*",
-    "coffeecode/router": "2.*"
+    "coffeecode/router": "2.*",
+    "fpdf/fpdf": "^1.86"
   }
 }

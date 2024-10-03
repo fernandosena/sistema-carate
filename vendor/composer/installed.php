@@ -55,6 +55,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'fpdf/fpdf' => array(
+            'pretty_version' => '1.86.0',
+            'version' => '1.86.0.0',
+            'reference' => 'd2a0cbd9e4b5557b9c6c29ddc8eb2b36d8761e00',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../fpdf/fpdf',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'league/plates' => array(
             'pretty_version' => 'v3.5.0',
             'version' => '3.5.0.0',
