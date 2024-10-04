@@ -145,12 +145,12 @@
                                     "submenu"=> [
                                         [
                                             "icon"=>"fa-refresh",
-                                            "href"=>"renewals",
+                                            "href"=>"renewals/students",
                                             "title"=>"Alunos",
                                         ],
                                         [
                                             "icon"=>"fa-refresh",
-                                            "href"=>"renewals",
+                                            "href"=>"renewals/instrunctos",
                                             "title"=>"Instrutores",
                                         ]
                                     ],

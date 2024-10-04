@@ -1,5 +1,5 @@
 <?php $this->layout("_admin"); ?>
-<?php if(!empty($students)): ?>
+<?php if(!empty($students)):?>
     <section class="content">
         <div class="container-fluid">
             <div class="row">
@@ -21,13 +21,17 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach ($students as $student): ?>
-                                        <?php 
+                                        <?php
                                             $renewal_data = verify_renewal_data($student->renewal, $student->last_renewal_data);
                                             if($renewal_data):
                                         ?>
                                         <tr>
                                             <td><a href="<?= url("admin/students/$student->type/student/{$student->id}") ?>"><?= $student->fullName(); ?></a></td>
+                                            <?php if(!empty($student->user_id)): ?>
                                             <td><a href="<?= url("admin/instructors/instructor/{$student->user_id}") ?>"><?= $student->teacher()->fullName() ?></a></td>
+                                            <?php else: ?>
+                                                <td>----------</td>
+                                            <?php endif; ?>
                                             <td><?= $student->document ?> </td>
                                                 <?php if($student->renewal == "pending"): ?>
                                                     <a href="#" class="btn bg-success"

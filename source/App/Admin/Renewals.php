@@ -2,12 +2,8 @@
 
 namespace Source\App\Admin;
 
-use Source\Models\App\AppBlackBelt;
 use Source\Models\App\AppStudent;
-use Source\Models\Belt;
-use Source\Support\Pager;
-use Source\Support\Thumb;
-use Source\Support\Upload;
+use Source\Models\User;
 
 /**
  * Class Renewals
@@ -26,11 +22,32 @@ class Renewals extends Admin
     /**
      * @param array|null $data
      */
-    public function home(?array $data): void
+    public function student(?array $data): void
     {
         $list = (new AppStudent())->find()->fetch(true);
         $head = $this->seo->render(
-            CONF_SITE_NAME . " | Faixas",
+            CONF_SITE_NAME . " | Alunos",
+            CONF_SITE_DESC,
+            url("/admin"),
+            url("/admin/assets/images/image.jpg"),
+            false
+        );
+
+        echo $this->view->render("widgets/renewals/home", [
+            "app" => "renewals/home",
+            "head" => $head,
+            "students" => $list,
+        ]);
+    }
+
+    /**
+     * @param array|null $data
+     */
+    public function instruncto(?array $data): void
+    {
+        $list = (new User())->find("level != 5")->fetch(true);
+        $head = $this->seo->render(
+            CONF_SITE_NAME . " | Professores",
             CONF_SITE_DESC,
             url("/admin"),
             url("/admin/assets/images/image.jpg"),

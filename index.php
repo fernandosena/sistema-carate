@@ -84,7 +84,8 @@ $route->get("/", "Login:root");
 $route->get("/login", "Login:login");
 $route->post("/login", "Login:login");
 
-$route->get("/renewals", "Renewals:home");
+$route->get("/renewals/students", "Renewals:student");
+$route->get("/renewals/instrunctos", "Renewals:instruncto");
 $route->post("/renewals", "Renewals:home");
 
 //dash

@@ -31,38 +31,7 @@ class Students extends Admin
      */
     public function home(?array $data): void
     {
-        //search redirect
-        if (!empty($data["s"])) {
-            $s = str_search($data["s"]);
-            echo json_encode(["redirect" => url("/admin/students/home/{$s}/1")]);
-            return;
-        }
-
-        $search = null;
-
-        if($data["type"] == "black"){
-            $students = (new AppBlackBelt())->find();
-        }else{
-            $students = (new AppKyus())->find();
-        }
-
-        if (!empty($data["search"]) && str_search($data["search"]) != "all") {
-            $search = str_search($data["search"]);
-            if($data["type"] == "black"){
-                $students = (new AppBlackBelt())->find("MATCH(first_name, last_name, email) AGAINST(:s)", "s={$search}");
-            }else{
-                $students = (new AppKyus())->find("MATCH(first_name, last_name) AGAINST(:s)", "s={$search}");
-            }
-            
-            if (!$students->count()) {
-                $this->message->info("Sua pesquisa não retornou resultados")->flash();
-                redirect("/admin/students/home");
-            }
-        }
-
-        $all = ($search ?? "all");
-        $pager = new Pager(url("/admin/students/home/{$all}/"));
-        $pager->pager($students->count(), 12, (!empty($data["page"]) ? $data["page"] : 1));
+        $students = (new AppStudent())->find("type = :t", "t={$data["type"]}")->fetch(true);
 
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Alunos",
@@ -76,9 +45,7 @@ class Students extends Admin
             "app" => "students/{$data["type"]}/home",
             "head" => $head,
             "type" => $data["type"],
-            "search" => $search,
-            "students" => $students->order("first_name, last_name")->limit($pager->limit())->offset($pager->offset())->fetch(true),
-            "paginator" => $pager->render()
+            "students" => $students,
         ]);
     }
 
