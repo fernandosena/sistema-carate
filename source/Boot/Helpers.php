@@ -15,7 +15,7 @@ function is_email(string $email): bool
     return filter_var($email, FILTER_VALIDATE_EMAIL);
 }
 
-function verify_multa_data($data)
+function verify_multa_data($data = "now")
 {
     $data_obj = new DateTime($data);
 
@@ -24,7 +24,7 @@ function verify_multa_data($data)
 
     if (($mes >= 1 && $mes <= 2)) {
         $multa = 0;
-    } elseif (($mes >= 3 && $mes <= 4)) {
+    } elseif (($mes >= 3 && $mes <= 5)) {
         $multa = 0.5;
     } else {
         $multa = 1;
@@ -33,13 +33,28 @@ function verify_multa_data($data)
     return $multa;
 }
 
-function verify_renewal_data($renewal, $last_renewal_data): bool|string
+function count_renewals()
+{
+    $user = (new \Source\Models\User())->find("level != :l AND YEAR(last_renewal_data) < YEAR(CURRENT_DATE())", "l=5")->count();
+    $students = (new \Source\Models\App\AppStudent())->find("YEAR(last_renewal_data) < YEAR(CURRENT_DATE())")->count();
+
+    return [
+        "all" => $user+$students,
+        "user" => $user,
+        "students" => $students,
+    ];
+}
+
+function verify_renewal_data($renewal, $last_renewal_data, $instructor = false): bool|string
 {
     if(!empty($last_renewal_data)){
         $timestamp = strtotime($last_renewal_data);
         $ano = date("Y", $timestamp);
 
         if($ano < date('Y')){
+            if($instructor){
+                $last_renewal_data = null;
+            }
             $multa = verify_multa_data($last_renewal_data);
             if($multa){
                 return true;
@@ -50,14 +65,20 @@ function verify_renewal_data($renewal, $last_renewal_data): bool|string
 
     return False;
 }
-function verify_multa_renewal_data($renewal, $last_renewal_data): bool|string
+function verify_multa_renewal_data($renewal, $last_renewal_data, $instructor = false): bool|string
 {
     if(!empty($last_renewal_data)){
         $timestamp = strtotime($last_renewal_data);
         $ano = date("Y", $timestamp);
 
         if($ano < date('Y')){
+            if($instructor){
+                $last_renewal_data = null;
+            }
             $multa = verify_multa_data($last_renewal_data);
+            if($multa){
+                return true;
+            }
             return $multa;
         }
     }

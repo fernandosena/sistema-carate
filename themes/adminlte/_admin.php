@@ -104,7 +104,7 @@
                                                         ".(!empty($array["submenu"]) ? "
                                                         <i class='right fas fa-angle-left'></i>" : null) ."
                                                     </p>
-                                                    ".((!empty($array["badge"]) && !empty($array["badgeText"])) ? "<span class='badge badge-".$array["badge"]." right'>".$array["badgeText"]."</span>" : null)."
+                                                    ".((!empty($array["badge"]) && !empty($array["badgeText"])) ? "<span class='badge mr-4 badge-".$array["badge"]." right'>".$array["badgeText"]."</span>" : null)."
                                                 </a>";
                                         if(!empty($array["submenu"])){
                                             $nav .= "<ul class='nav nav-treeview'>";
@@ -119,6 +119,7 @@
                                                             <a class='nav-link {$activeS}' href='{$urlS}'>
                                                                 <i class='far {$submenu["icon"]}'></i>
                                                                 <p>{$submenu["title"]}</p>
+                                                                ".((!empty($submenu["badge"]) && !empty($submenu["badgeText"])) ? "<span class='badge badge-".$submenu["badge"]." right'>".$submenu["badgeText"]."</span>" : null)."
                                                             </a>
                                                         </li>";
                                             }
@@ -137,21 +138,30 @@
                                 ],
                             );
                             echo '<li class="nav-header">Lista</li>';
+
+                            $renewals = count_renewals();
+
                             echo $nav(
                                 [
                                     "icon"=>"fa-refresh",
                                     "href"=>"renewals",
                                     "title"=>"Renovações",
+                                    "badge" => "info",
+                                    "badgeText" => $renewals["all"],
                                     "submenu"=> [
                                         [
                                             "icon"=>"fa-refresh",
                                             "href"=>"renewals/students",
                                             "title"=>"Alunos",
+                                            "badge" => "info",
+                                            "badgeText" => $renewals["students"],
                                         ],
                                         [
                                             "icon"=>"fa-refresh",
                                             "href"=>"renewals/instrunctos",
                                             "title"=>"Instrutores",
+                                            "badge" => "info",
+                                            "badgeText" => $renewals["user"],
                                         ]
                                     ],
                                 ],

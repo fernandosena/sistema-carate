@@ -54,7 +54,7 @@
                         <td>
                             <?php
                                 $verify = verify_renewal_data($student->renewal, $student->last_renewal_data);
-                                if($verify){
+                                if($verify && ($student->renewal != "pending")){
                             ?>
                                 <a href="#" class="btn bg-success"
                                 data-post="<?= url("app/alunos") ?>"

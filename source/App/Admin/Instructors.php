@@ -131,6 +131,42 @@ class Instructors extends Admin
             return;
         }
 
+        if (!empty($data["action"]) && $data["action"] == "payment") {
+            $user_id = $data["user_id"];
+            $instruncto_id = $data["instruncto_id"];
+
+            $user = (new User())->findById($user_id);
+            if(!$user){
+                echo json_encode([
+                    "message" => $this->message->warning("Usuario informado não existe")->render()
+                ]);
+                return;
+            }
+
+            $instruncto = (new User())->findById($instruncto_id);
+            if(!$instruncto){
+                echo json_encode([
+                    "message" => $this->message->warning("Instrutor informado não existe")->render()
+                ]);
+                return;
+            }
+
+            $instruncto->renewal = 'approved';
+            $instruncto->last_renewal_data = date("Y-m-d");
+
+            if(!$instruncto->save()){
+                echo json_encode([
+                    "message" => $this->message->error("Erro ao atualizar usuario")->render()
+                ]);
+                return;
+            }
+
+            echo json_encode([
+                "renewal" => true
+            ]);
+            return;
+        }
+
         //update
         if (!empty($data["action"]) && $data["action"] == "update") {
             $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);

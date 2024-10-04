@@ -105,6 +105,13 @@ class Auth extends Model
             return null;
         }
 
+        if ($user->level != 5) {
+            if (verify_renewal_data($user->renewal, $user->last_renewal_data)) {
+                $this->message->error("Usuário pendente para regularização, favor contante o administrador do sistema");
+                return null;
+            }
+        }
+
         if (passwd_rehash($user->password)) {
             $user->password = $password;
             $user->save();

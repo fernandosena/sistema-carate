@@ -21,32 +21,54 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach ($students as $student): ?>
-                                        <?php
-                                            $renewal_data = verify_renewal_data($student->renewal, $student->last_renewal_data);
-                                            if($renewal_data):
-                                        ?>
                                         <tr>
                                             <td><a href="<?= url("admin/students/$student->type/student/{$student->id}") ?>"><?= $student->fullName(); ?></a></td>
+
                                             <?php if(!empty($student->user_id)): ?>
-                                            <td><a href="<?= url("admin/instructors/instructor/{$student->user_id}") ?>"><?= $student->teacher()->fullName() ?></a></td>
+                                                <td><a href="<?= url("admin/instructors/instructor/{$student->user_id}") ?>"><?= $student->teacher()->fullName() ?></a></td>
                                             <?php else: ?>
                                                 <td>----------</td>
                                             <?php endif; ?>
+
                                             <td><?= $student->document ?> </td>
-                                                <?php if($student->renewal == "pending"): ?>
-                                                    <a href="#" class="btn bg-success"
-                                                    data-postbtn="<?= url("admin/students/$student->type/student") ?>"
-                                                    data-action="payment"
-                                                    data-user_id="<?= user()->id; ?>"
-                                                    data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Aprovar</a>
-                                                <?php elseif($student->renewal == "approved"):  ?>
-                                                    <strong class="badge bg-success">Pagamento realizado</strong>
+
+                                            <td>
+                                                <?php 
+                                                    $renewal_data = verify_renewal_data($student->renewal, $student->last_renewal_data);
+                                                    if($renewal_data):
+                                                        if(!empty($student->user_id)):
+                                                ?>
+                                                        <?php if($student->renewal == "pending"): ?>
+                                                            <a href="#" class="btn bg-success"
+                                                            data-postbtn="<?= url("admin/instructors/instructor") ?>"
+                                                            data-action="payment"
+                                                            data-user_id="<?= user()->id; ?>"
+                                                            data-instruncto_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Aprovar</a>
+                                                        <?php elseif($student->renewal == "approved"):  ?>
+                                                            <strong class="badge bg-success">Pagamento realizado</strong>
+                                                        <?php else: ?>
+                                                            <strong class="badge bg-warning">Aguardando envio</strong>
+                                                        <?php endif; ?>
+                                                    <?php else: ?>
+                                                        <a href="#" class="btn bg-success"
+                                                        data-postbtn="<?= url("admin/instructors/instructor") ?>"
+                                                        data-action="payment"
+                                                        data-user_id="<?= user()->id; ?>"
+                                                        data-instruncto_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Aprovar</a>
+                                                    <?php endif; ?>
                                                 <?php else: ?>
-                                                    <strong class="badge bg-warning">Aguardando envio</strong>
+                                                    Atualizado
                                                 <?php endif; ?>
-                                                <th>
-                                                    <?php 
-                                                        $multa = verify_multa_renewal_data($student->renewal, $student->last_renewal_data);
+                                            </td>
+                                            <td>
+                                                <?php 
+                                                    if($renewal_data){
+                                                        $instructor = false;
+                                                        if(empty($student->user_id)){
+                                                            $instructor = true;
+                                                        }
+                                                        
+                                                        $multa = verify_multa_renewal_data($student->renewal, $student->last_renewal_data, $instructor);
                                                         if(!empty($multa)){
                                                             ?>
                                                                 <strong class="badge bg-danger">
@@ -61,10 +83,13 @@
                                                                 <strong class="badge bg-success">Sem multa</strong>
                                                             <?php
                                                         }
-                                                    ?>
-                                                </th>
+                                                            
+                                                    }else{
+                                                        echo "Atualizado";
+                                                    }
+                                                ?>
+                                            </td>
                                         </tr>
-                                        <?php endif; ?>
                                     <?php endforeach; ?>
                                 </tbody>
                                 <tfoot>
