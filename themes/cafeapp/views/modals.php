@@ -47,6 +47,7 @@
                 <span class="field icon-life-ring">O que precisa?</span>
                 <select name="subject" required>
                     <option value="Pedido de suporte">&ofcir; Preciso de suporte</option>
+                    <option value="Tranferir aluno">&ofcir; Trânferir aluno</option>
                     <option value="Nova sugestão">&ofcir; Enviar uma sugestão</option>
                     <option value="Nova reclamação">&ofcir; Enviar uma reclamação</option>
                     <option value="Outro">&ofcir; Outro</option>
