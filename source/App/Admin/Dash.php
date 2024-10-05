@@ -72,7 +72,7 @@ class Dash extends Admin
             false
         );
 
-        $info = (new HistoricBelt())->find("instructor_id IS NOT NULL AND graduation_data IS NOT NULL AND DATEDIFF(graduation_data, CURDATE()) BETWEEN 180 AND 182;")->limit(1)->order("graduation_data DESC")->fetch(true);
+        $info = (new HistoricBelt())->find("instructor_id IS NOT NULL AND graduation_data IS NOT NULL AND DATEDIFF(graduation_data, CURDATE()) BETWEEN 0 AND 185;")->limit(1)->order("graduation_data DESC")->fetch(true);
 
         echo $this->view->render("widgets/dash/home", [
             "app" => "dash",
