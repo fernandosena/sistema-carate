@@ -24,7 +24,7 @@
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label>*Professor</label>
-                        <select class="form-control" name="teacher">
+                        <select data-dojo="<?= url("/admin/dojo") ?>" class="form-control" name="teacher">
                             <option value="" select>=== Selecione um professor ===</option>
                             <?php 
                                 foreach($form["teachers"] as $teacher):    
@@ -237,7 +237,7 @@
                                 return ($dojo == $value ? "selected" : "");
                             };
                         ?>
-                        <select class="form-control" required name="dojo">
+                        <select id="dojo" class="form-control" required name="dojo">
                             <?php foreach($form["dojo"] as $dojo): ?>
                                 <option <?= $select($dojo->id); ?> value="<?= $graduation->id ?>"><?= $graduation->title ?> - <?= $graduation->description ?></option>
                             <?php endforeach;   ?>

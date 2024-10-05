@@ -4,6 +4,7 @@ namespace Source\App\Admin;
 
 use Source\Core\Controller;
 use Source\Models\Auth;
+use Source\Models\User;
 
 /**
  * Class Admin
@@ -29,5 +30,22 @@ class Admin extends Controller
             $this->message->error("Para acessar é preciso logar-se")->flash();
             redirect("/admin/login");
         }
+    }
+
+    public function getdojo(?array $data): void
+    {
+        $dados = [];
+        if(!empty($data["valor"])){
+            $dojo = (new User())->findById($data["valor"]);
+            if(!empty($dojo)){
+                $d = explode(",", $dojo->dojo);
+                foreach ($d as $k => $v){
+                    $dados[] = [
+                        'id' => $v, 'nome' => $v
+                    ];
+                }
+            }
+        }
+        echo json_encode($dados);
     }
 }

@@ -232,7 +232,38 @@ $(function () {
               load.fadeOut();
           }
       });
-  });
+    });
+
+    $("[data-dojo]").change(function (e) {
+      e.preventDefault();
+
+      var clicked = $(this);
+      var data = clicked.data();
+      var load = $(".ajax_load");
+
+      $.ajax({
+          url: data.dojo,
+          type: "POST",
+          data: { valor: $(this).val() },
+          dataType: "json",
+          beforeSend: function () {
+              load.fadeIn(200).css("display", "flex");
+          },
+          success: function (data) {
+            $('#dojo').empty();
+            $.each(data, function(index, item) {
+              $('#dojo').append($('<option>', {
+                value: item.id,
+                text: item.nome
+              }));
+            });
+            load.fadeOut();
+          },
+          error: function () {
+              load.fadeOut();
+          }
+      });
+    });
 
     $("#example1").DataTable({
       "responsive": true,
