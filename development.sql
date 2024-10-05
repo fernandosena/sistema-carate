@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql:3306
--- Tempo de geração: 02/10/2024 às 14:29
+-- Tempo de geração: 05/10/2024 às 13:39
 -- Versão do servidor: 5.7.44
 -- Versão do PHP: 8.2.24
 
@@ -20,20 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `development`
 --
-
--- --------------------------------------------------------
-
---
--- Estrutura para tabela `aap_certificate`
---
-
-CREATE TABLE `aap_certificate` (
-  `id` int(11) NOT NULL,
-  `type` varchar(50) NOT NULL,
-  `html` text NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -66,6 +52,20 @@ CREATE TABLE `app_categories` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `app_certificate`
+--
+
+CREATE TABLE `app_certificate` (
+  `id` int(11) NOT NULL,
+  `type` varchar(50) NOT NULL,
+  `html` text NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -175,20 +175,12 @@ CREATE TABLE `app_students` (
   `graduation` int(11) NOT NULL,
   `description` text COLLATE utf8mb4_unicode_ci,
   `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_renewal_data` date DEFAULT NULL,
+  `renewal` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `renewal_data` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_renewal_data` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Despejando dados para a tabela `app_students`
---
-
-INSERT INTO `app_students` (`id`, `user_id`, `dojo`, `first_name`, `last_name`, `email`, `datebirth`, `mother_name`, `document`, `photo`, `status`, `zip`, `state`, `city`, `address`, `neighborhood`, `number`, `complement`, `phone`, `graduation`, `description`, `type`, `last_renewal_data`, `created_at`, `updated_at`) VALUES
-(1, 2, 'teste1', 'Fernano', 'Sena', 'fernandosenna2020@gmail.com', '1999-02-25', NULL, '99999999999', NULL, 'pending', '05207130', 'SP', 'São Paulo', 'Rua Magalhães Lemos', 'Vila Caiúba', '111', '', '(11) 1 1111-1111', 24, '', 'black', NULL, '2024-10-01 12:46:01', NULL),
-(2, 2, 'teste1', 'FERNANDO', 'DE SENA', '', '1999-02-25', NULL, '99999999998', NULL, 'pending', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 14, '', 'kyus', NULL, '2024-10-01 12:49:38', NULL),
-(3, 2, 'teste1', 'Usuario2', 'teseste', 'fernandocarvalho.sena2@gmail.com', '1999-02-25', NULL, '88888888888', NULL, 'pending', '05207130', 'SP', 'São Paulo', 'Rua Magalhães Lemos', 'Vila Caiúba', '199', '', '(11) 1 1111-1111', 24, '', 'black', NULL, '2024-10-01 17:06:49', NULL),
-(4, 2, 'teste1', 'Mario', 'usuario', 'fernandocarvalho.sena3@gmail.com', '1999-02-25', NULL, '77777777777', NULL, 'pending', '05207130', 'SP', 'São Paulo', 'Rua Magalhães Lemos', 'Vila Caiúba', '111111', '', '(11) 1 1111-1111', 24, '', 'black', NULL, '2024-10-01 17:07:40', NULL);
 
 -- --------------------------------------------------------
 
@@ -226,13 +218,6 @@ CREATE TABLE `app_wallets` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Despejando dados para a tabela `app_wallets`
---
-
-INSERT INTO `app_wallets` (`id`, `user_id`, `wallet`, `free`, `created_at`, `updated_at`) VALUES
-(1, 2, 'Minha Carteira', 1, '2024-10-01 11:47:55', '2024-10-01 11:47:55');
-
 -- --------------------------------------------------------
 
 --
@@ -267,14 +252,6 @@ INSERT INTO `belts` (`id`, `title`, `description`, `age_range`, `created_at`, `u
 (12, '3 kyu', '(marrom)', 2, '2024-09-07 01:19:41', '2024-09-07 19:09:19'),
 (13, '2 kyu', '(marrom + 1 listra)', 2, '2024-09-07 01:20:01', '2024-09-07 19:09:24'),
 (14, '1 kyu', '(marrom + 2 listras)', 2, '2024-09-07 01:20:17', '2024-09-07 19:09:29'),
-(15, '9 kyu', '(branco)', 1, '2024-09-07 01:21:00', '2024-09-07 19:09:34'),
-(16, '8 kyu', '(amarelo)', 1, '2024-09-07 01:21:10', '2024-09-07 19:09:38'),
-(17, '7 kyu', '(laranja)', 1, '2024-09-07 01:21:22', '2024-09-07 19:09:44'),
-(18, '6 kyu', '(verde)', 1, '2024-09-07 01:21:33', '2024-09-07 19:09:47'),
-(19, '5 kyu', '(azul)', 1, '2024-09-07 01:21:43', '2024-09-07 19:09:50'),
-(20, '4 kyu', '(vermelho)', 1, '2024-09-07 01:21:53', '2024-09-07 19:09:57'),
-(21, '3 kyu', '(marrom)', 1, '2024-09-07 01:22:01', '2024-09-07 19:10:02'),
-(22, '2 kyu', '(marrom + 1 listra)', 1, '2024-09-07 01:22:12', '2024-09-07 19:10:05'),
 (23, '1 kyu', '(marrom + 2 listras)', 1, '2024-09-07 01:22:28', '2024-09-07 19:10:08'),
 (24, '1 dan', '2 anos', 1, '2024-09-07 01:22:40', '2024-09-07 19:10:35'),
 (25, '2 dan', '3 anos', 1, '2024-09-07 01:22:49', '2024-09-07 19:10:40'),
@@ -347,16 +324,6 @@ CREATE TABLE `historic_belts` (
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Despejando dados para a tabela `historic_belts`
---
-
-INSERT INTO `historic_belts` (`id`, `black_belt_id`, `kyus_id`, `graduation_id`, `description`, `status`, `created_at`, `updated_at`) VALUES
-(1, 1, NULL, 24, 'Definido ao cadastrar aluno - (Cadastrado por: fernandocarvalho.sena@gmail.com)', 'pending', '2024-10-01 12:46:01', NULL),
-(2, NULL, 2, 14, 'Definido ao cadastrar aluno - (Cadastrado por: fernandocarvalho.sena@gmail.com)', 'pending', '2024-10-01 12:49:38', NULL),
-(3, 3, NULL, 24, 'Definido ao cadastrar aluno - (Cadastrado por: fernandocarvalho.sena@gmail.com)', 'pending', '2024-10-01 17:06:49', NULL),
-(4, 4, NULL, 24, 'Definido ao cadastrar aluno - (Cadastrado por: fernandocarvalho.sena@gmail.com)', 'pending', '2024-10-01 17:07:40', NULL);
 
 -- --------------------------------------------------------
 
@@ -432,15 +399,6 @@ CREATE TABLE `report_access` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Despejando dados para a tabela `report_access`
---
-
-INSERT INTO `report_access` (`id`, `users`, `views`, `pages`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, '2024-09-09 17:35:17', '2024-09-09 17:35:17'),
-(2, 1, 1, 2, '2024-09-14 14:15:27', '2024-09-14 14:15:28'),
-(3, 3, 6, 177, '2024-10-01 10:46:02', '2024-10-01 17:10:28');
-
 -- --------------------------------------------------------
 
 --
@@ -485,7 +443,9 @@ CREATE TABLE `users` (
   `phone` varchar(255) NOT NULL,
   `graduation` int(11) NOT NULL,
   `dojo` varchar(255) NOT NULL,
-  `last_renewal_data` date DEFAULT NULL,
+  `renewal` varchar(255) DEFAULT NULL,
+  `renewal_data` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_renewal_data` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `account_status` varchar(255) NOT NULL DEFAULT 'registered' COMMENT 'registered, confirmed',
   `status` varchar(255) NOT NULL DEFAULT 'activated' COMMENT 'activated, deactivated, pending',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -496,19 +456,12 @@ CREATE TABLE `users` (
 -- Despejando dados para a tabela `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `level`, `forget`, `datebirth`, `document`, `photo`, `zip`, `state`, `city`, `address`, `neighborhood`, `number`, `complement`, `phone`, `graduation`, `dojo`, `last_renewal_data`, `account_status`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Administrador', 'Sistema', 'admin@sistema.com.br', '$2y$10$0EV3OMItJWnOZsgVnyRTY.TOI0dBv89coCjrmbBTJIe8YBcofs.yW', 5, NULL, '1999-06-09', '1111111', NULL, '00000', '000000', '000000', '00000', '00000', '00000', NULL, '000000', 1, 'teste', NULL, 'registered', 'confirmed', '2024-09-08 02:45:25', NULL),
-(2, 'Fernando', 'Sena', 'fernandocarvalho.sena@gmail.com', '$2y$10$KFkTkbDuR/1l7UVpENdSS.gwgKVL2VDLw4SohMkAeN6.E7PtbwxVG', 1, NULL, '1999-02-05', '12687939498', NULL, '05207130', 'SP', 'São Paulo', 'Rua Magalhães Lemos', 'Vila Caiúba', '111', '', '(11) 9 4363-2003', 24, 'teste1,teste2', NULL, 'registered', 'activated', '2024-10-01 11:08:54', '2024-10-01 12:38:36');
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `level`, `forget`, `datebirth`, `document`, `photo`, `zip`, `state`, `city`, `address`, `neighborhood`, `number`, `complement`, `phone`, `graduation`, `dojo`, `renewal`, `renewal_data`, `last_renewal_data`, `account_status`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Admin', 'Sistema', 'admin@sistema.com.br', '$2y$10$Q1x9MpYo/Ug6TH4DwD.Tcur4pzfnpGpBIU.7AT5zouZ4dO/jFqqXm', 5, NULL, '2024-10-05', '11111111111', NULL, '000000', '000000', '000000', '000000', '000000', '000000', NULL, '000000', 1, '000000', NULL, '2024-10-05 13:39:46', '2024-10-05 13:39:46', 'confirmed', 'activated', '2024-10-05 13:39:46', NULL);
 
 --
 -- Índices para tabelas despejadas
 --
-
---
--- Índices de tabela `aap_certificate`
---
-ALTER TABLE `aap_certificate`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Índices de tabela `address`
@@ -523,6 +476,12 @@ ALTER TABLE `address`
 ALTER TABLE `app_categories`
   ADD PRIMARY KEY (`id`),
   ADD KEY `sub_of` (`sub_of`);
+
+--
+-- Índices de tabela `app_certificate`
+--
+ALTER TABLE `app_certificate`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Índices de tabela `app_credit_cards`
@@ -657,12 +616,6 @@ ALTER TABLE `users` ADD FULLTEXT KEY `full_text` (`first_name`,`last_name`,`emai
 --
 
 --
--- AUTO_INCREMENT de tabela `aap_certificate`
---
-ALTER TABLE `aap_certificate`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de tabela `address`
 --
 ALTER TABLE `address`
@@ -673,6 +626,12 @@ ALTER TABLE `address`
 --
 ALTER TABLE `app_categories`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `app_certificate`
+--
+ALTER TABLE `app_certificate`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `app_credit_cards`
@@ -702,7 +661,7 @@ ALTER TABLE `app_plans`
 -- AUTO_INCREMENT de tabela `app_students`
 --
 ALTER TABLE `app_students`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `app_subscriptions`
@@ -714,7 +673,7 @@ ALTER TABLE `app_subscriptions`
 -- AUTO_INCREMENT de tabela `app_wallets`
 --
 ALTER TABLE `app_wallets`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `belts`
@@ -744,7 +703,7 @@ ALTER TABLE `faq_questions`
 -- AUTO_INCREMENT de tabela `historic_belts`
 --
 ALTER TABLE `historic_belts`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `mail_queue`
@@ -768,7 +727,7 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT de tabela `report_access`
 --
 ALTER TABLE `report_access`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `report_online`
@@ -780,7 +739,7 @@ ALTER TABLE `report_online`
 -- AUTO_INCREMENT de tabela `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restrições para tabelas despejadas
