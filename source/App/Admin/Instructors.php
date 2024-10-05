@@ -151,7 +151,7 @@ class Instructors extends Admin
                 return;
             }
 
-            $instruncto->renewal = 'approved';
+            $instruncto->renewal = null;
             $instruncto->last_renewal_data = date("Y-m-d");
 
             if(!$instruncto->save()){

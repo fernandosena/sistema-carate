@@ -64,7 +64,7 @@ class App extends Controller
 
         if(verify_renew($this->user->last_renewal_data)){
             $this->message->error("Usuário pendente para regularização, realize o pagamento")->flash();
-            if(!str_contains($_SERVER["REQUEST_URI"], "regularization")){
+            if(!str_contains($_SERVER["REQUEST_URI"], "regularization") && !str_contains($_SERVER["REQUEST_URI"], "sair")){
                 redirect("app/regularization");
             }
         }

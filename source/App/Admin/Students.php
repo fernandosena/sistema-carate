@@ -192,7 +192,7 @@ class Students extends Admin
                 return;
             }
 
-            $student->renewal = 'approved';
+            $student->renewal = null;
             $student->last_renewal_data = date("Y-m-d");
 
             if(!$student->save()){
