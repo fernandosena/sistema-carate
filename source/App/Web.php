@@ -291,13 +291,14 @@ class Web extends Controller
                 redirect("/certificado");
             }
 
-            $date = "01 de Fevereiro de ".date('Y', strtotime('+1 year'));
+            $proximoano = date('Y', strtotime('+1 year'));
+            $date = "01 de Fevereiro de $proximoano";
             if(!empty($user->type)){
                 if($user->type == "black"){
                     $model = "certificado_faixa_preta.jpg";
                 }else{
                     $model = "certificado_kyu.jpg";
-                    $date = "MEMBRO ATIVO 2025";
+                    $date = "MEMBRO ATIVO $proximoano";
                 }
             }else{
                 $model = "certificado_instrutor.jpg";

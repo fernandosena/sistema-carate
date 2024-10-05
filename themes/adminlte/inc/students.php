@@ -24,12 +24,18 @@
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label>*Professor</label>
+                        <?php
+                            $instruct = $form["data"]->user_id;
+                            $instructSelect = function ($value) use ($instruct) {
+                                return ($instruct == $value ? "selected" : "");
+                            };
+                        ?>
                         <select data-dojo="<?= url("/admin/dojo") ?>" class="form-control" name="teacher">
                             <option value="" select>=== Selecione um professor ===</option>
                             <?php 
                                 foreach($form["teachers"] as $teacher):    
                             ?>
-                            <option value="<?= $teacher->id ?>"><?= $teacher->FullName() ?></option>
+                            <option <?= $instructSelect($teacher->id) ?> value="<?= $teacher->id ?>"><?= $teacher->FullName() ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -233,13 +239,14 @@
                         <label>*Dojo</label>
                         <?php
                             $dojo = $form["data"]->dojo;
-                            $select = function ($value) use ($dojo) {
+                            $edojo = explode(",", $dojo);
+                            $selectDojo = function ($value) use ($dojo) {
                                 return ($dojo == $value ? "selected" : "");
                             };
                         ?>
                         <select id="dojo" class="form-control" required name="dojo">
-                            <?php foreach($form["dojo"] as $dojo): ?>
-                                <option <?= $select($dojo->id); ?> value="<?= $graduation->id ?>"><?= $graduation->title ?> - <?= $graduation->description ?></option>
+                            <?php foreach($edojo as $dj): ?>
+                                <option <?= $selectDojo($dj); ?> value="<?= $dj ?>"><?= $dj ?></option>
                             <?php endforeach;   ?>
                         </select>
                     </div>
