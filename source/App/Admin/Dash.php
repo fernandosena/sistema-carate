@@ -12,6 +12,7 @@ use Source\Models\Report\Online;
 use Source\Models\User;
 use Source\Models\Belt;
 use Source\Models\App\AppBlackBelt;
+use Source\Models\HistoricBelt;
 
 /**
  * Class Dash
@@ -71,9 +72,12 @@ class Dash extends Admin
             false
         );
 
+        $info = (new HistoricBelt())->find("instructor_id IS NOT NULL AND graduation_data IS NOT NULL AND DATEDIFF(graduation_data, CURDATE()) BETWEEN 180 AND 182;")->limit(1)->order("graduation_data DESC")->fetch(true);
+
         echo $this->view->render("widgets/dash/home", [
             "app" => "dash",
             "head" => $head,
+            "info" => $info,
             "quantity" => [
                 "teachers" => (new User())->find("level < 5")->count(),
                 "black" => (new AppBlackBelt())->find()->count(),

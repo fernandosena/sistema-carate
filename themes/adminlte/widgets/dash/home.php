@@ -57,9 +57,8 @@
         </div>
     </div>
 </div>
-    <!-- ./col -->
-<!-- <div class="row">
-    <div class="div col-md-6">
+<div class="row">
+    <div class="div col-md-12">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
@@ -68,11 +67,37 @@
             </div>
 
             <div class="card-body">
-                <div class="alert alert-info alert-dismissible">
-                    <h5><i class="icon fas fa-info"></i> Alerta!</h5>
-                    Nenhum aviso encontrado
-                </div>
+                <?php if(!empty($info)): ?>
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Data da graduação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($info as $user):
+                            ?>
+                            <tr>
+                                <td><a href="<?= url("/admin/instructors/instructor/{$user->user()->id}"); ?>"><?= $user->user()->fullName(); ?></a></td>
+                                <td><?= date_fmt($user->graduation_data, "d/m/Y"); ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Data da graduação</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                <?php else: ?>
+                    <div class="alert alert-info alert-dismissible">
+                        <h5><i class="icon fas fa-info"></i> Alerta!</h5>
+                        Nenhum aviso encontrado
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
-</div> -->
+</div>

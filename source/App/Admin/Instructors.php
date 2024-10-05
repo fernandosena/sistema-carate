@@ -9,6 +9,7 @@ use Source\Support\Pager;
 use Source\Support\Thumb;
 use Source\Support\Upload;
 use Source\Models\App\AppBlackBelt;
+use Source\Models\HistoricBelt;
 
 /**
  * Class Instructors
@@ -123,6 +124,19 @@ class Instructors extends Admin
                 echo json_encode($json);
                 return;
             }
+
+            $hbelt = (new HistoricBelt());
+            $hbelt->instructor_id = $userCreate->id;
+
+            $graduation = graduation_data($data["graduation"]);
+            
+            if($graduation){
+                $hbelt->graduation_data = $graduation;
+            }
+
+            $hbelt->graduation_id = $data["graduation"];
+            $hbelt->description = "Definido ao cadastrar instrutor";
+            $hbelt->save();
 
             $this->message->success("Instrutor cadastrado com sucesso...")->flash();
             $json["redirect"] = url("/admin/instructors/instructor/{$userCreate->id}");

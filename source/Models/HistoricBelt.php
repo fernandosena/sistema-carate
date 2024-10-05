@@ -5,6 +5,7 @@ namespace Source\Models;
 use Source\Core\Model;
 use Source\Models\App\AppBlackBelt;
 use Source\Models\Belt;
+use Source\Models\User;
 
 /**
  * Class HistoricBelt
@@ -35,6 +36,14 @@ class HistoricBelt extends Model
         $this->graduation_id = $belt->id;
         $this->description = $description;
         return $this;
+    }
+
+    /**
+     * @return null|User
+     */
+    public function user(): ?User
+    {
+        return (new User())->find("id = :id", "id={$this->instructor_id}")->fetch();
     }
 
     /**

@@ -100,6 +100,13 @@ function verify_renew($data){
     return false;
 }
 
+function graduation_data($id){
+    $belt = (new \Source\Models\Belt())->findById($id);
+    if(!empty($belt->years)){
+        return date('Y-m-d', strtotime("+{$belt->years} year"));
+    }
+    return false;
+}
 
 function verify_multa_renewal_data($renewal, $last_renewal_data, $instructor = false): bool|string
 {
