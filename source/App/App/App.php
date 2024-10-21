@@ -41,10 +41,6 @@ class App extends Controller
             $this->message->warning("Efetue login para acessar o APP.")->flash();
             redirect("/entrar");
         }
-
-        if($this->user->level == 5){
-            redirect("/admin");
-        }
         
         (new Access())->report();
         (new Online())->report();
