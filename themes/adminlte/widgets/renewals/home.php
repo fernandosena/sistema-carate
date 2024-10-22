@@ -45,13 +45,13 @@
                                                             <a href="#" class="btn bg-success"
                                                             data-postbtn="<?= url("admin/students/$student->type/student") ?>"
                                                             data-action="payment"
-                                                            data-user_id="<?= user()->id; ?>"
+                                                            data-user_id="<?= user(5)->id; ?>"
                                                             data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Aprovar</a>
                                                         <?php else: ?>
                                                             <a href="#" class="btn bg-success"
                                                             data-postbtn="<?= url("admin/instructors/instructor") ?>"
                                                             data-action="payment"
-                                                            data-user_id="<?= user()->id; ?>"
+                                                            data-user_id="<?= user(5)->id; ?>"
                                                             data-instruncto_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Aprovar</a>
                                                         <?php endif; ?>
                                                     <?php endif; ?>

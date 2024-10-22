@@ -79,7 +79,7 @@
                             <?php foreach ($info as $user):
                             ?>
                             <tr>
-                                <td><a href="<?= url("/admin/instructors/instructor/{$user->user()->id}"); ?>"><?= $user->user()->fullName(); ?></a></td>
+                                <td><a href="<?= url("/admin/instructors/instructor/{$user->user(5)->id}"); ?>"><?= $user->user(5)->fullName(); ?></a></td>
                                 <td><?= date_fmt($user->graduation_data, "d/m/Y"); ?></td>
                             </tr>
                             <?php endforeach; ?>

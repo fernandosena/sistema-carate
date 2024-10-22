@@ -384,7 +384,7 @@ $(function () {
         
         if(idade < 18){
             $(".mother-name").show();
-            $(".document").attr('placeholder', 'CPF da mãe');
+            $(".document").attr('placeholder', 'CPF do responsável');
         }else{
             $(".mother-name").val('');
             $(".mother-name").hide();

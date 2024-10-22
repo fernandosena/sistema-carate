@@ -24,7 +24,7 @@ class Login extends Controller
      */
     public function root(): void
     {
-        $user = Auth::user();
+        $user = Auth::user(5);
 
         if ($user && $user->level >= 5) {
             redirect("/admin/dash");
@@ -38,7 +38,7 @@ class Login extends Controller
      */
     public function login(?array $data): void
     {
-        $user = Auth::user();
+        $user = Auth::user(5);
 
         if ($user && $user->level >= 5) {
             redirect("/admin/dash");

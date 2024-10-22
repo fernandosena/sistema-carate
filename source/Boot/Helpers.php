@@ -330,9 +330,9 @@ function redirect(string $url): void
 /**
  * @return \Source\Models\User|null
  */
-function user(): ?\Source\Models\User
+function user($level = 1): ?\Source\Models\User
 {
-    return \Source\Models\Auth::user();
+    return \Source\Models\Auth::user($level);
 }
 /**
  * @return \Source\Core\Session

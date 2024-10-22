@@ -32,12 +32,88 @@
             </label>
             <div class="label_group">
                 <label class="mother-name" style="display: none">
-                    <span class="field icon-briefcase">Nome da Mãe:</span>
-                    <input class="radius" placeholder="Nome da Mãe" type="text" name="mother_name" value="<?= ($student->mother_name) ?? null ?>"/>
+                    <span class="field icon-briefcase">Nome do responsável:</span>
+                    <input class="radius" placeholder="Nome do responsável" type="text" name="mother_name" value="<?= ($student->mother_name) ?? null ?>"/>
                 </label>
                 <label>
                     <span class="field icon-briefcase">CPF:</span>
                     <input class="radius mask-doc document" placeholder="CPF do usuário" type="text" name="document" value="<?= ($student->document) ?? null ?>" required/>
+                </label>
+            </div>
+            <div class="label_group">
+                <label>
+                    <span class="field icon-map-marker">CEP:</span>
+                    <input class="radius" id="cep" name="zip" value="<?= $student->zip; ?>" placeholder="CEP" required maxlength="8" minlength="8"/>
+                </label>
+                <label>
+                    <span class="field icon-map-marker">Estado:</span>
+                    <?php
+                        $state = $student->state;
+                        $select = function ($value) use ($state) {
+                            return ($state == $value ? "selected" : "");
+                        };
+                    ?>
+                    <select class="radius" <?= (!empty($student)) ? null : "disabled" ?> name="state" id="state" required data-input>
+                        <option selected>Estado</option>
+                        <option <?= $select("AC")?> value="AC">Acre</option>
+                        <option <?= $select("AL")?> value="AL">Alagoas</option>
+                        <option <?= $select("AP")?> value="AP">Amapá</option>
+                        <option <?= $select("AM")?> value="AM">Amazonas</option>
+                        <option <?= $select("BA")?> value="BA">Bahia</option>
+                        <option <?= $select("CE")?> value="CE">Ceará</option>
+                        <option <?= $select("DF")?> value="DF">Distrito Federal</option>
+                        <option <?= $select("ES")?> value="ES">Espírito Santo</option>
+                        <option <?= $select("GO")?> value="GO">Goiás</option>
+                        <option <?= $select("MA")?> value="MA">Maranhão</option>
+                        <option <?= $select("MT")?> value="MT">Mato Grosso</option>
+                        <option <?= $select("MS")?> value="MS">Mato Grosso do Sul</option>
+                        <option <?= $select("MG")?> value="MG">Minas Gerais</option>
+                        <option <?= $select("PA")?> value="PA">Pará</option>
+                        <option <?= $select("PB")?> value="PB">Paraíba</option>
+                        <option <?= $select("PR")?> value="PR">Paraná</option>
+                        <option <?= $select("PE")?> value="PE">Pernambuco</option>
+                        <option <?= $select("PI")?> value="PI">Piauí</option>
+                        <option <?= $select("RJ")?> value="RJ">Rio de Janeiro</option>
+                        <option <?= $select("RN")?> value="RN">Rio Grande do Norte</option>
+                        <option <?= $select("RS")?> value="RS">Rio Grande do Sul</option>
+                        <option <?= $select("RO")?> value="RO">Rondônia</option>
+                        <option <?= $select("RR")?> value="RR">Roraima</option>
+                        <option <?= $select("SC")?> value="SC">Santa Catarina</option>
+                        <option <?= $select("SP")?> value="SP">São Paulo</option>
+                        <option <?= $select("SE")?> value="SE">Sergipe</option>
+                        <option <?= $select("TO")?> value="TO">Tocantins</option>
+                    </select>
+                </label>
+            </div>
+            <div class="label_group">
+                <label>
+                    <span class="field icon-map-marker">Cidade:</span>
+                    <input id="city" type="text"
+                    name="city" class="radius"  <?= (!empty($student)) ? null : "disabled" ?> value="<?= $student->city ?>" placeholder="Cidade" required data-input>
+                </label>
+                <label>
+                    <span class="field icon-map-marker">Endereço:</span>
+                    <input id="address" type="text" name="address" class="radius" value="<?= $student->address ?>" placeholder="Endereço"  <?= (!empty($student)) ? null : "disabled" ?> required data-input>
+                </label>
+            </div>
+            <div class="label_group">
+                <label>
+                    <span class="field icon-map-marker">Bairro:</span>
+                    <input type="text" name="neighborhood" value="<?= $student->neighborhood ?>" id="neighborhood" class="radius"  <?= (!empty($student)) ? null : "disabled" ?> placeholder="Complemento" required data-input>
+                </label>
+                <label>
+                    <span class="field icon-map-marker">Número:</span>
+                    <input type="text" name="number" value="<?= $student->number ?>" class="radius" placeholder="Nº" <?= (!empty($student)) ? null : "disabled" ?> required data-input>
+                </label>
+            </div>
+            <div class="label_group">
+                <label>
+                    <span class="field icon-map-marker">Complemento:</span>
+                    <input type="text" name="complement"  <?= (!empty($student)) ? null : "disabled" ?> value="<?= $student->complement ?>" class="radius" placeholder="Complemento" data-input>
+                </label>
+                <label>
+                    <span class="field icon-phone">Celular:</span>
+                    <input type="text" name="phone" value="<?= $student->phone ?>"  class="radius mask-phone" placeholder="Ex: (99) 9 9999-9999" required>
                 </label>
             </div>
             <?php if (empty($student)): ?>

@@ -24,23 +24,35 @@ class Auth extends Model
     /**
      * @return null|User
      */
-    public static function user(): ?User
+    public static function user($level = 1): ?User
     {
         $session = new Session();
-        if (!$session->has("authUser")) {
-            return null;
-        }
+        if($level != 5){
+            if (!$session->has("authUserApp")) {
+                return null;
+            }
+    
+            return (new User())->findById($session->authUserApp);
+        }else{
+            if (!$session->has("authUserAdm")) {
+                return null;
+            }
 
-        return (new User())->findById($session->authUser);
+            return (new User())->findById($session->authUserAdm);
+        }
     }
 
     /**
      * log-out
      */
-    public static function logout(): void
+    public static function logout($level = 1): void
     {
         $session = new Session();
-        $session->unset("authUser");
+        if($level != 5){
+            $session->unset("authUserApp");
+        }else{
+            $session->unset("authUserAdm");
+        }
     }
 
     /**
@@ -134,7 +146,11 @@ class Auth extends Model
         }
 
         //LOGIN
-        (new Session())->set("authUser", $user->id);
+        if($level != 5){
+            (new Session())->set("authUserApp", $user->id);
+        }else{
+            (new Session())->set("authUserAdm", $user->id);
+        }
         return true;
     }
 

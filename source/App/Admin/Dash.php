@@ -110,7 +110,7 @@ class Dash extends Admin
     {
         $this->message->success("Você saiu com sucesso {$this->user->first_name}.")->flash();
 
-        Auth::logout();
+        Auth::logout(5);
         redirect("/admin/login");
     }
 }

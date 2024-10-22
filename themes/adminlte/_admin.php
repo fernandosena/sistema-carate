@@ -69,17 +69,17 @@
                     <!-- Sidebar user panel (optional) -->
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image">
-                            <?php if (user()->photo()): ?>
-                                <img class="img-circle elevation-2" alt="<?= user()->first_name; ?>" title="<?= user()->first_name; ?>"
-                                        src="<?= image(user()->photo, 260, 260); ?>"/>
+                            <?php if (user(5)->photo()): ?>
+                                <img class="img-circle elevation-2" alt="<?= user(5)->first_name; ?>" title="<?= user(5)->first_name; ?>"
+                                        src="<?= image(user(5)->photo, 260, 260); ?>"/>
                             <?php else: ?>
-                                <img class="img-circle elevation-2"  alt="<?= user()->first_name; ?>" title="<?= user()->first_name; ?>"
+                                <img class="img-circle elevation-2"  alt="<?= user(5)->first_name; ?>" title="<?= user(5)->first_name; ?>"
                                         src="<?= theme("/assets/images/avatar.jpg", CONF_VIEW_ADMIN); ?>"/>
                             <?php endif; ?>
                         </div>
                         <div class="info">
-                            <?php $idUser = user()->id; ?>
-                            <a href="<?= url("/admin/instructors/instructor/{$idUser}") ?>" class="d-block"><?= str_limit_words(user()->fullName(), 3); ?></a>
+                            <?php $idUser = user(5)->id; ?>
+                            <a href="<?= url("/admin/instructors/instructor/{$idUser}") ?>" class="d-block"><?= str_limit_words(user(5)->fullName(), 3); ?></a>
                         </div>
                     </div>
 
@@ -189,37 +189,18 @@
                             echo $nav(
                                 [
                                     "icon"=>"fa-graduation-cap",
-                                    "href"=>"students/black",
-                                    "title"=>"Faixas Preta",
+                                    "href"=>"students",
+                                    "title"=>"Alunos",
                                     "submenu"=> [
                                         [
                                             "icon"=>"fa-list",
                                             "href"=>"students/black/home",
-                                            "title"=>"Listar",
+                                            "title"=>"Faixa Preta",
                                         ],
-                                        [
-                                            "icon"=>"fa-user-plus",
-                                            "href"=>"students/black/student",
-                                            "title"=>"Cadastrar",
-                                        ]
-                                    ],
-                                ],
-                            );
-                            echo $nav(
-                                [
-                                    "icon"=>"fa-graduation-cap",
-                                    "href"=>"students/kyus",
-                                    "title"=>"Kyus",
-                                    "submenu"=> [
                                         [
                                             "icon"=>"fa-list",
                                             "href"=>"students/kyus/home",
-                                            "title"=>"Listar",
-                                        ],
-                                        [
-                                            "icon"=>"fa-user-plus",
-                                            "href"=>"students/kyus/student",
-                                            "title"=>"Cadastrar",
+                                            "title"=>"Kyus",
                                         ]
                                     ],
                                 ],
