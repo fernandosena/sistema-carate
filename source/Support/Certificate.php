@@ -23,7 +23,7 @@ class Certificate {
     ];
     protected $date;
     protected $dataDate = [
-        "font" => "Arial",
+        "font" => "zapfdingbats",
         "size" => 15,
         "x"=> 128,
         "y"=> 172,
@@ -110,6 +110,8 @@ class Certificate {
 
     public function render() 
     {
+        var_dump($this->dataName["font"]);
+        return;
         $this->pdf->AddPage('L');
 
         $this->pdf->SetLineWidth(1.5);

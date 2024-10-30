@@ -5,6 +5,7 @@ namespace Source\Models;
 use Source\Core\Model;
 use Source\Models\App\AppBlackBelt;
 use Source\Models\App\AppKyus;
+use Source\Models\Belt;
 
 /**
  * Class User Active Record Pattern
@@ -66,6 +67,17 @@ class User extends Model
         $document = preg_replace("/[^0-9]/", "", $document);
         $find = $this->find("document = :d", "d={$document}", $columns);
         return $find->fetch();
+    }
+
+    /**
+     * @return null|Belt
+     */
+    public function belt(): ?Belt
+    {
+        if($this->graduation){
+            return (new Belt())->find("id = :id", "id={$this->graduation}")->fetch();
+        }
+        return null;
     }
 
     /**

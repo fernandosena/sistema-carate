@@ -68,7 +68,6 @@
                                         <span><?= $student->belt()->title ?></span>
                                     </li>
                                 </ul>
-                                <button class="btn btn-primary btn-block w-50 m-auto" data-modalopen=".app_modal_student_belt">Alterar Faixa</button>
                             </div>
                         </div>
                     </div>

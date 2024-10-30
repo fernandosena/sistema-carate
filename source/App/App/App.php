@@ -13,6 +13,7 @@ use Source\Models\App\AppPlan;
 use Source\Models\App\AppSubscription;
 use Source\Models\App\AppWallet;
 use Source\Models\App\AppBlackBelt;
+use Source\Models\App\AppStudent;
 use Source\Models\Post;
 use Source\Models\Report\Access;
 use Source\Models\Report\Online;
@@ -172,7 +173,9 @@ class App extends Controller
             "income" => $income,
             "expense" => $expense,
             "wallet" => $wallet,
-            "posts" => $posts
+            "notices" => (new AppStudent())
+                ->find("mother_name IS NOT NULL AND TIMESTAMPDIFF(YEAR, datebirth, CURDATE()) >= 18")
+                ->fetch(true)
         ]);
     }
 

@@ -14,7 +14,6 @@
                                     <tr>
                                         <th>Nome</th>
                                         <th>Qtd. de alunos</th>
-                                        <th>Desde</th>
                                         <th>Opções</th>
                                     </tr>
                                 </thead>
@@ -28,8 +27,6 @@
                                             <img class="profile-user-img img-fluid img-circle img-table" src="<?= $studentPhoto; ?>" alt="<?= $student->fullName(); ?>">
                                         </td>
                                         <td><h3 class="profile-username text-center"><?= $student->fullName(); ?></h3></td>
-                                        <td><?= date_fmt($student->created_at, "d/m/y \à\s H\hi"); ?>
-                                        </td>
                                         <td>
                                         <a href="<?= url("/admin/students/{$type}/student/{$student->id}"); ?>" class="btn btn-primary btn-block"><b>Gerênciar</b></a>
                                         </td>
@@ -40,7 +37,6 @@
                                     <tr>
                                         <th>Nome</th>
                                         <th>Qtd. de alunos</th>
-                                        <th>Desde</th>
                                         <th>Opções</th>
                                     </tr>
                                 </tfoot>

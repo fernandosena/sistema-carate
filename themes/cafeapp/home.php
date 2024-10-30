@@ -34,16 +34,15 @@
                     <h2 class="icon-info">Avisos:</h2>
                 </header>
                 <div class="app_widget_content">
-                    <?php if (!empty($posts)): ?>
-                        <?php foreach ($posts as $post): ?>
+                    <?php if (!empty($notices)): ?>
+                        <?php foreach ($notices as $notice): ?>
                             <article class="app_widget_blog_article">
                                 <div class="thumb">
-                                    <img alt="<?= $post->title; ?>" title="<?= $post->title; ?>"
-                                         src="<?= image($post->cover, 300); ?>"/>
+                                    <strong class="badge bg-warning">Atualização de aluno</strong>
                                 </div>
-                                <h3 class="title">
-                                    <a target="_blank" href="<?= url("/blog/{$post->uri}"); ?>"
-                                       title="<?= $post->title; ?>"><?= str_limit_chars($post->title, 50); ?></a>
+                                <h3 class="title">O aluno
+                                    <a href="<?= url("app/aluno/{$notice->type}/{$notice->id}"); ?>"
+                                       title="<?= $notice->title; ?>"><?= $notice->fullName() ?></a> precisa ser atualizado. O mesmo já é maior de 18 anos
                                 </h3>
                             </article>
                         <?php endforeach; ?>

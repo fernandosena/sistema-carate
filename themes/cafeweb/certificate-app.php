@@ -107,10 +107,6 @@
                 </div>
                 <div class="label_group_div">
                     <label>
-                        <div><span class="icon-user">Graduação:</span></div>
-                        <input type="text" name="cep" value="<?= $user->belt()->title ?>" readonly>
-                    </label>
-                    <label>
                         <div><span class="icon-user">Descrição:</span></div>
                         <input type="text" name="email" value="<?= $user->description ?>" readonly>
                     </label>

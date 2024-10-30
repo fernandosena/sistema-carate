@@ -15,7 +15,6 @@
                                         <th>Foto</th>
                                         <th>Nome</th>
                                         <th>Qtd. de alunos</th>
-                                        <th>Desde</th>
                                         <th>Opções</th>
                                     </tr>
                                 </thead>
@@ -30,7 +29,6 @@
                                         </td>
                                         <td><h3 class="profile-username"><?= $user->fullName(); ?></h3></td>
                                         <td><a class="float-right"><?= $user->student()["all"]; ?></a></td>
-                                        <td><?= date_fmt($user->created_at, "d/m/y \à\s H\hi"); ?></td>
                                         <td><a href="<?= url("/admin/instructors/instructor/{$user->id}"); ?>" class="btn btn-primary btn-block"><b>Gerênciar</b></a></td>
                                     </tr>
                                     <?php endforeach; ?>
@@ -40,7 +38,6 @@
                                         <th>Foto</th>
                                         <th>Nome</th>
                                         <th>Qtd. de alunos</th>
-                                        <th>Desde</th>
                                         <th>Opções</th>
                                     </tr>
                                 </tfoot>
