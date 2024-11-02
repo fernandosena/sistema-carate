@@ -11,34 +11,38 @@
                     <!--ACTION SPOOFING-->
                     <input type="hidden" name="action" value="create"/>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>*Titulo</label>
                                 <input type="text"
                                 name="title"  class="form-control" placeholder="Titulo" required>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Faixa etaria</label>
                                 <select name="age_range" class="form-control">
-                                    <option value="1">Maior que 13 anos</option>
-                                    <option value="2">Menor que 13 anos</option>
+                                    <option value="1">Até 12 anos</option>
+                                    <option value="2">A partir de 13 anos</option>
+                                    <option value="3">Todos</option>
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-4">
                             <div class="form-group">
-                                <label>Descrição</label>
-                                <textarea name="description" class="form-control" placeholder="Descrição da faixa"></textarea>
+                                <label>Posição na graduação</label>
+                                <select name="position" class="form-control">
+                                    <option value="">=== Nenhum ===</option>
+                                    <?php for($i = 1;$i <= 20; $i ++): ?>
+                                        <option value="<?= $i ?>"><?= $i ?></option>
+                                    <?php endfor; ?>
+                                </select>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Criar Graduação</button>
+                    <button type="submit" class="btn btn-primary">Cadastrar Graduação</button>
                 </div>
             </form>
         </div>

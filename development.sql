@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql:3306
--- Tempo de geração: 05/10/2024 às 19:08
+-- Tempo de geração: 02/11/2024 às 18:25
 -- Versão do servidor: 5.7.44
--- Versão do PHP: 8.2.24
+-- Versão do PHP: 8.2.25
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -227,40 +227,12 @@ CREATE TABLE `app_wallets` (
 CREATE TABLE `belts` (
   `id` int(11) UNSIGNED NOT NULL,
   `title` varchar(255) NOT NULL,
-  `description` text NOT NULL,
+  `position` int(11) DEFAULT NULL,
   `years` int(11) DEFAULT NULL,
   `age_range` int(11) NOT NULL DEFAULT '1' COMMENT '1 - Menor que 13 anos\r\n2 - Maior que 13 anos',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Despejando dados para a tabela `belts`
---
-
-INSERT INTO `belts` (`id`, `title`, `description`, `years`, `age_range`, `created_at`, `updated_at`) VALUES
-(1, '10 kyu', '(branco)', NULL, 2, '2024-09-07 01:10:44', '2024-09-07 19:08:03'),
-(2, '9 kyu', '(branco e amarelo)', NULL, 2, '2024-09-07 01:17:29', '2024-09-07 19:08:13'),
-(3, '8 kyu', '(amarelo)', NULL, 2, '2024-09-07 01:17:47', '2024-09-07 19:08:25'),
-(4, '8/7 kyu', '(amarelo/laranja)', NULL, 2, '2024-09-07 01:18:07', '2024-09-07 19:08:39'),
-(5, '7 kyu', '(laranja)', NULL, 2, '2024-09-07 01:18:20', '2024-09-07 19:08:45'),
-(6, '7/6 kyu', '(laranja/verde)', NULL, 2, '2024-09-07 01:18:32', '2024-09-07 19:08:49'),
-(7, '6 kyu', '(verde)', NULL, 2, '2024-09-07 01:18:41', '2024-09-07 19:08:53'),
-(8, '6/5 kyu', '(verde/azul)', NULL, 2, '2024-09-07 01:18:52', '2024-09-07 19:08:58'),
-(9, '5 kyu', '(azul)', NULL, 2, '2024-09-07 01:19:03', '2024-09-07 19:09:03'),
-(10, '5/4 kyu', '(azul/vermelho)', NULL, 2, '2024-09-07 01:19:14', '2024-09-07 19:09:09'),
-(11, '4 kyu', '(vermelho)', NULL, 2, '2024-09-07 01:19:24', '2024-09-07 19:09:13'),
-(12, '3 kyu', '(marrom)', NULL, 2, '2024-09-07 01:19:41', '2024-09-07 19:09:19'),
-(13, '2 kyu', '(marrom + 1 listra)', NULL, 2, '2024-09-07 01:20:01', '2024-09-07 19:09:24'),
-(14, '1 kyu', '(marrom + 2 listras)', NULL, 2, '2024-09-07 01:20:17', '2024-09-07 19:09:29'),
-(23, '1 kyu', '(marrom + 2 listras)', NULL, 1, '2024-09-07 01:22:28', '2024-09-07 19:10:08'),
-(24, '1 dan', '2 anos', 2, 1, '2024-09-07 01:22:40', '2024-10-05 18:12:14'),
-(25, '2 dan', '3 anos', 3, 1, '2024-09-07 01:22:49', '2024-10-05 18:12:16'),
-(26, '3 dan', '4 anos', 4, 1, '2024-09-07 01:22:58', '2024-10-05 18:12:18'),
-(27, '4 dan', '5 anos', 5, 1, '2024-09-07 01:23:07', '2024-10-05 18:12:20'),
-(28, '5 dan', '6 anos', 6, 1, '2024-09-07 01:23:21', '2024-10-05 18:12:21'),
-(29, '6 dan', '7 anos', 7, 1, '2024-09-07 01:23:31', '2024-10-05 18:12:23'),
-(30, '7 dan', '', NULL, 1, '2024-09-07 01:28:52', '2024-09-07 19:11:52');
 
 -- --------------------------------------------------------
 
@@ -402,6 +374,13 @@ CREATE TABLE `report_access` (
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Despejando dados para a tabela `report_access`
+--
+
+INSERT INTO `report_access` (`id`, `users`, `views`, `pages`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 5, '2024-11-02 16:50:42', '2024-11-02 18:25:30');
+
 -- --------------------------------------------------------
 
 --
@@ -460,7 +439,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `level`, `forget`, `datebirth`, `document`, `photo`, `zip`, `state`, `city`, `address`, `neighborhood`, `number`, `complement`, `phone`, `graduation`, `dojo`, `renewal`, `renewal_data`, `last_renewal_data`, `account_status`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', 'Sistema', 'admin@sistema.com.br', '$2y$10$Q1x9MpYo/Ug6TH4DwD.Tcur4pzfnpGpBIU.7AT5zouZ4dO/jFqqXm', 5, NULL, '2024-10-05', '11111111111', NULL, '000000', '000000', '000000', '000000', '000000', '000000', NULL, '000000', 1, '000000', NULL, '2024-10-05 13:39:46', '2024-10-05 13:39:46', 'confirmed', 'activated', '2024-10-05 13:39:46', NULL);
+(1, 'Admin', 'Sistema', 'admin@sistema.com.br', '$2y$10$5JveWItTSNzzD1s1yPv4F...v2PAuMAWxaViYsPg6rzmR/U73RxAK', 5, NULL, '2024-11-02', '11111', NULL, '11111', '11111', '11111', '11111', '11111', '11111', NULL, '111111', 1, '11111', '111111', '2024-11-02 16:57:40', '2024-11-02 16:57:40', 'registered', 'activated', '2024-11-02 16:57:40', NULL);
 
 --
 -- Índices para tabelas despejadas
@@ -682,7 +661,7 @@ ALTER TABLE `app_wallets`
 -- AUTO_INCREMENT de tabela `belts`
 --
 ALTER TABLE `belts`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `categories`
@@ -730,7 +709,7 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT de tabela `report_access`
 --
 ALTER TABLE `report_access`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de tabela `report_online`
@@ -742,7 +721,7 @@ ALTER TABLE `report_online`
 -- AUTO_INCREMENT de tabela `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restrições para tabelas despejadas

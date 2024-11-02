@@ -14,7 +14,8 @@
                                 <thead>
                                     <tr>
                                         <th>Titulo</th>
-                                        <th>Qtd. de alunos</th>
+                                        <th>Idade</th>
+                                        <th>Posição na graduação</th>
                                         <th>Opções</th>
                                     </tr>
                                 </thead>
@@ -22,7 +23,16 @@
                                     <?php foreach ($belts as $belt): ?>
                                         <tr>
                                             <td><?= $belt->title; ?></td>
-                                            <td><?= $belt->student()["all"] ?></td>
+                                            <td><?php
+                                                if($belt->age_range == 1){
+                                                    echo "Até 12 anos";
+                                                }elseif($belt->age_range == 2){
+                                                    echo "A partir de 13 anos";
+                                                }else{
+                                                    echo "Todos";
+                                                }
+                                            ?></td>
+                                            <td><?= $belt->position; ?></td>
                                             <td><a href="<?= url("/admin/belts/belt/{$belt->id}"); ?>" class="btn btn-primary btn-block"><b>Gerênciar</b></a></td>
                                         </tr>
                                     <?php endforeach; ?>
@@ -30,7 +40,8 @@
                                 <tfoot>
                                     <tr>
                                         <th>Titulo</th>
-                                        <th>Qtd. de alunos</th>
+                                        <th>Idade</th>
+                                        <th>Posição na graduação</th>
                                         <th>Opções</th>
                                     </tr>
                                 </tfoot>

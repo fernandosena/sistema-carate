@@ -61,7 +61,7 @@ class Belts extends Admin
             "app" => "belts/home",
             "head" => $head,
             "search" => $search,
-            "belts" => $belts->order("age_range DESC, created_at")->limit($pager->limit())->offset($pager->offset())->fetch(true),
+            "belts" => $belts->order("age_range DESC, position DESC")->limit($pager->limit())->offset($pager->offset())->fetch(true),
             "paginator" => $pager->render()
         ]);
     }
@@ -78,7 +78,7 @@ class Belts extends Admin
 
             $beltCreate = new Belt();
             $beltCreate->title = $data["title"];
-            $beltCreate->description = $data["description"];
+            $beltCreate->position = $data["position"];
             $beltCreate->age_range = $data["age_range"];
 
             if (!$beltCreate->save()) {
@@ -107,7 +107,7 @@ class Belts extends Admin
 
             $beltUpdate->title = $data["title"];
             $beltUpdate->age_range = $data["age_range"];
-            $beltUpdate->description = $data["description"];
+            $beltUpdate->position = $data["position"];
 
             if (!$beltUpdate->save()) {
                 $json["message"] = $beltUpdate->message()->render();
