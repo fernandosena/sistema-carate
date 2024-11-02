@@ -110,8 +110,6 @@ class Certificate {
 
     public function render() 
     {
-        var_dump($this->dataName["font"]);
-        return;
         $this->pdf->AddPage('L');
 
         $this->pdf->SetLineWidth(1.5);
