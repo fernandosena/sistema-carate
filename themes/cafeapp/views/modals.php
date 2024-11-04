@@ -27,17 +27,18 @@
 
         $this->insert("views/student", [
             "graduations" => (new \Source\Models\Belt())
-                ->find("title LIKE '%dan%'")
+                ->find("title LIKE '%IOGKF%'  OR title LIKE '%dan%'")
                 ->order("title")
                 ->fetch(true)
         ]);
 
-        $this->insert("views/kyus", [
-            "graduations" => (new \Source\Models\Belt())
-                ->find("title NOT LIKE '%dan%'")
-                ->order("title")
-                ->fetch(true),
-        ]);
+        $this->insert("views/kyus");
+        // , [
+        //     "graduations" => (new \Source\Models\Belt())
+        //         ->find("title NOT LIKE '%dan%'")
+        //         ->order("position ASC")
+        //         ->fetch(true),
+        // ]
     ?>
     <!--SUPPORT-->
     <div class="app_modal_box app_modal_contact">

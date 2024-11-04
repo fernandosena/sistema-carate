@@ -277,11 +277,11 @@ class Students extends App
 
         $student->status = "pending";
 
-        if (!$student->save()) {
-            $json["message"] = $student->message()->render();
-            echo json_encode($json);
-            return;
-        }
+        // if (!$student->save()) {
+        //     $json["message"] = $student->message()->render();
+        //     echo json_encode($json);
+        //     return;
+        // }
 
         $dataNascimento = new \DateTime($student->datebirth);
         $dataAtual = new \DateTime();

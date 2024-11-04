@@ -384,12 +384,23 @@ $(function () {
         
         if(idade < 18){
             $(".mother-name").show();
-            $(".document").attr('placeholder', 'CPF do responsável');
+            $(".document").attr('placeholder', 'CPF do responsável'); 
         }else{
             $(".mother-name").val('');
             $(".mother-name").hide();
             $(".document").attr('placeholder', 'CPF do usuário');
-        }
+        }           
+            
+        $.post($(this).data("url"), {valor: idade}, function (data) {
+            $('#graduation').empty();
+            $.each(data, function(index, item) {
+              $('#graduation').append($('<option>', {
+                value: item.id,
+                text: item.nome
+              }));
+            });
+            load.fadeOut();
+        }, "json");
     });
 
   const addressForm = $(".address-form");

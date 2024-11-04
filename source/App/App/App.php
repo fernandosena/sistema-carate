@@ -6,6 +6,7 @@ use Source\Core\Controller;
 use Source\Core\Session;
 use Source\Core\View;
 use Source\Models\Auth;
+use Source\Models\Belt;
 use Source\Models\App\AppCategory;
 use Source\Models\App\AppInvoice;
 use Source\Models\App\AppOrder;
@@ -157,11 +158,7 @@ class App extends Controller
         //WALLET
         $wallet = (new AppInvoice())->balance($this->user);
         //END WALLET
-
-        //POSTS
-        $posts = (new Post())->findPost()->limit(3)->order("post_at DESC")->fetch(true);
-        //END POSTS
-
+        
         //STUDENTS
         $student = (new AppBlackBelt())->find("user_id = :id", "id={$this->user->id}")->count();
         //END STUDENTS
@@ -209,6 +206,30 @@ class App extends Controller
                 "date" => (!empty($data["date"]) ? str_replace("-", "/", $data["date"]) : null)
             ]
         ]);
+    }
+
+    public function getgraduation(?array $data): void
+    {
+        $dados = [];
+        $valor = $data["valor"];
+
+        if(!empty($valor)){
+            if($valor < 13){
+                $type_age = 1;
+            }else{
+                $type_age = 2;
+            }
+
+            $graduations = (new Belt())->find("(age_range = :a OR position IS NULL) AND title NOT LIKE '%dan%'", "a={$type_age}")->order("position ASC")->fetch(true);
+            if(!empty($graduations)){
+                foreach ($graduations as $graduation){
+                    $dados[] = [
+                        'id' => $graduation->id, 'nome' => $graduation->title
+                    ];
+                }
+            }
+        }
+        echo json_encode($dados);
     }
 
     /**

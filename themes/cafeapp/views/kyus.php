@@ -27,7 +27,7 @@
             </div>
             <label>
                 <span class="field icon-heartbeat">Nascimento:</span>
-                <input type="date"
+                <input type="date" data-url="<?= url("/app/graduation") ?>"
                 name="datebirth" id="dataNascimento" class="radius" value="<?= (!empty($student->datebirth)) ? date_fmt($student->datebirth, "Y-m-d") : null; ?>" placeholder="dd/mm/yyyy" required/>
             </label>
             <div class="label_group">
@@ -124,7 +124,7 @@
                             return ($graduation == $value ? "selected" : "");
                         };
                     ?>
-                    <select name="graduation">
+                    <select id="graduation" name="graduation">
                         <?php foreach ($graduations as $graduation): ?>
                             <option <?= $select($graduation->id); ?> value="<?= $graduation->id ?>">&ofcir; <?= $graduation->title; ?> - <?= $graduation->description; ?></option>
                         <?php endforeach; ?>
