@@ -36,19 +36,6 @@ class Belts extends Admin
         $search = null;
         $belts = (new Belt())->find();
 
-        if (!empty($data["search"]) && str_search($data["search"]) != "all") {
-            $search = str_search($data["search"]);
-            $belts = (new Belt())->find("title = :title", "title={$search}");
-            if (!$belts->count()) {
-                $this->message->info("Sua pesquisa não retornou resultados")->flash();
-                redirect("/admin/belts/home");
-            }
-        }
-
-        $all = ($search ?? "all");
-        $pager = new Pager(url("/admin/belts/home/{$all}/"));
-        $pager->pager($belts->count(), 12, (!empty($data["page"]) ? $data["page"] : 1));
-
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Faixas",
             CONF_SITE_DESC,
@@ -61,8 +48,9 @@ class Belts extends Admin
             "app" => "belts/home",
             "head" => $head,
             "search" => $search,
-            "belts" => $belts->order("age_range DESC, position DESC")->limit($pager->limit())->offset($pager->offset())->fetch(true),
-            "paginator" => $pager->render()
+            "belts" => $belts
+            ->order("age_range ASC, position")
+            ->fetch(true)
         ]);
     }
 
@@ -88,7 +76,7 @@ class Belts extends Admin
             }
 
             $this->message->success("Graduação cadastrada com sucesso...")->flash();
-            $json["redirect"] = url("/admin/belts/belt/{$beltCreate->id}");
+            $json["redirect"] = url("/admin/belts/belt");
 
             echo json_encode($json);
             return;

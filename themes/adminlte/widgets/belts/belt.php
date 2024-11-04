@@ -56,14 +56,14 @@
                     <!--ACTION SPOOFING-->
                     <input type="hidden" name="action" value="update"/>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>*Titulo</label>
                                 <input type="text"
                                 name="title" value="<?= $belt->title; ?>" class="form-control" placeholder="Titulo" required>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Faixa etaria</label>
                                 <?php
@@ -73,17 +73,21 @@
                                     };
                                 ?>
                                 <select name="age_range" class="form-control">
-                                    <option <?= $select("1"); ?> value="1">Maior que 13 anos</option>
-                                    <option <?= $select("2"); ?> value="2">Menor que 13 anos</option>
+                                    <option value="1" <?= $select("1"); ?>>Até 12 anos</option>
+                                    <option value="2" <?= $select("2"); ?>>A partir de 13 anos</option>
+                                    <option value="3" <?= $select("3"); ?>>Todos</option>
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-sm-4">
                             <div class="form-group">
-                                <label>Descrição</label>
-                                <textarea name="description" class="form-control" placeholder="Descrição da faixa"><?= $belt->description; ?></textarea>
+                                <label>Posição na graduação</label>
+                                <select name="position" class="form-control">
+                                    <option value="">=== Nenhum ===</option>
+                                    <?php for($i = 1;$i <= 20; $i ++): ?>
+                                        <option value="<?= $i ?>" <?= ($belt->position == $i) ? "selected" : null ?>><?= $i ?></option>
+                                    <?php endfor; ?>
+                                </select>
                             </div>
                         </div>
                     </div>

@@ -13,8 +13,8 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Titulo</th>
                                         <th>Idade</th>
+                                        <th>Titulo</th>
                                         <th>Posição na graduação</th>
                                         <th>Opções</th>
                                     </tr>
@@ -22,7 +22,6 @@
                                 <tbody>
                                     <?php foreach ($belts as $belt): ?>
                                         <tr>
-                                            <td><?= $belt->title; ?></td>
                                             <td><?php
                                                 if($belt->age_range == 1){
                                                     echo "Até 12 anos";
@@ -32,6 +31,7 @@
                                                     echo "Todos";
                                                 }
                                             ?></td>
+                                            <td><?= $belt->title; ?></td>
                                             <td><?= $belt->position; ?></td>
                                             <td><a href="<?= url("/admin/belts/belt/{$belt->id}"); ?>" class="btn btn-primary btn-block"><b>Gerênciar</b></a></td>
                                         </tr>
@@ -39,8 +39,8 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>Titulo</th>
                                         <th>Idade</th>
+                                        <th>Titulo</th>
                                         <th>Posição na graduação</th>
                                         <th>Opções</th>
                                     </tr>
