@@ -101,7 +101,6 @@ class Renewals extends Admin
                 }
                 $this->message->success("Graduação aprovada com sucesso...")->flash();
             }else{
-                $studentUpdate->graduation = $nextGraduation->id;
                 $studentUpdate->status = "activated";
                 if($studentUpdate->save()){
                     if($data["type_student"] == "black"){
