@@ -88,14 +88,17 @@
                                                 data-post="<?= url("admin/renewals/students") ?>"
                                                 data-action="update_graduation"
                                                 data-type_action="approved"
-                                                data-user_id="<?= $historic->id; ?>"><i class="fa-solid fa-circle-check"></i> Aprovar</a>
+                                                data-type_student="<?= $student->type; ?>"
+                                                data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Aprovar</a>
 
                                                 <a href="#" class="btn bg-danger"
                                                 data-post="<?= url("admin/renewals/students") ?>"
                                                 data-action="update_graduation"
                                                 data-type_action="disapprove"
-                                                data-user_id="<?= $historic->id; ?>"><i class="fa-sharp fa-solid fa-xmark"></i> Reprovar</a>
+                                                data-type_student="<?= $student->type; ?>"
+                                                data-student_id="<?= $student->id; ?>"><i class="fa-sharp fa-solid fa-xmark"></i> Reprovar</a>
                                             <?php else: ?>
+                                                atualizado
                                             <?php endif; ?>
                                             </td>
                                         </tr>

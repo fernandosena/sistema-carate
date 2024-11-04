@@ -269,7 +269,7 @@ class Students extends App
         }
 
         if ($student->status == "pending") {
-            $json["message"] = $this->message->warning("Ooops! aluno esta pendente, não pode ser alterado no momento. tente novamente mais tarte")->render();
+            $json["message"] = $this->message->warning("Ooops! aluno esta pendente, não pode ser alterado no momento. tente novamente mais tarde")->render();
             echo json_encode($json);
             return;
         }
@@ -282,6 +282,33 @@ class Students extends App
             return;
         }
 
+        $dataNascimento = new \DateTime($student->datebirth);
+        $dataAtual = new \DateTime();
+        $diferenca = $dataAtual->diff($dataNascimento);
+
+        if($diferenca->y < 13){
+            $type_age = 1;
+        }else{
+            $type_age = 2;
+        }
+
+        //Consulta graduação
+        $findGraduation = (new Belt())->findById($student->graduation);
+        if (!$findGraduation) {
+            $json["message"] = $this->message->warning("A graduação do usuário não foi encontrada")->render();
+            echo json_encode($json);
+            return;
+        }
+
+        $newGraduation = $findGraduation->position + 1;
+        $nextGraduation = (new Belt())->find("age_range = :a AND position = :p","a={$type_age}&p={$newGraduation}")->limit(1)->fetch();
+        
+        if (!$nextGraduation) {
+            $json["message"] = $this->message->warning("Não foi eonctrada uma proxima graduação para o usuário")->render();
+            echo json_encode($json);
+            return;
+        }
+
         $hbelt = (new HistoricBelt());
         if($data["type"] == "black"){
             $hbelt->black_belt_id = $student->id;
@@ -289,11 +316,12 @@ class Students extends App
             $hbelt->kyus_id = $student->id;
         }
         
-        $hbelt->graduation_id = $data["graduation"];
-        $hbelt->description = $data["description"];
+        $hbelt->graduation_id = $nextGraduation->id;
+        $hbelt->description = "Graduação realizada pelo usuário: {$this->user->email}";
         $hbelt->save();
 
         $json["message"] = $this->message->success("Pronto {$this->user->first_name}, A Graduação do aluno foi atualizado com sucesso!")->render();
+        $json["renewal"] = true;
         echo json_encode($json);
         return;
     }

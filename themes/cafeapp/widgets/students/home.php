@@ -80,11 +80,11 @@
                             <?php
                                 }else{
                             ?>
-                                <a href="#" class="btn bg-info"
-                                data-post="<?= url("app/alunos") ?>"
-                                data-action="graduation"
-                                data-user_id="<?= user()->id; ?>"
-                                data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Graduar Usuário</a>
+                                <a href="#" class="btn bg-success"
+                                data-post="<?= url("/app/alunos/faixa"); ?>"
+                                data-action="update"
+                                data-id="<?= $student->id ?>"
+                                data-type="<?= $student->type; ?>"><i class="fa-solid fa-circle-check"></i> Subir de graduação</a>
                             <?php
                                 }
                             ?>
