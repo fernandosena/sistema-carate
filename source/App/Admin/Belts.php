@@ -66,8 +66,11 @@ class Belts extends Admin
 
             $beltCreate = new Belt();
             $beltCreate->title = $data["title"];
-            $beltCreate->position = $data["position"];
             $beltCreate->age_range = $data["age_range"];
+
+            if(!empty($data["position"])){
+                $beltCreate->position = $data["position"];
+            }
 
             if (!$beltCreate->save()) {
                 $json["message"] = $beltCreate->message()->render();
@@ -95,7 +98,10 @@ class Belts extends Admin
 
             $beltUpdate->title = $data["title"];
             $beltUpdate->age_range = $data["age_range"];
-            $beltUpdate->position = $data["position"];
+
+            if(!empty($data["position"])){
+                $beltUpdate->position = $data["position"];
+            }
 
             if (!$beltUpdate->save()) {
                 $json["message"] = $beltUpdate->message()->render();

@@ -68,6 +68,12 @@ class AppBlackBelt extends Model
     {
         return "{$this->first_name} {$this->last_name}";
     }
+
+    public function historicbeltscount(): ?string
+    {
+        return (new HistoricBelt())->find("black_belt_id = :b AND status = 'pending'", "b={$this->id}")->count();
+    }
+
     /**
      * @return string|null
      */

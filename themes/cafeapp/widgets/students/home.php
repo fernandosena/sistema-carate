@@ -34,6 +34,7 @@
                 <th>Dojo</th>
                 <th>Status</th>
                 <th>Renovação</th>
+                <th>Graduação</th>
             </thead>
             <tbody>
                 <?php
@@ -68,6 +69,23 @@
                                     }else{
                                         echo "Usuário atualizado";
                                     }
+                                }
+                            ?>
+                        </td>
+                        <td>
+                            <?php
+                                if($student->historicbeltscount()){
+                            ?>
+                                <strong class="badge bg-warning">Pendente para análise</span>
+                            <?php
+                                }else{
+                            ?>
+                                <a href="#" class="btn bg-info"
+                                data-post="<?= url("app/alunos") ?>"
+                                data-action="graduation"
+                                data-user_id="<?= user()->id; ?>"
+                                data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Graduar Usuário</a>
+                            <?php
                                 }
                             ?>
                         </td>

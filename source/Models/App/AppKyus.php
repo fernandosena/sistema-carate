@@ -61,6 +61,12 @@ class AppKyus extends Model
         return $find->order("dojo")->fetch(true);
     }
 
+
+    public function historicbeltscount(): ?string
+    {
+        return (new HistoricBelt())->find("kyus_id = :b AND status = 'pending'", "b={$this->id}")->count();
+    }
+
     /**
      * @return string
      */

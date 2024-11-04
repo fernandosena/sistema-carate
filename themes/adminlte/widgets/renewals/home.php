@@ -14,9 +14,10 @@
                                     <tr>
                                         <th>Nome</th>
                                         <th>Professor</th>
-                                        <th>CPF</th>
+                                        <th>Graduação</th>
                                         <th>Pagamento</th>
                                         <th>Multa</th>
+                                        <th>Atualizar Graduação</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -30,7 +31,7 @@
                                                 <td>----------</td>
                                             <?php endif; ?>
 
-                                            <td><?= $student->document ?> </td>
+                                            <td><?= $student->belt()->title ?> </td>
 
                                             <td>
                                                 <?php 
@@ -81,6 +82,22 @@
                                                     atualizado
                                                 <?php endif; ?>
                                             </td>
+                                            <td>
+                                            <?php if($student->historicbeltscount()): ?>
+                                                <a href="#" class="btn bg-success"
+                                                data-post="<?= url("admin/renewals/students") ?>"
+                                                data-action="update_graduation"
+                                                data-type_action="approved"
+                                                data-user_id="<?= $historic->id; ?>"><i class="fa-solid fa-circle-check"></i> Aprovar</a>
+
+                                                <a href="#" class="btn bg-danger"
+                                                data-post="<?= url("admin/renewals/students") ?>"
+                                                data-action="update_graduation"
+                                                data-type_action="disapprove"
+                                                data-user_id="<?= $historic->id; ?>"><i class="fa-sharp fa-solid fa-xmark"></i> Reprovar</a>
+                                            <?php else: ?>
+                                            <?php endif; ?>
+                                            </td>
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>
@@ -88,9 +105,10 @@
                                     <tr>
                                         <th>Nome</th>
                                         <th>Professor</th>
-                                        <th>CPF</th>
+                                        <th>Graduação</th>
                                         <th>Pagamento</th>
                                         <th>Multa</th>
+                                        <th>Atualizar Graduação</th>
                                     </tr>
                                 </tfoot>
                             </table>
