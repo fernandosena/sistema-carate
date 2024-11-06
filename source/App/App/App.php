@@ -15,7 +15,6 @@ use Source\Models\App\AppSubscription;
 use Source\Models\App\AppWallet;
 use Source\Models\App\AppBlackBelt;
 use Source\Models\App\AppStudent;
-use Source\Models\Post;
 use Source\Models\Report\Access;
 use Source\Models\Report\Online;
 use Source\Models\User;
@@ -65,7 +64,9 @@ class App extends Controller
         //     }
         // }
 
-        if(verify_renew($this->user->last_renewal_data)){
+        $data_obj = new \DateTime("now");
+        $mes = $data_obj->format('m');;
+        if((verify_renew($this->user->last_renewal_data)) && ($mes >= 3)){
             $this->message->error("Usuário pendente para regularização, realize o pagamento")->flash();
             if(!str_contains($_SERVER["REQUEST_URI"], "regularization") && !str_contains($_SERVER["REQUEST_URI"], "sair")){
                 redirect("app/regularization");

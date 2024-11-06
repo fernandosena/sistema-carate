@@ -73,7 +73,7 @@
                                             <a href="<?= url("admin/students/black/student/{$black->id}") ?>"><?= $black->fullName() ?></a>
                                         </span>
                                         <span class="description">Cadastrado em - <?= date_fmt($black->created_at, "d/m/y \à\s H\hi"); ?></span>
-                                        <span class="description">Faixa - <strong class="badge" style="background-color: <?= $black->belt()->color ?>"><?= $black->belt()->title ?></strong> | Status - <strong class="badge bg-<?= ($black->status == 'activated') ? 'success': (($black->status == 'pending') ? 'warning' : 'danger') ?>"><?= ($black->status == 'activated') ? 'Ativo': (($black->status == 'pending') ? 'Pendente' : 'Desativado') ?></strong>  | Dojo: <?= $kyu->dojo ?></span>
+                                        <span class="description">Faixa - <strong class="badge" style="background-color: <?= $black->belt()->color ?>"><?= $black->belt()->title ?></strong> | Status - <strong class="badge bg-<?= ($black->status == 'activated') ? 'success': (($black->status == 'pending') ? 'warning' : 'danger') ?>"><?= ($black->status == 'activated') ? 'Ativo': (($black->status == 'pending') ? 'Pendente' : 'Desativado') ?></strong>  | Dojo: <?= $black->dojo ?></span>
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
