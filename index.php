@@ -89,6 +89,7 @@ $route->get("/login", "Login:login");
 $route->post("/login", "Login:login");
 
 $route->post("/dojo", "Admin:getdojo");
+$route->post("/conf", "Admin:conf");
 
 $route->get("/renewals/students", "Renewals:student");
 $route->post("/renewals/students", "Renewals:student");

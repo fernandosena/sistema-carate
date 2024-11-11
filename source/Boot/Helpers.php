@@ -330,6 +330,10 @@ function user($level = 1): ?\Source\Models\User
 {
     return \Source\Models\Auth::user($level);
 }
+function conf(): ?\Source\Models\Conf
+{
+    return (new \Source\Models\Conf())->findById(1);
+}
 /**
  * @return \Source\Core\Session
  */
