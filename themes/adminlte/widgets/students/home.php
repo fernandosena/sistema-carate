@@ -12,8 +12,8 @@
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
+                                        <th>Foto</th>
                                         <th>Nome</th>
-                                        <th>Qtd. de alunos</th>
                                         <th>Opções</th>
                                     </tr>
                                 </thead>
@@ -35,8 +35,8 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
+                                        <th>Foto</th>
                                         <th>Nome</th>
-                                        <th>Qtd. de alunos</th>
                                         <th>Opções</th>
                                     </tr>
                                 </tfoot>
