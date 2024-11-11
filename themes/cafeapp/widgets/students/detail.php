@@ -27,7 +27,7 @@
                                 </div>
                             </div>
                             <div class="list-group list-group-flush text-center mt-4">
-                                <a href="#" class="btn btn-primary btn-block" data-modalopen=".app_modal_student">
+                                <a href="#" class="btn btn-primary btn-block" data-modalopen="<?= (!empty($type) && $type == "black") ? '.app_modal_student' : '.app_modal_student_kyus' ; ?>">
                                     Editar Dados
                                 </a>
                             </div>

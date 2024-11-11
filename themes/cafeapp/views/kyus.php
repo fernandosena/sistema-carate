@@ -146,6 +146,22 @@
                     <?php endforeach; ?>
                 </select>
             </label>
+            <?php if(!empty($student->id)): ?>
+                <label>
+                    <span class="field icon-status">Status:</span>
+                    <?php
+                        $status = $student->status;
+                        $selectStatus = function ($value) use ($status) {
+                            return ($status == $value ? "selected" : "");
+                        };
+                    ?>
+                    <select name="status">
+                        <option <?= $selectStatus("activated"); ?> value="activated">&ofcir; Ativo</option>
+                        <option <?= $selectStatus("pending"); ?> value="pending">&ofcir; Pendente</option>
+                        <option <?= $selectStatus("canceled"); ?> value="canceled">&ofcir; Cancelado</option>
+                    </select>
+                </label>
+            <?php endif; ?>
             <label>
                 <span class="field icon-text">Observação:</span>
                 <textarea class="radius" name="description" placeholder="Aluno tranferido da escola xyz"><?= ($student->description) ?? null ?></textarea>

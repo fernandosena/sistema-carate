@@ -80,39 +80,31 @@ class Students extends App
             #cadastra faixa preta
             if($data["type"] == "black"){
                 $studentCreate = new AppBlackBelt();
-                $studentCreate->user_id = $this->user->id;
-                $studentCreate->first_name = $data["first_name"];
-                $studentCreate->last_name = $data["last_name"];
                 $studentCreate->email = $data["email"];
-                $studentCreate->datebirth = date_fmt_back($data["datebirth"]);
-                $studentCreate->document = preg_replace("/[^0-9]/", "", $data["document"]);
-                $studentCreate->zip = preg_replace("/[^0-9]/", "", $data["zip"]);
-                $studentCreate->state = $data["state"];
-                $studentCreate->city = $data["city"];
-                $studentCreate->address = $data["address"];
-                $studentCreate->neighborhood = $data["neighborhood"];
-                $studentCreate->number = $data["number"];
-                $studentCreate->complement = $data["complement"];
-                $studentCreate->phone = $data["phone"];
-                $studentCreate->graduation = $data["graduation"];
-                $studentCreate->description = $data["description"];
-                $studentCreate->dojo = $data["dojo"];
             }else{
                 #cadastra faixa Kyus
                 $studentCreate = new AppKyus();
-                $studentCreate->user_id = $this->user->id;
-                $studentCreate->first_name = $data["first_name"];
-                $studentCreate->last_name = $data["last_name"];
-                $studentCreate->datebirth = date_fmt_back($data["datebirth"]);
-                $studentCreate->document = preg_replace("/[^0-9]/", "", $data["document"]);
-                $studentCreate->graduation = $data["graduation"];
-                $studentCreate->description = $data["description"];
-                $studentCreate->dojo = $data["dojo"];
-
                 if(!empty($data["mother_name"])){
                     $studentCreate->mother_name = $data["mother_name"];
                 }
             }
+
+            $studentCreate->user_id = $this->user->id;
+            $studentCreate->first_name = $data["first_name"];
+            $studentCreate->last_name = $data["last_name"];
+            $studentCreate->datebirth = date_fmt_back($data["datebirth"]);
+            $studentCreate->document = preg_replace("/[^0-9]/", "", $data["document"]);
+            $studentCreate->zip = preg_replace("/[^0-9]/", "", $data["zip"]);
+            $studentCreate->state = $data["state"];
+            $studentCreate->city = $data["city"];
+            $studentCreate->address = $data["address"];
+            $studentCreate->neighborhood = $data["neighborhood"];
+            $studentCreate->number = $data["number"];
+            $studentCreate->complement = $data["complement"];
+            $studentCreate->phone = $data["phone"];
+            $studentCreate->graduation = $data["graduation"];
+            $studentCreate->description = $data["description"];
+            $studentCreate->dojo = $data["dojo"];
 
             //upload photo
             if (!empty($_FILES["photo"])) {
@@ -179,6 +171,7 @@ class Students extends App
             $student->phone = $data["phone"];
             $student->description = $data["description"];
             $student->dojo = $data["dojo"];
+            $student->status = $data["status"];
 
             //upload photo
             if (!empty($_FILES["photo"])) {
