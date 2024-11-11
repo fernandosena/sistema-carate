@@ -285,11 +285,12 @@
     <div class="card-footer">
         <button type="submit" class="btn btn-primary">
         <?= (!empty($form["data"]) ? "Atualizar" : "Criar") ?> Usuário</button>
+        <?php if(!empty($form["data"]->id) && $form["data"]->level != 5): ?>
         <a href="#" style="margin-left: 20px; color: red;" class="remove_link icon-warning"
         data-post="<?= $form["url"] ?>"
         data-action="delete"
         data-confirm="ATENÇÃO: Tem certeza que deseja excluir o usuário e todos os dados relacionados a ele? Essa ação não pode ser desfeita!"
         data-user_id="<?= $user->id; ?>">Excluir Usuário</a>
-
+        <?php endif; ?>
     </div>
 </form>
