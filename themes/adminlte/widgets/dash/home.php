@@ -20,7 +20,7 @@
         <div class="small-box bg-warning">
             <div class="inner">
                 <h3><?= $quantity["black"] ?></h3>
-                <p>Faixa Pretas</p>
+                <p>Dan</p>
             </div>
             <div class="icon">
                 <i class="ion ion-person"></i>

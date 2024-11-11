@@ -1,6 +1,6 @@
 <div class="app_modal_box app_modal_student">
     <?php if(empty($student) || (!empty($student) && $student->status != "pending")): ?>
-        <p class="title icon-user"><?= (!empty($student)) ? "Atualizar Faixa Preta" : "Novo Faixa Preta" ?>:</p>
+        <p class="title icon-user"><?= (!empty($student)) ? "Atualizar Dan" : "Novo Dan" ?>:</p>
         <form class="app_form address-form" action="<?= url("/app/alunos"); ?>" method="post">
             <input type="hidden" name="action" value="<?= (!empty($student)) ? "update" : "create" ?>"/>
             <input type="hidden" name="type" value="black">

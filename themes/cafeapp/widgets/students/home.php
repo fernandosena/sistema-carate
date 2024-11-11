@@ -4,7 +4,7 @@
     <div class="app_launch_form_filter app_form"></div>
     <?php if($type == "black"): ?>
         <div class="app_launch_btn income radius transition icon-plus-circle"
-            data-modalopen=".app_modal_student"> Cadastrar Faixa Preta
+            data-modalopen=".app_modal_student"> Cadastrar Dan
         </div>
     <?php else: ?>
         <div class="app_launch_btn income radius transition icon-plus-circle"

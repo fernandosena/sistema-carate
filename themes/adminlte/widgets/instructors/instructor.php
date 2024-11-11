@@ -51,7 +51,7 @@
                 <div class="card-header p-2">
                 <ul class="nav nav-pills">
                     <?php if($user->level != 5): ?>
-                        <li class="nav-item"><a class="nav-link active" href="#black" data-toggle="tab">Faixa Pretas</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="#black" data-toggle="tab">Dan</a></li>
                         <li class="nav-item"><a class="nav-link" href="#kyus" data-toggle="tab">Kyus</a></li>
                     <?php endif; ?>
                     <li class="nav-item"><a class="nav-link <?php if($user->level == 5): ?>active<?php endif; ?>" href="#profile" data-toggle="tab">Perfil</a></li>
@@ -80,7 +80,7 @@
                             <?php else: ?>
                                 <div class="alert alert-info alert-dismissible">
                                     <h5><i class="icon fas fa-info"></i> Aviso!</h5>
-                                    Nenhum faixa preta desse professor foi encontrado! 
+                                    Nenhum Dan desse professor foi encontrado! 
                                 </div>
                             <?php endif; ?>
                         </div>

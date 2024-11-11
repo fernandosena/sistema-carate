@@ -195,7 +195,7 @@
                                         [
                                             "icon"=>"fa-list",
                                             "href"=>"students/black/home",
-                                            "title"=>"Faixa Preta",
+                                            "title"=>"Dan",
                                         ],
                                         [
                                             "icon"=>"fa-list",

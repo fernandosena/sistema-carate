@@ -13,7 +13,7 @@
         <section class="app_main_right">
             <ul class="app_widget_shortcuts">
                 <li class="income radius transition" data-modalopen=".app_modal_student">
-                    <p class="icon-plus-circle">Faixa Preta</p>
+                    <p class="icon-plus-circle">Dan</p>
                 </li>
                 <li class="income radius transition" data-modalopen=".app_modal_student_kyus">
                     <p class="icon-plus-circle">KYUS</p>
