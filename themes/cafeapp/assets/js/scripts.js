@@ -23,6 +23,8 @@ $(function () {
         var clicked = $(this);
         var data = clicked.data();
         var load = $(".ajax_load");
+        var flashClass = "ajax_response";
+        var flash = $("." + flashClass);
   
         if (data.confirm) {
             var deleteConfirm = confirm(data.confirm);
@@ -42,6 +44,18 @@ $(function () {
             success: function (response) {
                 if(response.renewal){
                     clicked.replaceWith('Em analise');
+                }
+
+                //message
+                if (response.message) {
+                    if (flash.length) {
+                        flash.html(response.message).fadeIn(100).effect("bounce", 300);
+                    } else {
+                        $(".app_main").prepend("<div class='" + flashClass + "'>" + response.message + "</div>")
+                            .find("." + flashClass).effect("bounce", 300);
+                    }
+                } else {
+                    flash.fadeOut(100);
                 }
 
                 //redirect

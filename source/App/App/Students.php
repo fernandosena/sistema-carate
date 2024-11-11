@@ -105,6 +105,7 @@ class Students extends App
             $studentCreate->graduation = $data["graduation"];
             $studentCreate->description = $data["description"];
             $studentCreate->dojo = $data["dojo"];
+            $studentCreate->status = "pending";
 
             //upload photo
             if (!empty($_FILES["photo"])) {
