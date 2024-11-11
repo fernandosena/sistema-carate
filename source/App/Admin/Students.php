@@ -310,6 +310,30 @@ class Students extends Admin
             return;
         }
 
+        //delete
+        if (!empty($data["action"]) && $data["action"] == "delete") {
+            $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
+            #atualizar faixa preta
+            if($data["type"] == "black"){
+                $studentDelete = (new AppBlackBelt())->findById($data["student_id"]);
+            }else{
+                #atualizar faixa Kyus
+                $studentDelete = (new AppKyus())->findById($data["student_id"]);
+            }
+
+            if (!$studentDelete) {
+                $this->message->error("Você tentou remover um aluno que não existe")->flash();
+                echo json_encode(["redirect" => url("/admin/instructors/home")]);
+                return;
+            }
+
+            $studentDelete->destroy();
+            $this->message->success("Estudante excluído com sucesso...")->flash();
+
+            echo json_encode(["redirect" => url("/admin/instructors/home")]);
+            return;
+        }
+
         //update graduation
         if (!empty($data["action"]) && $data["action"] == "update_graduation") {
             $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);

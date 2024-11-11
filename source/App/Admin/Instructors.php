@@ -265,6 +265,25 @@ class Instructors extends Admin
             return;
         }
 
+
+        //delete
+        if (!empty($data["action"]) && $data["action"] == "delete") {
+            $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
+            
+            $userDelete = (new User())->findById($data["instructor_id"]);
+
+            if (!$userDelete) {
+                $this->message->error("Você tentou remover um instrutor que não existe")->flash();
+                echo json_encode(["redirect" => url("/admin/instructors/home")]);
+                return;
+            }
+
+            $userDelete->destroy();
+            $this->message->success("Instrutor excluído com sucesso...")->flash();
+
+            echo json_encode(["redirect" => url("/admin/instructors/home")]);
+            return;
+        }
         
         $userId = filter_var($data["instructor_id"], FILTER_VALIDATE_INT);
         $user = (new User())->findById($userId);
