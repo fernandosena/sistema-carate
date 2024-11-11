@@ -225,12 +225,6 @@
                                 ],
                             );
                             echo '<li class="nav-header">Sistema</li>';
-                            echo "<li class='nav-item'>
-                                    <a href='".url("app")."' class='nav-link'>
-                                        <i class='fa-duotone fa-solid fa-sidebar-flip'></i>
-                                        <p>App</p>
-                                    </a>
-                                </li>";
                             echo $nav(
                                 [
                                     "icon"=>"fa-sign-out",
