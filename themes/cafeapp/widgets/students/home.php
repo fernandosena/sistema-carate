@@ -76,13 +76,17 @@
                             <?php
                                 if($student->historicbeltscount()){
                             ?>
-                                <strong class="badge bg-warning">Pendente para análise</span>
+                                <a href="#" class="btn bg-warning"
+                                data-post="<?= url("/app/alunos/faixa"); ?>"
+                                data-action="update-reverse"
+                                data-id="<?= $student->id ?>"
+                                data-type="<?= $student->type; ?>"><i class="fa-solid fa-circle-check"></i> Cancelar graduação</a>
                             <?php
                                 }else{
                             ?>
                                 <a href="#" class="btn bg-success"
                                 data-post="<?= url("/app/alunos/faixa"); ?>"
-                                data-action="update"
+                                data-action="update-graduation"
                                 data-id="<?= $student->id ?>"
                                 data-type="<?= $student->type; ?>"><i class="fa-solid fa-circle-check"></i> Subir de graduação</a>
                             <?php

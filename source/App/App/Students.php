@@ -249,76 +249,107 @@ class Students extends App
 
     public function belt(array $data): void
     {
-        if($data["type"] == "black"){
-            $student = (new AppBlackBelt())->find("user_id = :user AND id = :id",
-        "user={$this->user->id}&id={$data["id"]}")->fetch();
-        }else{
-            $student = (new AppKyus())->find("user_id = :user AND id = :id",
-        "user={$this->user->id}&id={$data["id"]}")->fetch();
-        }
+        if($data["action"] == "update-reverse"){
+            if($data["type"] == "black"){
+                $studentUpdate = (new AppBlackBelt())->find("id = :id AND user_id = :u","id={$data["id"]}&u={$this->user->id}")->fetch();   
+                $historics = (new HistoricBelt())->find("black_belt_id = :h AND status = 'pending'", "h={$studentUpdate->id}")->fetch(true);                  
+            }else{
+                #atualizar faixa Kyus
+                $studentUpdate = (new AppKyus())->find("id = :id AND user_id = :u","id={$data["id"]}&u={$this->user->id}")->fetch(); 
+                $historics = (new HistoricBelt())->find("kyus_id = :k AND status = 'pending'", "k={$studentUpdate->id}")->fetch(true);
+            }
 
-        if (!$student) {
-            $json["message"] = $this->message->error("Ooops! aluno inrormado não encontrado")->render();
+            if (!$studentUpdate) {
+                $json["message"] = $this->message->warning("O aluno informado não foi encontrado")->render();
+                echo json_encode($json);
+                return;
+            }
+
+            if(!empty($historics)){
+                foreach($historics as $historic){
+                    $historic->destroy();
+                }
+            }
+
+            $this->message->success("Graduação reprovada com sucesso...")->flash();
+            $json["renewal"] = true;
             echo json_encode($json);
             return;
         }
 
-        if ($student->status == "pending") {
-            $json["message"] = $this->message->warning("Ooops! aluno esta pendente, não pode ser alterado no momento. tente novamente mais tarde")->render();
+        if($data["action"] == "update-graduation"){
+            //update-graduation
+            if($data["type"] == "black"){
+                $student = (new AppBlackBelt())->find("user_id = :user AND id = :id",
+            "user={$this->user->id}&id={$data["id"]}")->fetch();
+            }else{
+                $student = (new AppKyus())->find("user_id = :user AND id = :id",
+            "user={$this->user->id}&id={$data["id"]}")->fetch();
+            }
+
+            if (!$student) {
+                $json["message"] = $this->message->error("Ooops! aluno inrormado não encontrado")->render();
+                echo json_encode($json);
+                return;
+            }
+
+            if ($student->status == "pending") {
+                $json["message"] = $this->message->warning("Ooops! aluno esta pendente, não pode ser alterado no momento. tente novamente mais tarde")->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $student->status = "pending";
+
+            // if (!$student->save()) {
+            //     $json["message"] = $student->message()->render();
+            //     echo json_encode($json);
+            //     return;
+            // }
+
+            $dataNascimento = new \DateTime($student->datebirth);
+            $dataAtual = new \DateTime();
+            $diferenca = $dataAtual->diff($dataNascimento);
+
+            if($diferenca->y < 13){
+                $type_age = 1;
+            }else{
+                $type_age = 2;
+            }
+
+            //Consulta graduação
+            $findGraduation = (new Belt())->findById($student->graduation);
+            if (!$findGraduation) {
+                $json["message"] = $this->message->warning("A graduação do usuário não foi encontrada")->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $newGraduation = $findGraduation->position + 1;
+            $nextGraduation = (new Belt())->find("age_range = :a AND position = :p","a={$type_age}&p={$newGraduation}")->limit(1)->fetch();
+            
+            if (!$nextGraduation) {
+                $json["message"] = $this->message->warning("Não foi encontrar uma proxima graduação para o usuário")->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $hbelt = (new HistoricBelt());
+            if($data["type"] == "black"){
+                $hbelt->black_belt_id = $student->id;
+            }else{
+                $hbelt->kyus_id = $student->id;
+            }
+            
+            $hbelt->graduation_id = $nextGraduation->id;
+            $hbelt->description = "Graduação realizada pelo usuário: {$this->user->email}";
+            $hbelt->save();
+
+            $json["message"] = $this->message->success("Pronto {$this->user->first_name}, A Graduação do aluno foi enviada com sucesso!")->render();
+            $json["renewal"] = true;
             echo json_encode($json);
             return;
         }
-
-        $student->status = "pending";
-
-        // if (!$student->save()) {
-        //     $json["message"] = $student->message()->render();
-        //     echo json_encode($json);
-        //     return;
-        // }
-
-        $dataNascimento = new \DateTime($student->datebirth);
-        $dataAtual = new \DateTime();
-        $diferenca = $dataAtual->diff($dataNascimento);
-
-        if($diferenca->y < 13){
-            $type_age = 1;
-        }else{
-            $type_age = 2;
-        }
-
-        //Consulta graduação
-        $findGraduation = (new Belt())->findById($student->graduation);
-        if (!$findGraduation) {
-            $json["message"] = $this->message->warning("A graduação do usuário não foi encontrada")->render();
-            echo json_encode($json);
-            return;
-        }
-
-        $newGraduation = $findGraduation->position + 1;
-        $nextGraduation = (new Belt())->find("age_range = :a AND position = :p","a={$type_age}&p={$newGraduation}")->limit(1)->fetch();
-        
-        if (!$nextGraduation) {
-            $json["message"] = $this->message->warning("Não foi eonctrada uma proxima graduação para o usuário")->render();
-            echo json_encode($json);
-            return;
-        }
-
-        $hbelt = (new HistoricBelt());
-        if($data["type"] == "black"){
-            $hbelt->black_belt_id = $student->id;
-        }else{
-            $hbelt->kyus_id = $student->id;
-        }
-        
-        $hbelt->graduation_id = $nextGraduation->id;
-        $hbelt->description = "Graduação realizada pelo usuário: {$this->user->email}";
-        $hbelt->save();
-
-        $json["message"] = $this->message->success("Pronto {$this->user->first_name}, A Graduação do aluno foi atualizado com sucesso!")->render();
-        $json["renewal"] = true;
-        echo json_encode($json);
-        return;
     }
 
     /**
