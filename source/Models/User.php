@@ -69,6 +69,11 @@ class User extends Model
         return $find->fetch();
     }
 
+    public function historicbeltscount(): bool
+    {
+        return false;
+    }
+
     /**
      * @return null|Belt
      */
