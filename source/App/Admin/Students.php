@@ -316,9 +316,11 @@ class Students extends Admin
             #atualizar faixa preta
             if($data["type"] == "black"){
                 $studentDelete = (new AppBlackBelt())->findById($data["student_id"]);
+                $historics = (new HistoricBelt())->find("black_belt_id = :id", "id={$data["student_id"]}'")->fetch(true);
             }else{
                 #atualizar faixa Kyus
                 $studentDelete = (new AppKyus())->findById($data["student_id"]);
+                $historics = (new HistoricBelt())->find("kyus_id = :id", "id={$data["student_id"]}'")->fetch(true);
             }
 
             if (!$studentDelete) {
@@ -326,6 +328,13 @@ class Students extends Admin
                 echo json_encode(["redirect" => url("/admin/instructors/home")]);
                 return;
             }
+
+            if(!empty($historics)){
+                foreach ($historics as $historic) {
+                    $historic->destroy();
+                }
+            }
+
 
             $studentDelete->destroy();
             $this->message->success("Estudante excluído com sucesso...")->flash();

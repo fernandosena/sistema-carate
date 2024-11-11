@@ -3,6 +3,7 @@
 namespace Source\App\Admin;
 
 use Source\Models\App\AppKyus;
+use Source\Models\App\AppStudent;
 use Source\Models\Auth;
 use Source\Models\App\AppPlan;
 use Source\Models\App\AppSubscription;
@@ -80,8 +81,8 @@ class Dash extends Admin
             "info" => $info,
             "quantity" => [
                 "teachers" => (new User())->find("level < 5")->count(),
-                "black" => (new AppBlackBelt())->find()->count(),
-                "kyus" => (new AppKyus())->find()->count(),
+                "black" => (new AppStudent())->find("type = 'black'")->count(),
+                "kyus" => (new AppStudent())->find("type = 'kyus'")->count(),
                 "belts" => (new Belt())->find()->count(),
             ],
             "control" => (object)[
