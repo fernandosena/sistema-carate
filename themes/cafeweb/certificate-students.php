@@ -3,12 +3,12 @@
 <div class="al-center"><?= flash(); ?></div>
 <article class="auth">
     <div class="container-tap">
-        <div class="content-tap">
+        <div>
             <h1>Escolha o aluno</h1>
-            <table>
+            <table style="margin: 10px auto 0 auto;">
                 <thead>
                     <tr>
-                        <th>Nome</th>
+                        <th>Alunos</th>
                     </tr>
                 </thead>
                 <tbody>
