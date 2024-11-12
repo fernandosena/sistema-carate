@@ -34,6 +34,7 @@ $route->post("/web/alunos", "Web:student");
 
 $route->get("/certificado", "Web:certificate");
 $route->get("/certificado/{document}/{type}", "Web:certificate");
+$route->get("/certificado/{document}/{type}/{id}", "Web:certificate");
 $route->post("/certificado", "Web:certificate");
 
 //optin

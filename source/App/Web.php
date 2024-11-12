@@ -266,27 +266,27 @@ class Web extends Controller
 
             $document = preg_replace("/[^0-9]/", "", $data['document']);
 
-            $user = (new User())->findByDocument($document);
-            if(!$user){
-                $user = (new AppStudent())->findByDocument($document);
+            $users = (new User())->find("document = :d", "d={$document}")->fetch(true);
+            if(!$users){
+                $users = (new AppStudent())->find("document = :d", "d={$document}")->fetch(true);
             }
 
-            if(!$user){
+            if(!$users){
                 $json['message'] = $this->message->warning("Usuário não encontrado")->render();
                 echo json_encode($json);
                 return;
             }
-
+            
             $data_obj = new \DateTime("now");
             $mes = $data_obj->format('m');
 
-            if(verify_renewal_data($user->renewal, $user->last_renewal_data) && ($mes >= 3)){
-                $json['message'] = $this->message->warning("Usuário pendente para regularização")->render();
-                echo json_encode($json);
-                return;
+            if(count($users) ==  1){
+                $id = $users[0]->id;
+                $json['redirect'] = url("/certificado/{$document}/app/{$id}");
+            }else{
+                $json['redirect'] = url("/certificado/{$document}/mudar");
             }
 
-            $json['redirect'] = url("/certificado/{$document}/app");
             echo json_encode($json);
             return;
         }
@@ -306,12 +306,41 @@ class Web extends Controller
             return;
         }
 
+        if(!empty($data["type"]) && $data["type"] == "mudar"){
+            $document = $data["document"];
+            $user = (new User())->find("document = :d", "d={$document}")->fetch(true);
+            
+            if(!$user){
+                $user = (new AppStudent())->find("document = :d", "d={$document}")->fetch(true);
+            }
+
+            if(!$user){
+                $this->message->warning("Usuários não encontrado")->flash();
+                redirect("/certificado/{$document}/app");
+            }
+
+            echo $this->view->render("certificate-students", [
+                "head" => $head,
+                "document" => $document,
+                "students" => $user
+            ]);
+            return;
+
+        }
+
         if(!empty($data["type"]) && $data["type"] == "app"){
             $document = $data["document"];
-            $user = (new User())->findByDocument($document);
+            $id = $data["id"];
+            
+            if(empty($id)){
+                $this->message->warning("Informações não encontradas")->flash();
+                redirect("/certificado");
+            }
+            
+            $user = (new User())->find("id = :id AND document = :d", "id={$id}&d={$document}")->fetch();
             $student = false;
             if(!$user){
-                $user = (new AppStudent())->findByDocument($document);
+                $user = (new AppStudent())->find("id = :id AND document = :d", "id={$id}&d={$document}")->fetch();
                 if($user->type == "black"){
                     $student = (new AppBlackBelt())->findById($user->id);
                 }else{
@@ -342,14 +371,20 @@ class Web extends Controller
 
         if(!empty($data["type"]) && $data["type"] == "certificado"){
             $document = $data["document"];
-            $user = (new User())->findByDocument($document);
+            $id = $data["id"];
+            if(empty($id)){
+                $this->message->warning("Informações não encontradas")->flash();
+                redirect("/certificado");
+            }
+
+            $user = (new User())->find("id = :id AND document = :d", "id={$id}&d={$document}")->fetch();
             if(!$user){
-                $user = (new AppStudent())->findByDocument($document);
+                $user = (new AppStudent())->find("id = :id AND document = :d", "id={$id}&d={$document}")->fetch();
             }
 
             if(!$user){
                 $this->message->warning("Usuário não encontrado")->flash();
-                redirect("/certificado/{$document}/app");
+                redirect("/certificado");
             }
 
             $data_obj = new \DateTime("now");

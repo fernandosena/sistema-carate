@@ -38,7 +38,7 @@
             <?php endif; ?>
             <?php if(empty($renew)): ?>
                 <p>Clique no botão abaixo para gerar o seu certificado</p>
-                <a style="text-decoration: none" href="<?= url("certificado/{$document}/certificado") ?>">
+                <a style="text-decoration: none" href="<?= url("certificado/{$document}/certificado/{$user->id}") ?>">
                     <button class="auth_form_btn transition gradient gradient-green gradient-hover">Gerar certificado</button>
                 </a>
             <?php endif; ?>
