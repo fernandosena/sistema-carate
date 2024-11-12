@@ -404,22 +404,22 @@ class App extends Controller
             return;
         }
 
-        if (request_limit("appsupport", 3, 60 * 5)) {
-            $json["message"] = $this->message->warning("Por favor, aguarde 5 minutos para enviar novos contatos, sugestões ou reclamações")->render();
-            echo json_encode($json);
-            return;
-        }
+        // if (request_limit("appsupport", 3, 60 * 5)) {
+        //     $json["message"] = $this->message->warning("Por favor, aguarde 5 minutos para enviar novos contatos, sugestões ou reclamações")->render();
+        //     echo json_encode($json);
+        //     return;
+        // }
 
-        if (request_repeat("message", $data["message"])) {
-            $json["message"] = $this->message->info("Já recebemos sua solicitação {$this->user->first_name}. Agradecemos pelo contato e responderemos em breve.")->render();
-            echo json_encode($json);
-            return;
-        }
+        // if (request_repeat("message", $data["message"])) {
+        //     $json["message"] = $this->message->info("Já recebemos sua solicitação {$this->user->first_name}. Agradecemos pelo contato e responderemos em breve.")->render();
+        //     echo json_encode($json);
+        //     return;
+        // }
 
         $subject = date_fmt() . " - {$data["subject"]}";
         $message = filter_var($data["message"], FILTER_SANITIZE_STRING);
 
-        $view = new View(__DIR__ . "/../../shared/views/email");
+        $view = new View(__DIR__ . "/../../../shared/views/email");
         $body = $view->render("mail", [
             "subject" => $subject,
             "message" => str_textarea($message)
@@ -430,7 +430,7 @@ class App extends Controller
             $body,
             CONF_MAIL_SUPPORT,
             "Suporte " . CONF_SITE_NAME
-        )->queue($this->user->email, "{$this->user->first_name} {$this->user->last_name}");
+        )->send();
 
         $this->message->success("Recebemos sua solicitação {$this->user->first_name}. Agradecemos pelo contato e responderemos em breve.")->flash();
         $json["reload"] = true;
