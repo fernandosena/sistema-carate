@@ -76,6 +76,9 @@
                                 <?php if(!empty($student->email)): ?>
                                 <li><span>E-mail:</span></span><?= $student->email ?></span></li>
                                 <?php endif; ?>
+                                <?php if(!empty($student->mother_name)): ?>
+                                <li><span>Nome responsável:</span></span><?= $student->mother_name ?></span></li>
+                                <?php endif; ?>
                                 <li><span>Data de nascimento:</span></span><?= date("d/m/Y", strtotime($student->datebirth)) ?></span></li>
                                 <li><span>CPF:</span></span><?= $student->document ?></span></li>
                                 <li><span>Telefone:</span></span><?= $student->phone ?></span></li>
