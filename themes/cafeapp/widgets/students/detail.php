@@ -89,6 +89,8 @@
                                     <strong class="badge bg-<?= ($student->status == 'activated') ? 'success': (($student->status == 'pending') ? 'warning' : 'danger') ?>"><?= ($student->status == 'activated') ? 'Ativo': (($student->status == 'pending') ? 'Pendente' : 'Desativado') ?></strong>
                                 </span>
                                 </li>
+                                <li><span>Descrição:</span></span><?= $student->description ?></span></li>
+                                <li>
                             </ul>
                         </div>
                     </div>

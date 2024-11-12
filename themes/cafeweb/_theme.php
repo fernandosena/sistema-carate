@@ -23,7 +23,10 @@
 <header class="main_header gradient gradient-green">
     <div class="container">
         <div class="main_header_logo">
-            <h1><a class="icon-cog transition" title="Home" href="<?= url(); ?>"><?= CONF_SITE_NAME ?></a></h1>
+            <div class="app-logo">
+                <img src="<?= (conf()->logo) ? image(conf()->logo, 300, 300) : theme("dist/img/AdminLTELogo.png", CONF_VIEW_ADMIN) ?>" alt="<?= CONF_SITE_NAME ?> Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <h1><a class="transition" href="<?= url("/app"); ?>" title="<?= conf()->title ?? CONF_SITE_NAME ?>"><?= conf()->title ?? CONF_SITE_NAME ?></a></h1>
+            </div>
         </div>
 
         <nav class="main_header_nav">

@@ -105,12 +105,6 @@
                         <input type="text" name="email" value="<?= $user->phone ?>" readonly>
                     </label>
                 </div>
-                <div class="label_group_div">
-                    <label>
-                        <div><span class="icon-user">Descrição:</span></div>
-                        <input type="text" name="email" value="<?= $user->description ?>" readonly>
-                    </label>
-                </div>
             </form>
         </div>
         <div class="help text">

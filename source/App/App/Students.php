@@ -80,7 +80,6 @@ class Students extends App
             #cadastra faixa preta
             if($data["type"] == "black"){
                 $studentCreate = new AppBlackBelt();
-                $studentCreate->email = $data["email"];
             }else{
                 #cadastra faixa Kyus
                 $studentCreate = new AppKyus();
@@ -89,6 +88,7 @@ class Students extends App
                 }
             }
 
+            $studentCreate->email = $data["email"];
             $studentCreate->user_id = $this->user->id;
             $studentCreate->first_name = $data["first_name"];
             $studentCreate->last_name = $data["last_name"];
@@ -152,7 +152,6 @@ class Students extends App
             if($data["type"] == "black"){
                 $student = (new AppBlackBelt())->find("user_id = :user AND id = :id",
                 "user={$this->user->id}&id={$data["id"]}")->fetch();
-                $student->email = $data["email"];
             }else{
                 #cadastra faixa Kyus
                 $student = (new AppKyus())->find("user_id = :user AND id = :id",
@@ -170,6 +169,7 @@ class Students extends App
 
             $student->first_name = $data["first_name"];
             $student->last_name = $data["last_name"];
+            $student->email = $data["email"];
             $student->datebirth = date_fmt_back($data["datebirth"]);
             $student->document = preg_replace("/[^0-9]/", "", $data["document"]);
             $student->zip = preg_replace("/[^0-9]/", "", $data["zip"]);

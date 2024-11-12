@@ -192,13 +192,14 @@ class AppKyus extends Model
         if (!empty($this->id)) {
             $AppBlackBeltId = $this->id;
 
-            if ($this->find("document = :d AND id != :i", "d={$this->document}&i={$AppBlackBeltId}", "id")->fetch()) {
-                $this->message->warning("O CPF informado já está cadastrado");
-                return false;
-            }
 
-            if(!empty($this->document)){
-                if ((new User())->find("document = :d", "d={$this->document}", "id")->fetch()) {
+            if(empty($this->mother_name)){
+                if ($this->find("email = :d AND id != :i", "d={$this->email}&i={$AppBlackBeltId}", "id")->fetch()) {
+                    $this->message->warning("O E-mail informado já está cadastrado");
+                    return false;
+                }
+
+                if ($this->find("document = :d AND id != :i", "d={$this->document}&i={$AppBlackBeltId}", "id")->fetch()) {
                     $this->message->warning("O CPF informado já está cadastrado");
                     return false;
                 }
@@ -214,13 +215,13 @@ class AppKyus extends Model
 
         /** AppBlackBelt Create */
         if (empty($this->id)) {
-            if ($this->findByDocument($this->document, "id")) {
-                $this->message->warning("O CPF informado já está cadastrado");
-                return false;
-            }
+            if(empty($this->mother_name)){
+                if ($this->findByEmail($this->email, "id")) {
+                    $this->message->warning("O e-mail informado já está cadastrado");
+                    return false;
+                }
 
-            if(!empty($this->document)){
-                if ((new User())->find("document = :d", "d={$this->document}", "id")->fetch()) {
+                if ($this->findByDocument($this->document, "id")) {
                     $this->message->warning("O CPF informado já está cadastrado");
                     return false;
                 }

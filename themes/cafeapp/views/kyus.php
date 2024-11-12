@@ -108,13 +108,17 @@
             <div class="label_group">
                 <label>
                     <span class="field icon-map-marker">Complemento:</span>
-                    <input type="text" name="complement"  <?= (!empty($student)) ? null : "disabled" ?> value="<?= $student->complement ?>" class="radius" placeholder="Complemento" data-input>
+                    <input type="text" name="complement" <?= (!empty($student)) ? null : "disabled" ?> value="<?= $student->complement ?>" class="radius" placeholder="Complemento" data-input>
                 </label>
                 <label>
                     <span class="field icon-phone">Celular:</span>
                     <input type="text" name="phone" value="<?= $student->phone ?>"  class="radius mask-phone" placeholder="Ex: (99) 9 9999-9999" required>
                 </label>
             </div>
+            <label>
+                <span class="field icon-envelope">E-mail:</span>
+                <input class="radius" type="text" name="email" value="<?= ($student->email) ?? null ?>" placeholder="Ex: exemplo@gmail.com" required/>
+            </label>
             <?php if (empty($student)): ?>
                 <label>
                     <span class="field icon-filter">Graduação:</span>
