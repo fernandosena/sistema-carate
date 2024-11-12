@@ -138,7 +138,7 @@ class Students extends App
 
             $hbelt->graduation_id = $data["graduation"];
             $hbelt->status = "activated";
-            $hbelt->description = "Definido ao cadastrar aluno - (Cadastrado por: {$this->user->email})";
+            $hbelt->description = "Cadastro inserido pelo Instrutor {$this->user->fullName()}, na data de ";
             $hbelt->save();
 
             $this->message->success("Aluno cadastrado com sucesso...")->flash();

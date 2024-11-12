@@ -44,10 +44,12 @@ class Certificate {
     function __construct($name, $date, $cpf, $model)
     {
         $this->pdf = new Fpdf();
+        $this->pdf->AddFont('DINNeueRoman','B','DINNeueRoman.php'); //Bold
         $this->name = $name;
         $this->date = $date;
         $this->cpf = $cpf;
         $this->model = $model;
+        
     }
 
     function setColorName($r = 0, $g = 0, $b = 0){
@@ -118,13 +120,15 @@ class Certificate {
         $this->pdf->Image($this->model,0,0,295);
 
         // Mostrar o nome
-        $this->pdf->SetFont($this->dataName["font"], '', $this->dataName["size"]);
+        $this->pdf->SetFont('DINNeueRoman', 'B', $this->dataName["size"]);
+        // $this->pdf->SetFont($this->dataName["font"], '', $this->dataName["size"]);
         $this->pdf->SetTextColor($this->dataName["color"]["r"], $this->dataName["color"]["g"], $this->dataName["color"]["b"]);
         $this->pdf->SetXY($this->dataName["x"],$this->dataName["y"]);
         $this->pdf->MultiCell($this->dataName["w"], $this->dataName["h"], $this->name, $this->dataName["border"], $this->dataName["align"], $this->dataName["fill"]);
 
         
-        $this->pdf->SetFont($this->dataDate["font"], '', $this->dataDate["size"]);
+        $this->pdf->SetFont('DINNeueRoman', 'B', $this->dataDate["size"]);
+        // $this->pdf->SetFont($this->dataDate["font"], '', $this->dataDate["size"]);
         $this->pdf->SetTextColor($this->dataDate["color"]["r"], $this->dataDate["color"]["g"], $this->dataDate["color"]["b"]);
         $this->pdf->SetXY($this->dataDate["x"],$this->dataDate["y"]);
         $this->pdf->MultiCell($this->dataDate["w"], $this->dataDate["h"], $this->date, $this->dataDate["border"], $this->dataDate["align"], $this->dataDate["fill"]);
