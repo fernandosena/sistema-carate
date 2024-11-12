@@ -35,6 +35,7 @@
                 <th>Status</th>
                 <th>Renovação</th>
                 <th>Graduação</th>
+                <th>Certificado</th>
             </thead>
             <tbody>
                 <?php
@@ -92,6 +93,9 @@
                             <?php
                                 }
                             ?>
+                        </td>
+                        <td>
+                            <a class="btn bg-info icon-print" target="__blank" href="<?= url("certificado/{$student->document}/certificado") ?>">Imprimir Certificado</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

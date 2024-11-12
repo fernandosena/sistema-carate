@@ -9,6 +9,10 @@ body {
     font-family: 'Open Sans', sans-serif;
     background-color: var(--body-bg);
 }
+.bg-info{
+    background-color: var(--color-blue);
+    color: #fff;
+}
 .label_group_div{
     display: flex;
     gap: 10px;
