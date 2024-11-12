@@ -21,9 +21,7 @@
                                     <h4><?= $student->fullName() ?></h4>
                                     <p>Cadastro: <?= date_fmt($student->created_at, "d/m/y \à\s H\hi"); ?></p>
 
-                                    <?php if(!empty($type) && $type == "black"): ?>
                                     <p>Endereço: <?= $student->address ?>, <?= $student->number ?> <?= $student->complement ?>, <?= $student->city ?> - <?= $student->state ?> - <?= $student->zip ?></p>
-                                    <?php endif; ?>
                                 </div>
                             </div>
                             <div class="list-group list-group-flush text-center mt-4">
@@ -73,33 +71,22 @@
                     </div>
                     <div class="card mt-4">
                         <div class="card-body p-0 table-responsive">
-                            <h4 class="p-3 mb-0">Detalhes</h4>
-                            <table class="table mb-0">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Descrição</th>
-                                        <?php if(!empty($type) && $type == "black"): ?>
-                                            <th scope="col">E-mail</th>
-                                            <th scope="col">Telefone</th>
-                                        <?php else: ?>
-                                            <th scope="col">CPF</th>
-                                        <?php endif; ?>
-                                        <th scope="col">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><?= (!empty($student->description)) ? $student->description : "--------" ?></td>
-                                        <?php if(!empty($type) && $type == "black"): ?>
-                                            <td><?= $student->email ?></td>
-                                            <td><?= $student->phone ?></td>
-                                        <?php else: ?>
-                                            <td><?= $student->document ?></td>
-                                        <?php endif; ?>
-                                        <td><strong class="badge bg-<?= ($student->status == 'activated') ? 'success': (($student->status == 'pending') ? 'warning' : 'danger') ?>"><?= ($student->status == 'activated') ? 'Ativo': (($student->status == 'pending') ? 'Pendente' : 'Desativado') ?></strong></span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <h4 class="p-3 mb-0">Informações</h4>
+                            <ul class="card-body informacoes-card">
+                                <?php if(!empty($student->email)): ?>
+                                <li><span>E-mail:</span></span><?= $student->email ?></span></li>
+                                <?php endif; ?>
+                                <li><span>Data de nascimento:</span></span><?= date("d/m/Y", strtotime($student->datebirth)) ?></span></li>
+                                <li><span>CPF:</span></span><?= $student->document ?></span></li>
+                                <li><span>Telefone:</span></span><?= $student->phone ?></span></li>
+                                <li><span>Dojo:</span></span><?= $student->dojo ?></span></li>
+                                <li>
+                                <span>Status:</span>
+                                <span>
+                                    <strong class="badge bg-<?= ($student->status == 'activated') ? 'success': (($student->status == 'pending') ? 'warning' : 'danger') ?>"><?= ($student->status == 'activated') ? 'Ativo': (($student->status == 'pending') ? 'Pendente' : 'Desativado') ?></strong>
+                                </span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     <div class="card mt-4">
