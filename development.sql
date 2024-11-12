@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql:3306
--- Tempo de geração: 04/11/2024 às 17:41
+-- Tempo de geração: 12/11/2024 às 16:58
 -- Versão do servidor: 5.7.44
 -- Versão do PHP: 8.2.25
 
@@ -158,7 +158,7 @@ CREATE TABLE `app_students` (
   `dojo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `last_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `datebirth` date NOT NULL,
   `mother_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `document` varchar(11) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -223,7 +223,7 @@ CREATE TABLE `app_wallets` (
 --
 
 INSERT INTO `app_wallets` (`id`, `user_id`, `wallet`, `free`, `created_at`, `updated_at`) VALUES
-(1, 2, 'Minha Carteira', 1, '2024-11-04 11:54:44', '2024-11-04 11:54:44');
+(2, 3, 'Minha Carteira', 1, '2024-11-11 13:55:16', '2024-11-11 13:55:16');
 
 -- --------------------------------------------------------
 
@@ -294,6 +294,25 @@ CREATE TABLE `categories` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `conf`
+--
+
+CREATE TABLE `conf` (
+  `id` int(11) NOT NULL,
+  `logo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Despejando dados para a tabela `conf`
+--
+
+INSERT INTO `conf` (`id`, `logo`, `title`) VALUES
+(1, 'images/2024/11/logo.png', 'IOGKF');
 
 -- --------------------------------------------------------
 
@@ -425,7 +444,13 @@ CREATE TABLE `report_access` (
 INSERT INTO `report_access` (`id`, `users`, `views`, `pages`, `created_at`, `updated_at`) VALUES
 (1, 1, 1, 5, '2024-11-02 16:50:42', '2024-11-02 18:25:30'),
 (2, 1, 1, 3, '2024-11-03 23:16:01', '2024-11-03 23:16:42'),
-(3, 1, 2, 188, '2024-11-04 11:02:18', '2024-11-04 17:37:53');
+(3, 1, 2, 188, '2024-11-04 11:02:18', '2024-11-04 17:37:53'),
+(4, 3, 3, 232, '2024-11-11 13:00:13', '2024-11-11 17:54:51'),
+(5, 3, 6, 261, '2024-11-12 12:19:17', '2024-11-12 16:57:10'),
+(6, 1, 1, 6, '2025-01-11 15:28:30', '2025-01-11 15:37:08'),
+(7, 1, 1, 5, '2025-02-11 15:37:11', '2025-02-11 15:37:14'),
+(8, 1, 1, 2, '2025-03-11 15:37:04', '2025-03-11 15:37:05'),
+(9, 1, 1, 1, '2026-02-11 15:37:07', '2026-02-11 15:37:07');
 
 -- --------------------------------------------------------
 
@@ -485,8 +510,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `email`, `password`, `level`, `forget`, `datebirth`, `document`, `photo`, `zip`, `state`, `city`, `address`, `neighborhood`, `number`, `complement`, `phone`, `graduation`, `dojo`, `renewal`, `renewal_data`, `last_renewal_data`, `account_status`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', 'Sistema', 'admin@sistema.com.br', '$2y$10$5JveWItTSNzzD1s1yPv4F...v2PAuMAWxaViYsPg6rzmR/U73RxAK', 5, NULL, '2024-11-02', '11111', NULL, '11111', '11111', '11111', '11111', '11111', '11111', NULL, '111111', 1, '11111', '111111', '2024-11-02 16:57:40', '2024-11-02 16:57:40', 'registered', 'activated', '2024-11-02 16:57:40', NULL),
-(2, 'Fernando', 'Sena', 'fernandocarvalho.sena@gmail.com', '$2y$10$sv7yxp2POiXe6LdfvNvHSeucQr1UxYXyxt4FUD.oFbssoAqu5owkO', 1, NULL, '1999-02-25', '12687939498', NULL, '05207130', 'SP', 'São Paulo', 'Rua Magalhães Lemos', 'Vila Caiúba', '199', '', '(11) 1 1111-1111', 24, 't1,t2', NULL, '2024-11-04 11:54:25', '2024-11-04 11:54:25', 'registered', 'activated', '2024-11-04 11:54:25', NULL);
+(1, 'Admin sistema', 'Sistema', 'admin@sistema.com.br', '$2y$10$5JveWItTSNzzD1s1yPv4F...v2PAuMAWxaViYsPg6rzmR/U73RxAK', 5, NULL, '2024-11-02', '11111', 'images/2024/11/admin-sistema-sistema.png', '05207130', 'SP', 'São Paulo', 'Rua Magalhães Lemos', 'Vila Caiúba', '11111', '', '(11) 1 111', 24, '11111', '111111', '2024-11-02 16:57:40', '2024-11-02 16:57:40', 'registered', 'activated', '2024-11-02 16:57:40', '2024-11-12 16:51:45'),
+(3, 'Fernando', 'Sena', 'fernandocarvalho.sena@gmail.com', '$2y$10$AL4GenpyVi2v6i/wAtFxz.tse4qldkyTsqBr8Ed96bC5WTU/2eH2O', 1, NULL, '1999-02-25', '11111111111', NULL, '05207130', 'SP', 'São Paulo', 'Rua Magalhães Lemos', 'Vila Caiúba', '111', '', '(11) 1 1111-1111', 24, 'teste', NULL, '2024-11-11 13:55:05', '2024-11-11 13:55:05', 'registered', 'activated', '2024-11-11 13:55:05', NULL);
 
 --
 -- Índices para tabelas despejadas
@@ -549,7 +574,7 @@ ALTER TABLE `app_plans`
 --
 ALTER TABLE `app_students`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `document` (`document`);
 ALTER TABLE `app_students` ADD FULLTEXT KEY `full_text` (`first_name`,`last_name`,`email`);
 
 --
@@ -579,6 +604,12 @@ ALTER TABLE `belts`
 --
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Índices de tabela `conf`
+--
+ALTER TABLE `conf`
+  ADD UNIQUE KEY `id` (`id`);
 
 --
 -- Índices de tabela `faq_channels`
@@ -702,7 +733,7 @@ ALTER TABLE `app_subscriptions`
 -- AUTO_INCREMENT de tabela `app_wallets`
 --
 ALTER TABLE `app_wallets`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de tabela `belts`
@@ -715,6 +746,12 @@ ALTER TABLE `belts`
 --
 ALTER TABLE `categories`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `conf`
+--
+ALTER TABLE `conf`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de tabela `faq_channels`
@@ -756,7 +793,7 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT de tabela `report_access`
 --
 ALTER TABLE `report_access`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de tabela `report_online`
@@ -768,7 +805,7 @@ ALTER TABLE `report_online`
 -- AUTO_INCREMENT de tabela `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restrições para tabelas despejadas

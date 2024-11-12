@@ -21,7 +21,10 @@
 
 <div class="app">
     <header class="app_header">
-        <h1><a class="icon-cog transition" href="<?= url("/app"); ?>" title="<?= CONF_SITE_NAME ?>"><?= CONF_SITE_NAME ?></a></h1>
+        <div class="app-logo">
+            <img src="<?= (conf()->logo) ? image(conf()->logo, 300, 300) : theme("dist/img/AdminLTELogo.png", CONF_VIEW_ADMIN) ?>" alt="<?= CONF_SITE_NAME ?> Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <h1><a class="transition" href="<?= url("/app"); ?>" title="<?= conf()->title ?? CONF_SITE_NAME ?>"><?= conf()->title ?? CONF_SITE_NAME ?></a></h1>
+        </div>
         <ul class="app_header_widget">
             <li data-mobilemenu="open" class="app_header_widget_mobile radius transition icon-menu icon-notext"></li>
         </ul>

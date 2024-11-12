@@ -148,8 +148,19 @@ class Students extends App
         }
         
         if ((!empty($data["action"]) && $data["action"] == "update") && !empty($data["id"])) {
-            $student = (new AppBlackBelt())->find("user_id = :user AND id = :id",
+            #cadastra faixa preta
+            if($data["type"] == "black"){
+                $student = (new AppBlackBelt())->find("user_id = :user AND id = :id",
                 "user={$this->user->id}&id={$data["id"]}")->fetch();
+                $student->email = $data["email"];
+            }else{
+                #cadastra faixa Kyus
+                $student = (new AppKyus())->find("user_id = :user AND id = :id",
+                "user={$this->user->id}&id={$data["id"]}")->fetch();;
+                if(!empty($data["mother_name"])){
+                    $student->mother_name = $data["mother_name"];
+                }
+            }
 
             if (!$student) {
                 $json["message"] = $this->message->error("Ooops! Não foi possível carregar a fatura {$this->user->first_name}. Você pode tentar novamente.")->render();
@@ -159,7 +170,6 @@ class Students extends App
 
             $student->first_name = $data["first_name"];
             $student->last_name = $data["last_name"];
-            $student->email = $data["email"];
             $student->datebirth = date_fmt_back($data["datebirth"]);
             $student->document = preg_replace("/[^0-9]/", "", $data["document"]);
             $student->zip = preg_replace("/[^0-9]/", "", $data["zip"]);

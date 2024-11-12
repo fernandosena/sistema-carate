@@ -9,6 +9,14 @@ body {
     font-family: 'Open Sans', sans-serif;
     background-color: var(--body-bg);
 }
+.app-logo{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.brand-image{
+    width: 50px;
+}
 .bg-info{
     background-color: var(--color-blue);
     color: #fff;
