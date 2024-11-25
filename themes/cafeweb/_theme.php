@@ -22,26 +22,28 @@
 <!--HEADER-->
 <header class="main_header gradient gradient-green">
     <div class="container">
-        <div class="main_header_logo">
-            <div class="app-logo">
-                <img src="<?= (conf()->logo) ? image(conf()->logo, 300, 300) : theme("dist/img/AdminLTELogo.png", CONF_VIEW_ADMIN) ?>" alt="<?= CONF_SITE_NAME ?> Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <h1><a class="transition" href="<?= url("/app"); ?>" title="<?= conf()->title ?? CONF_SITE_NAME ?>"><?= conf()->title ?? CONF_SITE_NAME ?></a></h1>
+        <?php if(empty($document)): ?>
+            <div class="main_header_logo">
+                <div class="app-logo">
+                    <img src="<?= (conf()->logo) ? image(conf()->logo, 300, 300) : theme("dist/img/AdminLTELogo.png", CONF_VIEW_ADMIN) ?>" alt="<?= CONF_SITE_NAME ?> Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                    <h1><a class="transition" href="<?= url("/app"); ?>" title="<?= conf()->title ?? CONF_SITE_NAME ?>"><?= conf()->title ?? CONF_SITE_NAME ?></a></h1>
+                </div>
             </div>
-        </div>
 
-        <nav class="main_header_nav">
-            <span class="main_header_nav_mobile j_menu_mobile_open icon-menu icon-notext radius transition"></span>
-            <div class="main_header_nav_links j_menu_mobile_tab">
-                <span class="main_header_nav_mobile_close j_menu_mobile_close icon-error icon-notext transition"></span>
-                <?php if (\Source\Models\Auth::user()): ?>
-                    <a class="link login transition radius icon-coffee" title="Controlar"
-                       href="<?= url("/app"); ?>">Controlar</a>
-                <?php else: ?>
-                    <a class="link login transition radius icon-sign-in" title="Entrar"
-                       href="<?= url("/entrar"); ?>">Entrar</a>
-                <?php endif; ?>
-            </div>
-        </nav>
+            <nav class="main_header_nav">
+                <span class="main_header_nav_mobile j_menu_mobile_open icon-menu icon-notext radius transition"></span>
+                <div class="main_header_nav_links j_menu_mobile_tab">
+                    <span class="main_header_nav_mobile_close j_menu_mobile_close icon-error icon-notext transition"></span>
+                    <?php if (\Source\Models\Auth::user()): ?>
+                        <a class="link login transition radius icon-coffee" title="Controlar"
+                        href="<?= url("/app"); ?>">Controlar</a>
+                    <?php else: ?>
+                        <a class="link login transition radius icon-sign-in" title="Entrar"
+                        href="<?= url("/entrar"); ?>">Entrar</a>
+                    <?php endif; ?>
+                </div>
+            </nav>
+        <?php endif; ?>
     </div>
 </header>
 

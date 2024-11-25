@@ -266,9 +266,9 @@ class Web extends Controller
 
             $document = preg_replace("/[^0-9]/", "", $data['document']);
 
-            $users = (new User())->find("document = :d", "d={$document}")->fetch(true);
+            $users = (new User())->find("document = :d AND status != 'pending'", "d={$document}")->fetch(true);
             if(!$users){
-                $users = (new AppStudent())->find("document = :d", "d={$document}")->fetch(true);
+                $users = (new AppStudent())->find("document = :d AND status != 'pending'", "d={$document}")->fetch(true);
             }
 
             if(!$users){
@@ -395,8 +395,9 @@ class Web extends Controller
                 redirect("/certificado/{$document}/app");
             }
     
-            $proximoano = date('Y', strtotime('+1 year'));
-            $date = "01 de Fevereiro de $proximoano";
+            // $proximoano = date('Y', strtotime('+1 year'));
+            $proximoano = date('Y');
+            $date = "31 de Dezembro de $proximoano";
             if(!empty($user->type)){
                 if($user->type == "black"){
                     $model = "certificado_faixa_preta.jpg";

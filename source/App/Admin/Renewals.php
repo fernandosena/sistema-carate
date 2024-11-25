@@ -131,7 +131,6 @@ class Renewals extends Admin
             url("/admin/assets/images/image.jpg"),
             false
         );
-
         echo $this->view->render("widgets/renewals/home", [
             "app" => "renewals/home",
             "head" => $head,

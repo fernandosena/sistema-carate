@@ -15,6 +15,7 @@
                                         <th>Nome</th>
                                         <th>Professor</th>
                                         <th>Graduação</th>
+                                        <th>Status</th>
                                         <th>Pagamento</th>
                                         <th>Multa</th>
                                         <th>Atualizar Graduação</th>
@@ -23,7 +24,7 @@
                                 <tbody>
                                     <?php foreach ($students as $student): ?>
                                         <?php $last_renewal_data = $student->last_renewal_data; ?>
-                                        <?php if(verify_renew($last_renewal_data) || $student->historicbeltscount()): ?>
+                                        <?php if(verify_renew($last_renewal_data) || $student->historicbeltscount() || $student->status == "pending"): ?>
                                             <tr>
                                                 <td><a href="<?= url("admin/students/$student->type/student/{$student->id}") ?>"><?= $student->fullName(); ?></a></td>
 
@@ -34,7 +35,24 @@
                                                 <?php endif; ?>
 
                                                 <td><?= $student->belt()->title ?> </td>
-
+                                                <td>
+                                                    <?php if($student->status == "pending"):?>
+                                                        <a href="#" class="btn bg-success"
+                                                    data-postbtn="<?= url("admin/students/$student->type/student") ?>"
+                                                    data-action="status"
+                                                    data-status="activated"
+                                                    data-user_id="<?= user(5)->id; ?>"
+                                                    data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Ativar</a>
+                                                    <a href="#" class="btn bg-warning"
+                                                    data-postbtn="<?= url("admin/students/$student->type/student") ?>"
+                                                    data-action="status"
+                                                    data-status="deactivated"
+                                                    data-user_id="<?= user(5)->id; ?>"
+                                                    data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-warning"></i> Desativar</a>
+                                                    <?php else: ?>
+                                                        atualizado
+                                                    <?php endif; ?>
+                                                </td>
                                                 <td>
                                                     <?php 
                                                     if(verify_renew($last_renewal_data)): ?>
@@ -111,6 +129,7 @@
                                         <th>Nome</th>
                                         <th>Professor</th>
                                         <th>Graduação</th>
+                                        <th>Status</th>
                                         <th>Pagamento</th>
                                         <th>Multa</th>
                                         <th>Atualizar Graduação</th>
