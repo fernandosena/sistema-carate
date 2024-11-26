@@ -299,7 +299,7 @@ class Instructors extends Admin
         $blacks = (new AppBlackBelt())->findByTeacher($userId);
         $kyus = (new AppKyus())->findByTeacher($userId);
         
-        $graduations = (new Belt())->find("title LIKE '%dan%'")->fetch(true);
+        $graduations = (new Belt())->find("title LIKE '%IOGKF%'  OR title LIKE '%dan%'")->fetch(true);
 
         echo $this->view->render("widgets/instructors/instructor", [
             "app" => "users/user",

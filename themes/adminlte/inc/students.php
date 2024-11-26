@@ -215,7 +215,7 @@
                     ?>
                     <select class="form-control" required name="graduation">
                         <?php foreach($form["graduations"] as $graduation): ?>
-                            <option <?= $select($graduation->id); ?> value="<?= $graduation->id ?>"><?= $graduation->title ?> - <?= $graduation->description ?></option>
+                            <option <?= $select($graduation->id); ?> value="<?= $graduation->id ?>"><?= $graduation->title ?></option>
                         <?php endforeach;   ?>
                     </select>
                 </div>

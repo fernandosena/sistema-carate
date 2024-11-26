@@ -23,8 +23,13 @@
                                 </thead>
                                 <tbody>
                                     <?php foreach ($students as $student): ?>
-                                        <?php $last_renewal_data = $student->last_renewal_data; ?>
-                                        <?php if(verify_renew($last_renewal_data) || $student->historicbeltscount() || $student->status == "pending"): ?>
+                                        <?php $last_renewal_data = $student->last_renewal_data; 
+                                        
+                                        $data_banco_obj = new DateTime($student->updated_at);
+                                        $data_atual_obj = new DateTime();
+                                        $intervalo = $data_atual_obj->diff($data_banco_obj);
+                                        ?>
+                                        <?php if(verify_renew($last_renewal_data) || $student->historicbeltscount() || $student->status == "pending" || ($student->status != "pending" && $intervalo->days == 0)): ?>
                                             <tr>
                                                 <td><a href="<?= url("admin/students/$student->type/student/{$student->id}") ?>"><?= $student->fullName(); ?></a></td>
 
@@ -43,14 +48,19 @@
                                                     data-status="activated"
                                                     data-user_id="<?= user(5)->id; ?>"
                                                     data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Ativar</a>
-                                                    <a href="#" class="btn bg-warning"
+                                                    <a href="#" class="btn bg-danger"
                                                     data-postbtn="<?= url("admin/students/$student->type/student") ?>"
                                                     data-action="status"
                                                     data-status="deactivated"
                                                     data-user_id="<?= user(5)->id; ?>"
-                                                    data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-warning"></i> Desativar</a>
+                                                    data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-erro"></i> Desativar</a>
                                                     <?php else: ?>
-                                                        atualizado
+                                                        <a href="#" class="btn bg-warning"
+                                                        data-postbtn="<?= url("admin/students/$student->type/student") ?>"
+                                                        data-action="status"
+                                                        data-status="pending"
+                                                        data-user_id="<?= user(5)->id; ?>"
+                                                        data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-warning"></i> Revogar</a>
                                                     <?php endif; ?>
                                                 </td>
                                                 <td>

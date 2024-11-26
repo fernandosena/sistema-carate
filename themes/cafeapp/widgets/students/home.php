@@ -83,12 +83,16 @@
                                 data-type="<?= $student->type; ?>"><i class="fa-solid fa-circle-check"></i> Cancelar graduação</a>
                             <?php
                                 }else{
-                            ?>
+                            ?>  
+                                <?php if($student->status == "activated"): ?>
                                 <a href="#" class="btn bg-success"
                                 data-post="<?= url("/app/alunos/faixa"); ?>"
                                 data-action="update-graduation"
                                 data-id="<?= $student->id ?>"
                                 data-type="<?= $student->type; ?>"><i class="fa-solid fa-circle-check"></i> Subir de graduação</a>
+                                <?php else: ?>
+                                    Atualizada
+                                <?php endif ?>
                             <?php
                                 }
                             ?>
