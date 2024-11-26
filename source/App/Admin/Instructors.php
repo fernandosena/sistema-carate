@@ -41,21 +41,7 @@ class Instructors extends Admin
             return;
         }
 
-        $search = null;
-        $users = (new User())->find("level < :l", "l=5");
-
-        if (!empty($data["search"]) && str_search($data["search"]) != "all") {
-            $search = str_search($data["search"]);
-            $users = (new User())->find("MATCH(first_name, last_name, email) AGAINST(:s)", "s={$search}");
-            if (!$users->count()) {
-                $this->message->info("Sua pesquisa não retornou resultados")->flash();
-                redirect("/admin/instructors/home");
-            }
-        }
-
-        $all = ($search ?? "all");
-        $pager = new Pager(url("/admin/instructors/home/{$all}/"));
-        $pager->pager($users->count(), 12, (!empty($data["page"]) ? $data["page"] : 1));
+        $users = (new User())->find("level < :l", "l=5")->fetch(true);
 
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Usuários",
@@ -68,9 +54,7 @@ class Instructors extends Admin
         echo $this->view->render("widgets/instructors/home", [
             "app" => "users/home",
             "head" => $head,
-            "search" => $search,
-            "users" => $users->order("first_name, last_name")->limit($pager->limit())->offset($pager->offset())->fetch(true),
-            "paginator" => $pager->render()
+            "users" => $users,
         ]);
     }
 
