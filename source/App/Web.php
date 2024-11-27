@@ -301,7 +301,8 @@ class Web extends Controller
         if(empty($data["document"])){
             echo $this->view->render("certificate", [
                 "head" => $head,
-                "document" => null
+                "document" => null,
+                "certificate" => true
             ]);
             return;
         }

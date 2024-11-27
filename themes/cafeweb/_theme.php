@@ -21,6 +21,7 @@
 
 <!--HEADER-->
 <header class="main_header gradient gradient-green">
+<?php if(empty($certificate)): ?>
     <div class="container">
         <?php if(empty($document)): ?>
             <div class="main_header_logo">
@@ -45,6 +46,16 @@
             </nav>
         <?php endif; ?>
     </div>
+    <?php else: ?>
+    <div class="container">
+        <div class="main_header_logo">
+            <div class="app-logo">
+                <img src="<?= (conf()->logo) ? image(conf()->logo, 300, 300) : theme("dist/img/AdminLTELogo.png", CONF_VIEW_ADMIN) ?>" alt="<?= CONF_SITE_NAME ?> Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <h1><?= conf()->title ?? CONF_SITE_NAME ?></h1>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
 </header>
 
 <!--CONTENT-->
