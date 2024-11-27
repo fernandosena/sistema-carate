@@ -27,7 +27,7 @@
 
         $this->insert("views/student", [
             "graduations" => (new \Source\Models\Belt())
-                ->find("title LIKE '%IOGKF%'  OR title LIKE '%dan%'")
+                ->find("title LIKE '%IOGKF%' OR title LIKE '%dan (%'")
                 ->order("title")
                 ->fetch(true)
         ]);

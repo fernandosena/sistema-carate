@@ -216,12 +216,12 @@ class App extends Controller
 
         if(!empty($valor)){
             if($valor < 13){
-                $type_age = 1;
+                $type_age = "age_range = 1 AND title NOT LIKE '%dan%'";
             }else{
-                $type_age = 2;
+                $type_age = "(age_range = 2 AND title NOT LIKE '%dan (%') OR title LIKE '%/%' OR title LIKE '%dan Jr%'";
             }
 
-            $graduations = (new Belt())->find("(age_range = :a OR position IS NULL) AND title NOT LIKE '%dan%'", "a={$type_age}")->order("position ASC")->fetch(true);
+            $graduations = (new Belt())->find("({$type_age} OR position IS NULL)")->order("position ASC")->fetch(true);
             if(!empty($graduations)){
                 foreach ($graduations as $graduation){
                     $dados[] = [

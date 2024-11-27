@@ -441,7 +441,7 @@ class Students extends Admin
         );
         
         if($data["type"] == "black"){
-            $graduations =(new Belt())->find("title LIKE '%dan%'")->order("title")->fetch(true);
+            $graduations =(new Belt())->find("title LIKE '%IOGKF%'  OR title LIKE '%dan (%'")->order("title")->fetch(true);
         }else{
             $graduations =(new Belt())->find("title NOT LIKE '%dan%'")->order("title")->fetch(true);
         }
