@@ -110,7 +110,8 @@
         <div class="help text">
             <ul class="timeline">
             <?php if(!empty($student)): ?>
-                <?php $c=0; foreach($student->historic(" AND status IS NOT 'disapprove'") as $historic):?>
+                <?php $c=0; foreach($student->historic() as $historic):?>
+                    <?php if($historic->status == "disapprove"){continue;} ?>
                     <?php  if($historic->status == "approved" && $c == 0){$c = 1;} ?>
                     <li <?= ($c == 1) ? 'class="active"': null?>>
                         <?php $data = $historic->findBelt($historic->graduation_id) ?>
