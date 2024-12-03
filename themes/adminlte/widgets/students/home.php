@@ -14,6 +14,9 @@
                                     <tr>
                                         <th>Foto</th>
                                         <th>Nome</th>
+                                        <th>Professor</th>
+                                        <th>Graduação</th>
+                                        <th>Status</th>
                                         <th>Opções</th>
                                     </tr>
                                 </thead>
@@ -26,9 +29,19 @@
                                         <td>
                                             <img class="profile-user-img img-fluid img-circle img-table" src="<?= $studentPhoto; ?>" alt="<?= $student->fullName(); ?>">
                                         </td>
-                                        <td><h3 class="profile-username text-center"><?= $student->fullName(); ?></h3></td>
+                                        <td><?= $student->fullName(); ?></td>
+                                        <td><?= $student->teacher()->first_name; ?></td>
+                                        <td><?= $student->belt()->title; ?></td>
+                                        <td><?php if($student->status == "activated"){
+                                            echo "<strong class='badge bg-success'>Ativado</strong>";
+                                        }else if($student->status == "deactivated"){
+                                            echo "<strong class='badge bg-danger'>Desativado</strong>";
+                                        }else{
+
+                                            echo "<strong class='badge bg-warning'>Pendente</strong>";
+                                        } ?></td>
                                         <td>
-                                        <a href="<?= url("/admin/students/{$type}/student/{$student->id}"); ?>" class="btn btn-primary btn-block"><b>Gerênciar</b></a>
+                                            <a href="<?= url("/admin/students/{$type}/student/{$student->id}"); ?>" class="btn btn-primary btn-block"><b>Gerênciar</b></a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -37,6 +50,9 @@
                                     <tr>
                                         <th>Foto</th>
                                         <th>Nome</th>
+                                        <th>Professor</th>
+                                        <th>Graduação</th>
+                                        <th>Status</th>
                                         <th>Opções</th>
                                     </tr>
                                 </tfoot>

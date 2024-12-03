@@ -59,6 +59,7 @@
             </div>
         </div>
         <div class="row">
+            <?php if($form["data"]->level != 5): ?>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>*CPF</label>
@@ -66,7 +67,8 @@
                     name="document" value="<?= ($form["data"]->document) ?>" class="form-control mask-doc" placeholder="CPF do usuário" required>
                 </div>
             </div>
-            <div class="col-sm-6">
+            <?php endif; ?>
+            <div class="<?= ($form["data"]->level != 5) ? "col-sm-6" : "col-sm-12" ?>">
                 <div class="form-group">
                     <label>*Nascimento</label>
                     <input type="date"

@@ -1,9 +1,7 @@
 <?php $this->layout("_theme"); ?>
 
 <div class="app_formbox app_widget">
-    <form class="app_form" method="post">
-        <input type="hidden" name="update" value="true"/>
-
+    <div class="app_form">
         <div class="app_formbox_photo">
             <div class="rounded j_profile_image thumb" style="background-image: url('<?= $photo; ?>')"></div>
         </div>
@@ -112,5 +110,20 @@
                 <span class="field icon-filter">Dojos:</span>
                 <input class="radius" type="text" name="email" value="<?= ($user->dojo) ?? null ?>" placeholder="Dojos" disabled/>
             </label>
-    </form>
+            <form class="app_form" action="<?= url("/app/profile") ?>" method="post">
+                <input type="hidden" name="update" value="true"/>
+
+                <div class="label_group">
+                    <label>
+                        <span class="field icon-unlock-alt">Senha</span>
+                        <input class="radius" type="password" name="password" placeholder="Senha"/>
+                    </label>
+                    <label>
+                        <span class="field icon-unlock-alt">Senha novamente</span>
+                        <input class="radius" type="password" name="repassword" placeholder="Senha novamente"/>
+                    </label>
+                </div>
+                <button class="btn radius transition">Atualizar senha</button>
+            </form>
+        </div>
 </div>

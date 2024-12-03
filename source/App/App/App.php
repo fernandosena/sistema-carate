@@ -585,25 +585,16 @@ class App extends Controller
     public function profile(?array $data): void
     {
         if (!empty($data["update"])) {
-            list($d, $m, $y) = explode("/", $data["datebirth"]);
             $user = (new User())->findById($this->user->id);
 
-            if (!empty($_FILES["photo"])) {
-                $file = $_FILES["photo"];
-                $upload = new Upload();
-
-                if ($this->user->photo()) {
-                    (new Thumb())->flush("storage/{$this->user->photo}");
-                    $upload->remove("storage/{$this->user->photo}");
-                }
-
-                if (!$user->photo = $upload->image($file, "{$user->first_name} {$user->last_name} " . time(), 360)) {
-                    $json["message"] = $upload->message()->before("Ooops {$this->user->first_name}! ")->after(".")->render();
-                    echo json_encode($json);
-                    return;
-                }
+            if($data["repassword"] != $data["password"]){
+                $json["message"] = $this->message->warning("A senhas informadas não são iguais")->render();
+                echo json_encode($json);
+                return;
             }
 
+            $user->password = $data["password"];
+            
             if (!$user->save()) {
                 $json["message"] = $user->message()->render();
                 echo json_encode($json);

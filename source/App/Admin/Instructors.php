@@ -181,7 +181,11 @@ class Instructors extends Admin
             $userUpdate->email = $data["email"];
             $userUpdate->password = (!empty($data["password"]) ? $data["password"] : $userUpdate->password);
             $userUpdate->datebirth = date_fmt_back($data["datebirth"]);
-            $userUpdate->document = preg_replace("/[^0-9]/", "", $data["document"]);
+
+            if($userUpdate->level != 5){
+                $userUpdate->document = preg_replace("/[^0-9]/", "", $data["document"]);
+            }
+            
             $userUpdate->zip = preg_replace("/[^0-9]/", "", $data["zip"]);
             $userUpdate->state = $data["state"];
             $userUpdate->city = $data["city"];

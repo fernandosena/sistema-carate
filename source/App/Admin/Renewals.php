@@ -112,8 +112,7 @@ class Renewals extends Admin
 
                     if(!empty($historics)){
                         foreach($historics as $historic){
-                            $historic->status = "disapprove";
-                            $historic->save();
+                            $historic->destroy();
                         }
                     }
                 }
