@@ -264,6 +264,8 @@ class Students extends Admin
 
             #atualizar faixa preta
             if($data["type"] == "black"){
+                $graduation = (new Belt())->findById($data["graduation"]);
+
                 $studentUpdate->user_id = $data["teacher"]; 
                 $studentUpdate->first_name = $data["first_name"];
                 $studentUpdate->last_name = $data["last_name"];
@@ -278,6 +280,13 @@ class Students extends Admin
                 $studentUpdate->number = $data["number"];
                 $studentUpdate->complement = $data["complement"];
                 $studentUpdate->phone = $data["phone"];
+
+                if(!empty($graduation->graduation_time)){
+                    if($studentUpdate->graduation != $data["graduation"]){
+                        $studentUpdate->next_graduation = date("Y-m-d", strtotime("+{$graduation->graduation_time} years"));
+                    }
+                }
+                
                 $studentUpdate->graduation = $data["graduation"];
                 $studentUpdate->description = $data["description"];
                 $studentUpdate->status = $data["status"];

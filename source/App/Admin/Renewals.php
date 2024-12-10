@@ -71,7 +71,18 @@ class Renewals extends Admin
                 return;
             }
 
-            $newGraduation = $findGraduation->position + 1;
+            if(empty($findGraduation->position)){
+                if($data["type_student"] == "black"){
+                    $findGraduation = (new Belt())->find("type_student = :t","t=black")->order("position ASC")->limit(1)->fetch();
+                    var_dump($findGraduation);
+                }else{
+                    $findGraduation = (new Belt())->find("age_range = :a AND type_student = :t","a={$type_age}&t=kyus")->order("position ASC")->limit(1)->fetch();
+                }
+                $newGraduation = $findGraduation->position;
+            }else{
+                $newGraduation = $findGraduation->position + 1;
+            }
+
             $nextGraduation = (new Belt())->find("age_range = :a AND position = :p","a={$type_age}&p={$newGraduation}")->limit(1)->fetch();
             
             if (!$nextGraduation) {
@@ -81,11 +92,24 @@ class Renewals extends Admin
             }
 
             if($data["type_action"] == "approved"){
+                if($nextGraduation->type_student == "black"){
+                    $studentUpdate = (new AppStudent())->findById($data["student_id"]);
+                    $studentUpdate->type = "black";
+                }
+
                 $studentUpdate->graduation = $nextGraduation->id;
                 $studentUpdate->status = "activated";
 
+                //Se o aluno for black e tiver tempo na graduação deve-se alterar next_graduation
+                if($nextGraduation->type_student == "black"){
+                    if(!empty($nextGraduation->graduation_time)){
+                        $studentUpdate->next_graduation = date("Y-m-d", strtotime("+{$nextGraduation->graduation_time} years"));
+                    }
+            
+                }
+
                 if($studentUpdate->save()){
-                    if($data["type_student"] == "black"){
+                    if($nextGraduation->type_student == "black"){
                         $historics = (new HistoricBelt())->find("black_belt_id = :h AND status = 'pending'", "h={$studentUpdate->id}")->fetch(true);     
                     }else{
                         #atualizar faixa Kyus

@@ -29,7 +29,7 @@
                                         <td>
                                             <img class="profile-user-img img-fluid img-circle img-table" src="<?= $studentPhoto; ?>" alt="<?= $student->fullName(); ?>">
                                         </td>
-                                        <td><?= $student->fullName(); ?></td>
+                                        <td><?= $student->fullName(); ?> <?= (calcularIdade($student->datebirth) < 13) ? "<strong class='badge bg-warning'>Até 12 anos</strong>": "" ?></td>
                                         <td><?= $student->teacher()->first_name; ?></td>
                                         <td><?= $student->belt()->title; ?></td>
                                         <td><?php if($student->status == "activated"){

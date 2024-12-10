@@ -68,6 +68,8 @@ class Instructors extends Admin
         if (!empty($data["action"]) && $data["action"] == "create") {
             $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
 
+            $graduation = (new Belt())->findById($data["graduation"]);
+            
             $userCreate = new User();
             $userCreate->first_name = $data["first_name"];
             $userCreate->last_name = $data["last_name"];
@@ -85,8 +87,12 @@ class Instructors extends Admin
             $userCreate->complement = $data["complement"];
             $userCreate->phone = $data["phone"];
             $userCreate->graduation = $data["graduation"];
+            if(!empty($graduation->graduation_time)){
+                $userCreate->next_graduation = date("Y-m-d", strtotime("+{$graduation->graduation_time} years"));
+            }
             $userCreate->dojo = implode(",", $data["dojo"]);
             $userCreate->status = $data["status"];
+            
 
             //upload photo
             if (!empty($_FILES["photo"])) {
@@ -169,6 +175,7 @@ class Instructors extends Admin
         if (!empty($data["action"]) && $data["action"] == "update") {
             $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
             $userUpdate = (new User())->findById($data["instructor_id"]);
+            $graduation = (new Belt())->findById($data["graduation"]);
 
             if (!$userUpdate) {
                 $this->message->error("Você tentou gerenciar um instrutor que não existe")->flash();
@@ -194,6 +201,13 @@ class Instructors extends Admin
             $userUpdate->number = $data["number"];
             $userUpdate->complement = $data["complement"];
             $userUpdate->phone = $data["phone"];
+
+            if(!empty($graduation->graduation_time)){
+                if($userUpdate->graduation != $data["graduation"]){
+                    $userUpdate->next_graduation = date("Y-m-d", strtotime("+{$graduation->graduation_time} years"));
+                }
+            }
+            
             $userUpdate->graduation = $data["graduation"];
             $userUpdate->status = $data["status"];
 

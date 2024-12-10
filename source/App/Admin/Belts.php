@@ -67,6 +67,11 @@ class Belts extends Admin
             $beltCreate = new Belt();
             $beltCreate->title = $data["title"];
             $beltCreate->age_range = $data["age_range"];
+            $beltCreate->type_student = $data["type_student"];
+
+            if(!empty($data["graduation_time"])){
+                $beltCreate->graduation_time = $data["graduation_time"];
+            }
 
             if(!empty($data["position"])){
                 $beltCreate->position = $data["position"];
@@ -98,6 +103,11 @@ class Belts extends Admin
 
             $beltUpdate->title = $data["title"];
             $beltUpdate->age_range = $data["age_range"];
+            $beltUpdate->type_student = $data["type_student"];
+            
+            if(!empty($data["graduation_time"])){
+                $beltUpdate->graduation_time = $data["graduation_time"];
+            }
 
             if(!empty($data["position"])){
                 $beltUpdate->position = $data["position"];

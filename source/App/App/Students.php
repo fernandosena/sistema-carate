@@ -79,7 +79,12 @@ class Students extends App
 
             #cadastra faixa preta
             if($data["type"] == "black"){
+                $graduation = (new Belt())->findById($data["graduation"]);
                 $studentCreate = new AppBlackBelt();
+
+                if(!empty($graduation->graduation_time)){
+                    $studentCreate->next_graduation = date("Y-m-d", strtotime("+{$graduation->graduation_time} years"));
+                }
             }else{
                 #cadastra faixa Kyus
                 $studentCreate = new AppKyus();

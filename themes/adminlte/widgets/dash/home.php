@@ -67,7 +67,7 @@
             </div>
 
             <div class="card-body">
-                <?php if(!empty($info)): ?>
+                <?php if(!empty($info["instructors"]) || !empty($info["black"])): ?>
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
@@ -76,13 +76,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($info as $user):
-                            ?>
-                            <tr>
-                                <td><a href="<?= url("/admin/instructors/instructor/{$user->user(5)->id}"); ?>"><?= $user->user(5)->fullName(); ?></a></td>
-                                <td><?= date_fmt($user->graduation_data, "d/m/Y"); ?></td>
-                            </tr>
-                            <?php endforeach; ?>
+                            <?php if(!empty($info["instructors"])): ?>
+                                <?php foreach ($info["instructors"] as $instructors): ?>
+                                <tr>
+                                    <td><a href="<?= url("/admin/instructors/instructor/{$instructors->id}"); ?>"><?= $instructors->fullName(); ?></a></td>
+                                    <td><?= date_fmt($instructors->next_graduation, "d/m/Y"); ?></td>
+                                </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                            <?php if(!empty($info["black"])): ?>
+                                <?php foreach ($info["black"] as $black):?>
+                                <tr>
+                                    <td><a href="<?= url("/admin/students/black/student/{$black->id}"); ?>"><?= $black->fullName(); ?></a></td>
+                                    <td><?= date_fmt($black->next_graduation, "d/m/Y"); ?></td>
+                                </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                         <tfoot>
                             <tr>

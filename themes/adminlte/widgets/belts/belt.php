@@ -40,6 +40,29 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Tempo de graduação</label>
+                                <select name="graduation_time" class="form-control">
+                                    <option value="">=== Nenhum ===</option>
+                                    <?php for($i = 1;$i <= 10; $i ++): ?>
+                                        <option value="<?= $i ?>"><?= $i ?>  Ano(s)</option>
+                                    <?php endfor; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Tipo de estudante</label>
+                                <select name="type_student" class="form-control">
+                                    <option value="both">Todos</option>
+                                    <option value="kyus">Kyus</option>
+                                    <option value="black">Black</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Cadastrar Graduação</button>
@@ -87,6 +110,29 @@
                                     <?php for($i = 1;$i <= 20; $i ++): ?>
                                         <option value="<?= $i ?>" <?= ($belt->position == $i) ? "selected" : null ?>><?= $i ?></option>
                                     <?php endfor; ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Tempo de graduação</label>
+                                <select name="graduation_time" class="form-control">
+                                    <option value="">=== Nenhum ===</option>
+                                    <?php for($i = 1;$i <= 10; $i ++): ?>
+                                        <option value="<?= $i ?>" <?= ($belt->graduation_time == $i) ? "selected" : null ?>><?= $i ?> Ano(s)</option>
+                                    <?php endfor; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Tipo de estudante</label>
+                                <select name="type_student" class="form-control">
+                                    <option <?= ($belt->type_student == "both") ? "selected" : null ?> value="both">Todos</option>
+                                    <option  <?= ($belt->type_student == "kyus") ? "selected" : null ?> value="kyus">Kyus</option>
+                                    <option  <?= ($belt->type_student == "black") ? "selected" : null ?> value="black">Black</option>
                                 </select>
                             </div>
                         </div>

@@ -44,7 +44,12 @@ function verify_multa_data($data = "now")
 
     return $multa;
 }
-
+function calcularIdade($dataNascimento) {
+    $dataNascimento = new DateTime($dataNascimento);
+    $dataAtual = new DateTime();
+    $intervalo = $dataNascimento->diff($dataAtual);
+    return $intervalo->y;
+}
 function verify_renewal_data($renewal, $last_renewal_data, $instructor = false): bool|string
 {
     if(!empty($last_renewal_data)){

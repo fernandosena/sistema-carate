@@ -251,8 +251,20 @@
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="<?= url("admin") ?>">Home</a></li>
-                            <li class="breadcrumb-item active">Dashboard</li>
+                                <?php
+                                    $array = array_filter(explode("/", $_SERVER["REQUEST_URI"]));
+                                    $array_new = array_values($array);
+
+                                    array_splice($array_new, 0, 2);
+                                    $url = "admin/";
+                                    foreach ($array_new as $value) {
+                                    $url .= "{$value}/";
+                                ?>
+                                <li class="breadcrumb-item"><a href="<?= url($url) ?>"><?= ucfirst($value) ?></a></li>
+                                <?php
+                                    }
+                                    //active
+                                ?>
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
