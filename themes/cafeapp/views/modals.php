@@ -39,6 +39,8 @@
         //         ->order("position ASC")
         //         ->fetch(true),
         // ]
+
+        $this->insert("views/payment");
     ?>
     <!--SUPPORT-->
     <div class="app_modal_box app_modal_contact">

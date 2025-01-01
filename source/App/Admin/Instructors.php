@@ -3,6 +3,7 @@
 namespace Source\App\Admin;
 
 use Source\Models\App\AppKyus;
+use Source\Models\App\AppPayments;
 use Source\Models\App\AppStudent;
 use Source\Models\Belt;
 use Source\Models\User;
@@ -75,7 +76,6 @@ class Instructors extends Admin
         );
 
         $graduations = (new Belt())->find("title LIKE '%IOGKF%'  OR title LIKE '%dan%'")->fetch(true);
-
         echo $this->view->render("widgets/instructors/profile", [
             "app" => "users/home",
             "head" => $head,
@@ -333,6 +333,8 @@ class Instructors extends Admin
         
         $graduations = (new Belt())->find("title LIKE '%IOGKF%'  OR title LIKE '%dan%'")->fetch(true);
 
+        $payments = (new AppPayments())->find("user_id = :id", "id={$user->id}")->fetch(true);
+
         $all = (new AppStudent())->find("user_id = :id", "id={$user->id}");
         $dan = (new AppStudent())->find("user_id = :id AND type = :t", "id={$user->id}&t=black");
         $kyu1 = (new AppStudent())->query("SELECT s.id, s.user_id, s.first_name, s.last_name FROM belts b JOIN app_students s ON b.id = s.graduation WHERE b.age_range = :ar AND b.type_student = :ts AND s.user_id = :ud", "ar=1&ts=kyus&ud={$user->id}");
@@ -342,6 +344,7 @@ class Instructors extends Admin
             "app" => "users/user",
             "head" => $head,
             "user" => $user,
+            "payments" => $payments,
             "form" => [
                 "url" => url("admin/instructors/instructor/{$user->id}"),
                 "graduations" => $graduations,

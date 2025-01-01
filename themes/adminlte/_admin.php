@@ -180,7 +180,7 @@
                                         ],
                                         [
                                             "icon"=>"fa-user-plus",
-                                            "href"=>"instructors/instructor",
+                                            "href"=>"instructors/instructor/create/profile",
                                             "title"=>"Cadastrar",
                                         ]
                                     ],

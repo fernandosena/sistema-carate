@@ -252,6 +252,21 @@ $(function () {
           load.fadeOut(200);
         }
 
+        if (response.pix) {
+          $(".div_pix")
+            .html(
+              "<div><p>" +
+                response.pix.code +
+                "</p><p>" +
+                response.pix.code +
+                "</p></div>"
+            )
+            .fadeIn(100)
+            .effect("bounce", 300);
+        } else {
+          load.fadeOut(200);
+        }
+
         //reload
         if (response.reload) {
           window.location.reload();

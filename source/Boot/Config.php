@@ -95,6 +95,12 @@ define("CONF_MAIL_OPTION_SECURE", "ssl");
 define("CONF_MAIL_OPTION_CHARSET", "utf-8");
 
 /**
+ * MAERCADO PAGO
+ */
+define("CONF_MERCADOPAGO_PUBLIC", "test");
+define("CONF_MERCADOPAGO_SECRET", "test");
+
+/**
  * PAGAR.ME
  */
 define("CONF_PAGARME_MODE", "test");

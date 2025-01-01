@@ -62,6 +62,9 @@ $route->post("/onpaid", "App:onpaid");
 $route->post("/profile", "App:profile");
 $route->post("/wallets/{wallet}", "App:wallets");
 
+$route->get("/pagamentos", "Payments:pagamentos");
+$route->post("/pagamentos/gerar", "Payments:pagamentosGerar");
+
 $route->get("/alunos/{type}", "Students:students");
 $route->post("/alunos", "Students:students");
 $route->post("/alunos/faixa", "Students:belt");

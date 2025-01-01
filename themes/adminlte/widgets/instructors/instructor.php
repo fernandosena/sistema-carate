@@ -47,7 +47,7 @@
         <!-- small box -->
         <div class="small-box bg-info">
             <div class="inner">
-                <h3><?= str_limit_chars($user->first_name, 15) ?></h3>
+                <h3><?= ($user->first_name) ? str_limit_chars($user->first_name, 15): "Instrutor" ?></h3>
                 <p>Perfil</p>
             </div>
             <div class="icon">
@@ -62,7 +62,7 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
-                    <i class="ion ion-clipboard mr-1"></i> Todos os alunos desse instrutor
+                    <i class="ion ion-clipboard mr-1"></i> Todos os Pagamentos o instrutor
                 </h3>
             </div>
 
@@ -70,48 +70,25 @@
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>Foto</th>
-                        <th>Nome</th>
-                        <th>Professor</th>
-                        <th>Graduação</th>
-                        <th>Status</th>
-                        <th>Opções</th>
+                        <th>Valor</th>
+                        <th>Qtd. Alunos</th>
+                        <th>Cadastro</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($students["all"]["data"]  as $student):
-                    $studentPhoto = ($student->photo() ? image($student->photo, 300, 300) :
-                        theme("/assets/images/avatar.jpg", CONF_VIEW_ADMIN));
-                    ?>
+                    <?php foreach ($payments as $payment): ?>
                     <tr>
-                        <td>
-                            <img class="profile-user-img img-fluid img-circle img-table" src="<?= $studentPhoto; ?>" alt="<?= $student->fullName(); ?>">
-                        </td>
-                        <td><?= $student->fullName(); ?> <?= (calcularIdade($student->datebirth) < 13) ? "<strong class='badge bg-warning'>Até 12 anos</strong>": "" ?></td>
-                        <td><?= $student->teacher()->first_name; ?></td>
-                        <td><?= $student->belt()->title; ?></td>
-                        <td><?php if($student->status == "activated"){
-                            echo "<strong class='badge bg-success'>Ativado</strong>";
-                        }else if($student->status == "deactivated"){
-                            echo "<strong class='badge bg-danger'>Desativado</strong>";
-                        }else{
-
-                            echo "<strong class='badge bg-warning'>Pendente</strong>";
-                        } ?></td>
-                        <td>
-                            <a href="<?= url("/admin/students/{$student->type}/student/{$student->id}"); ?>" class="btn btn-primary btn-block"><b>Gerênciar</b></a>
-                        </td>
+                        <td>R$ <?= number_format($payment->value, 2, ',', '.') ?></td>
+                        <td><?= $payment->qtd_alunos ?></td>
+                        <td><?= date("d/m/Y H:m:s", strtotime($payment->created_at)) ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>Foto</th>
-                        <th>Nome</th>
-                        <th>Professor</th>
-                        <th>Graduação</th>
-                        <th>Status</th>
-                        <th>Opções</th>
+                        <th>Valor</th>
+                        <th>Qtd. Alunos</th>
+                        <th>Cadastro</th>
                     </tr>
                 </tfoot>
             </table>
