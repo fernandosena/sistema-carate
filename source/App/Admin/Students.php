@@ -38,7 +38,7 @@ class Students extends Admin
                 $filter = 2;
             }
 
-            $students = (new AppStudent())->query("SELECT s.id, s.first_name, s.last_name, s.user_id, s.graduation, s.status, b.age_range, b.type_student FROM app_students s JOIN belts b ON s.graduation = b.id WHERE b.type_student = :ts AND b.age_range = :ar", "ts={$data["type"]}&ar={$filter}")->fetch(true);
+            $students = (new AppStudent())->query("SELECT s.id, s.first_name, s.last_name, s.user_id, s.graduation, s.status, b.age_range, b.type_student FROM app_students s JOIN belts b ON s.graduation = b.id WHERE b.type_student = :ts AND b.age_range = :ar AND s.user_id = :ud", "ud={$data['instructor']}&ts={$data["type"]}&ar={$filter}")->fetch(true);
         }else{
             $students = (new AppStudent())->find("type = :t AND user_id = :id", "t={$data["type"]}&id={$data['instructor']}")->fetch(true);
         }
