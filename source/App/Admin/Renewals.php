@@ -74,7 +74,6 @@ class Renewals extends Admin
             if(empty($findGraduation->position)){
                 if($data["type_student"] == "black"){
                     $findGraduation = (new Belt())->find("type_student = :t","t=black")->order("position ASC")->limit(1)->fetch();
-                    var_dump($findGraduation);
                 }else{
                     $findGraduation = (new Belt())->find("age_range = :a AND type_student = :t","a={$type_age}&t=kyus")->order("position ASC")->limit(1)->fetch();
                 }
@@ -94,19 +93,15 @@ class Renewals extends Admin
             if($data["type_action"] == "approved"){
                 if($nextGraduation->type_student == "black"){
                     $studentUpdate = (new AppStudent())->findById($data["student_id"]);
+                    if(!empty($nextGraduation->graduation_time)){
+                        $studentUpdate->next_graduation = date("Y-m-d", strtotime("+{$nextGraduation->graduation_time} years"));
+                    }
+
                     $studentUpdate->type = "black";
                 }
 
                 $studentUpdate->graduation = $nextGraduation->id;
                 $studentUpdate->status = "activated";
-
-                //Se o aluno for black e tiver tempo na graduação deve-se alterar next_graduation
-                if($nextGraduation->type_student == "black"){
-                    if(!empty($nextGraduation->graduation_time)){
-                        $studentUpdate->next_graduation = date("Y-m-d", strtotime("+{$nextGraduation->graduation_time} years"));
-                    }
-            
-                }
 
                 if($studentUpdate->save()){
                     if($nextGraduation->type_student == "black"){
@@ -145,8 +140,9 @@ class Renewals extends Admin
             echo json_encode(["reload" => true]);
             return;
         }
-
+        
         $list = (new AppStudent())->find()->fetch(true);
+
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Alunos",
             CONF_SITE_DESC,

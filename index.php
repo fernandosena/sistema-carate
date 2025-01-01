@@ -110,10 +110,11 @@ $route->get("/instructors/home/{search}/{page}", "Instructors:home");
 $route->get("/instructors/instructor", "Instructors:Instructor");
 $route->post("/instructors/instructor", "Instructors:Instructor");
 $route->get("/instructors/instructor/{instructor_id}", "Instructors:instructor");
+$route->get("/instructors/instructor/{instructor_id}/profile", "Instructors:profile");
 $route->post("/instructors/instructor/{instructor_id}", "Instructors:instructor");
 
 //student
-$route->get("/students/{type}/home", "Students:home");
+$route->get("/students/{instructor}/{type}/home/{filter}", "Students:home");
 $route->post("/students/home", "Students:home");
 $route->get("/students/novos", "Students:news");
 $route->get("/students/{type}/home/{search}/{page}", "Students:home");

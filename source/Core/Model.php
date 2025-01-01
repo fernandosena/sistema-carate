@@ -131,6 +131,18 @@ abstract class Model
         $this->query = "SELECT {$columns} FROM {$this->entity}";
         return $this;
     }
+    /**
+     * @param null|string $terms
+     * @param null|string $params
+     * @param string $columns
+     * @return Model|mixed
+     */
+    public function query(string $query = null, ?string $params = null)
+    {
+        parse_str($params ?? "", $this->params);
+        $this->query = $query;
+        return $this;
+    }
 
     /**
      * @param int $id

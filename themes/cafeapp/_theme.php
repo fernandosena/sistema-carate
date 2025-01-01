@@ -52,6 +52,9 @@
         </nav>
 
         <main class="app_main">
+            <div style="text-align: right;margin-bottom: 10px">
+                <a href="<?= url_back() ?>"><- Retornar a página anterior</a>
+            </div>
             <div class="al-center"><?= flash(); ?></div>
             <?= $this->section("content"); ?>
         </main>

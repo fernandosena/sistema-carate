@@ -188,25 +188,6 @@
                             );
                             echo $nav(
                                 [
-                                    "icon"=>"fa-graduation-cap",
-                                    "href"=>"students",
-                                    "title"=>"Alunos",
-                                    "submenu"=> [
-                                        [
-                                            "icon"=>"fa-list",
-                                            "href"=>"students/black/home",
-                                            "title"=>"Dan",
-                                        ],
-                                        [
-                                            "icon"=>"fa-list",
-                                            "href"=>"students/kyus/home",
-                                            "title"=>"Kyus",
-                                        ]
-                                    ],
-                                ],
-                            );
-                            echo $nav(
-                                [
                                     "icon"=>"fa-uniform-martial-arts",
                                     "href"=>"belts",
                                     "title"=>"Graduações",
@@ -250,22 +231,9 @@
                             <h1 class="m-0">Dashboard</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <?php
-                                    $array = array_filter(explode("/", $_SERVER["REQUEST_URI"]));
-                                    $array_new = array_values($array);
-
-                                    array_splice($array_new, 0, 2);
-                                    $url = "admin/";
-                                    foreach ($array_new as $value) {
-                                    $url .= "{$value}/";
-                                ?>
-                                <li class="breadcrumb-item"><a href="<?= url($url) ?>"><?= ucfirst($value) ?></a></li>
-                                <?php
-                                    }
-                                    //active
-                                ?>
-                            </ol>
+                            <div style="text-align: right;margin-bottom: 10px">
+                                <a href="<?= url_back() ?>"><- Retornar a página anterior</a>
+                            </div>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
                 </div><!-- /.container-fluid -->

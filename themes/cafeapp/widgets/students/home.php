@@ -41,10 +41,13 @@
                     $unpaid = 0;
                     $paid = 0;
                     foreach ($students as $student):
+                    $data_banco_obj = new DateTime($student->updated_at);
+                    $data_atual_obj = new DateTime();
+                    $intervalo = $data_atual_obj->diff($data_banco_obj);
                 ?>
                     <tr>
                         <td><a title="<?= $student->fullName(); ?>"
-                        href="<?= url("/app/aluno/{$type}/{$student->id}"); ?>"><?= str_limit_words($student->fullName(), 3, "...") ?></a></td>
+                        href="<?= url("/app/aluno/{$type}/{$student->id}"); ?>"><?= str_limit_words($student->fullName(), 3, "...") ?> <?= (calcularIdade($student->datebirth) < 13) ? "<strong class='badge bg-success'>Até 12 anos</strong>": "" ?></a></td>
 
                         <?php if(!empty($type) && $type == "black"): ?>
                             <td><?= $student->email ?></td>

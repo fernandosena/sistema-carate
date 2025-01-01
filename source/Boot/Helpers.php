@@ -17,11 +17,12 @@ function is_email(string $email): bool
 
 function count_renewals()
 {
-    $user = (new \Source\Models\User())->find("level != :l AND YEAR(last_renewal_data) < YEAR(CURRENT_DATE())", "l=5")->count();
-    $students = (new \Source\Models\App\AppStudent())->find("YEAR(last_renewal_data) < YEAR(CURRENT_DATE())")->count();
+    $year = date("Y");
+    $user = (new \Source\Models\User())->query("SELECT * FROM `users` s WHERE level != 5 AND (YEAR(s.last_renewal_data) < {$year})")->count();
 
+    $students = (new \Source\Models\App\AppStudent())->query("SELECT * FROM `app_students` s WHERE YEAR(s.last_renewal_data) < {$year}")->count();
     return [
-        "all" => $user+$students,
+        "all" => $user + $students,
         "user" => $user,
         "students" => $students,
     ];

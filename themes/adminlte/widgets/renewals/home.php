@@ -30,8 +30,11 @@
                                         $intervalo = $data_atual_obj->diff($data_banco_obj);
                                         ?>
                                        
-                                        <?php if(empty($student->level)): ?>
-                                            <?php if(verify_renew($last_renewal_data) || ($student->status != "pending" && $intervalo->days != 0)): continue; ?><?php endif; ?>
+                                        <?php 
+                                            #usado para alunos
+                                            if(empty($student->level)): 
+                                        ?>
+                                            <?php if(!verify_renew($last_renewal_data) && ($student->status != "pending") && !$student->historicbeltscount()): continue; ?><?php endif; ?>
                                         <?php endif; ?>
                                          <tr>
                                             <td><a href="<?= url("admin/students/$student->type/student/{$student->id}") ?>"><?= $student->fullName(); ?></a> <?= (calcularIdade($student->datebirth) < 13) ? "<strong class='badge bg-warning'>Até 12 anos</strong>": "" ?></td>
@@ -58,12 +61,7 @@
                                                 data-user_id="<?= user(5)->id; ?>"
                                                 data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-erro"></i> Desativar</a>
                                                 <?php else: ?>
-                                                    <a href="#" class="btn bg-warning"
-                                                    data-postbtn="<?= url("admin/students/$student->type/student") ?>"
-                                                    data-action="status"
-                                                    data-status="pending"
-                                                    data-user_id="<?= user(5)->id; ?>"
-                                                    data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-warning"></i> Revogar</a>
+                                                    Atualizado
                                                 <?php endif; ?>
                                             </td>
                                             <td>

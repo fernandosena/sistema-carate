@@ -30,8 +30,19 @@ class Students extends Admin
      * @param array|null $data
      */
     public function home(?array $data): void
-    {
-        $students = (new AppStudent())->find("type = :t", "t={$data["type"]}")->fetch(true);
+    {   
+        if($data["type"] != "black"){
+            if($data['filter'] == 'menor'){
+                $filter = 1;
+            }else{
+                $filter = 2;
+            }
+
+            $students = (new AppStudent())->query("SELECT s.id, s.first_name, s.last_name, s.user_id, s.graduation, s.status, b.age_range, b.type_student FROM app_students s JOIN belts b ON s.graduation = b.id WHERE b.type_student = :ts AND b.age_range = :ar", "ts={$data["type"]}&ar={$filter}")->fetch(true);
+        }else{
+            $students = (new AppStudent())->find("type = :t AND user_id = :id", "t={$data["type"]}&id={$data['instructor']}")->fetch(true);
+        }
+
 
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Alunos",
@@ -331,7 +342,7 @@ class Students extends Admin
 
             if($data["type"] == "black"){
                 $hbelt = (new HistoricBelt());
-                $find = $hbelt->find("black_belt_id = :id AND graduation_id = :gid", "id={$studentUpdate->id}&gid={$data["graduation"]}")->count();
+                $find = $hbelt->find("black_belt_id = :id OR  AND graduation_id = :gid", "id={$studentUpdate->id}&gid={$data["graduation"]}")->count();
                 
                 if(!$find){
                     $hbelt->black_belt_id = $studentUpdate->id;
@@ -402,12 +413,7 @@ class Students extends Admin
             }
 
             #atualizar faixa preta
-            if($data["type"] == "black"){
-                $studentUpdate = (new AppBlackBelt())->findById($historic->black_belt_id);
-            }else{
-                #atualizar faixa Kyus
-                $studentUpdate = (new AppKyus())->findById($historic->kyus_id);
-            }
+            $studentUpdate = (new AppStudent())->findById($historic->black_belt_id ?? $historic->kyus_id);
             
             if($data["type_action"] == "approved"){
                 $studentUpdate->graduation = $historic->graduation_id;
@@ -421,8 +427,7 @@ class Students extends Admin
                 $studentUpdate->graduation = $historic->graduation_id;
                 $studentUpdate->status = "activated";
                 if($studentUpdate->save()){
-                    $historic->status = "disapprove";
-                    $historic->save();
+                    $historic->destroy();
                 }
                 $this->message->success("Graduação reprovada com sucesso...")->flash();
             }
@@ -434,11 +439,7 @@ class Students extends Admin
         $studentEdit = null;
         if (!empty($data["student_id"])) {
             $studentId = filter_var($data["student_id"], FILTER_VALIDATE_INT);
-            if($data["type"] == "black"){
-                $studentEdit = (new AppBlackBelt())->findById($studentId);
-            }else{
-                $studentEdit = (new AppKyus())->findById($studentId);
-            }
+            $studentEdit = (new AppStudent())->findById($studentId);
         }
 
         $head = $this->seo->render(

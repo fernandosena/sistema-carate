@@ -3,9 +3,9 @@
  * DATABASE
  */
 define("CONF_DB_HOST", "mysql");
-define("CONF_DB_USER", "mysql");
-define("CONF_DB_PASS", "mysql");
-define("CONF_DB_NAME", "development");
+define("CONF_DB_USER", "root");
+define("CONF_DB_PASS", "root");
+define("CONF_DB_NAME", "u583192303_sistema");
 
 /**
  * PROJECT URLs

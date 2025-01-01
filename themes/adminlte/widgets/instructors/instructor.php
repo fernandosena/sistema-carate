@@ -1,168 +1,121 @@
 <?php $this->layout("_admin"); ?>
 
-<section class="dash_content_app">
-    <?php if (!$form["data"]): ?>
-        <div class="card card-primary">
-            <div class="card-header">
-                <h3 class="card-title"><?= (!empty($form["data"])) ? $form["data"]->fullName() : "Cadastrar Instrutor"; ?></h3>
+<!-- Small boxes (Stat box) -->
+<div class="row">
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-warning">
+            <div class="inner">
+                <h3><?= $students["dan"]["count"] ?></h3>
+                <p>Dan</p>
             </div>
-            <?= $this->insert("inc/students"); ?>
-        </div>
-    <?php else: ?>
-        <!-- Main content -->
-<section class="content">
-    <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-3">
-            <!-- Profile Image -->
-            <div class="card card-primary card-outline">
-                <div class="card-body box-profile">
-                    <div class="text-center">
-                        <?php
-                            $userPhoto = ($user->photo() ? image($user->photo, 300, 300) :
-                            theme("/assets/images/avatar.jpg", CONF_VIEW_ADMIN));
-                        ?>
-                        <img class="profile-user-img img-fluid img-circle"
-                            src="<?= $userPhoto ?>"
-                            alt="<?= $user->fullName() ?>">
-                    </div>
-
-                    <h3 class="profile-username text-center"><?= $user->fullName() ?></h3>
-                    <?php if($user->level != 5): ?>
-                        <ul class="list-group list-group-unbordered mb-3">
-                            <li class="list-group-item">
-                            <b>Alunos Ativo</b> <a class="float-right"><?= $user->student()["activated"] ?></a>
-                            </li>
-                            <li class="list-group-item">
-                            <b>Alunos Desativados</b> <a class="float-right"><?= $user->student()["deactivated"] ?></a>
-                            </li>
-                            <li class="list-group-item">
-                            <b>Alunos Pendente</b> <a class="float-right"><?= $user->student()["pending"] ?></a>
-                            </li>
-                        </ul>
-                    <?php endif; ?>
-                </div>
-                <!-- /.card-body -->
+            <div class="icon">
+                <i class="ion ion-person"></i>
             </div>
+            <a href="<?= url("admin/students/{$user->id}/black/home/all") ?>" class="small-box-footer">Ver todos <i class="fas fa-arrow-circle-right"></i></a>
         </div>
-        <!-- /.col -->
-        <div class="col-md-9">
-            <div class="card">
-                <div class="card-header p-2">
-                <ul class="nav nav-pills">
-                    <?php if($user->level != 5): ?>
-                        <li class="nav-item"><a class="nav-link active" href="#black" data-toggle="tab">Dan</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#kyus" data-toggle="tab">Kyus</a></li>
-                    <?php endif; ?>
-                    <?php if($user->level == 5): ?>
-                        <li class="nav-item"><a class="nav-link" href="#system" data-toggle="tab">Sistema</a></li>
-                    <?php endif; ?>
-                    <li class="nav-item"><a class="nav-link <?php if($user->level == 5): ?>active<?php endif; ?>" href="#profile" data-toggle="tab">Perfil</a></li>
-                </ul>
-                </div><!-- /.card-header -->
-                <div class="card-body">
-                <div class="tab-content">
-                    <?php if($user->level != 5): ?>
-                        <div class="active tab-pane" id="black">
-                            <?php if(!empty($blacks)): ?>
-                                <?php foreach($blacks as $black):                             
-                                    $userPhoto = ($black->photo() ? image($black->photo, 300, 300) :
-                                    theme("/assets/images/avatar.jpg", CONF_VIEW_ADMIN));
-                                ?>
-                                    <div class="post">
-                                        <div class="user-block">
-                                        <img class="img-circle img-bordered-sm" src="<?= $userPhoto ?>" alt="<?= $black->fullName() ?>">
-                                        <span class="username">
-                                            <a href="<?= url("admin/students/black/student/{$black->id}") ?>"><?= $black->fullName() ?></a>
-                                        </span>
-                                        <span class="description">Cadastrado em - <?= date_fmt($black->created_at, "d/m/y \à\s H\hi"); ?></span>
-                                        <span class="description">Faixa - <strong class="badge" style="background-color: <?= $black->belt()->color ?>"><?= $black->belt()->title ?></strong> | Status - <strong class="badge bg-<?= ($black->status == 'activated') ? 'success': (($black->status == 'pending') ? 'warning' : 'danger') ?>"><?= ($black->status == 'activated') ? 'Ativo': (($black->status == 'pending') ? 'Pendente' : 'Desativado') ?></strong>  | Dojo: <?= $black->dojo ?></span>
-                                        </div>
-                                    </div>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <div class="alert alert-info alert-dismissible">
-                                    <h5><i class="icon fas fa-info"></i> Aviso!</h5>
-                                    Nenhum Dan desse professor foi encontrado! 
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                        <!-- /.tab-pane -->
-
-                        <div class="tab-pane" id="kyus">
-                            <?php if(!empty($kyus)): ?>
-                                <?php foreach($kyus as $kyu):                             
-                                    $userPhoto = ($kyu->photo() ? image($kyu->photo, 300, 300) :
-                                    theme("/assets/images/avatar.jpg", CONF_VIEW_ADMIN));
-                                ?>
-                                    <div class="post">
-                                        <div class="user-block">
-                                        <img class="img-circle img-bordered-sm" src="<?= $userPhoto ?>" alt="<?= $kyu->fullName() ?>">
-                                        <span class="username">
-                                            <a href="<?= url("admin/students/kyus/student/{$kyu->id}") ?>"><?= $kyu->fullName() ?></a>
-                                        </span>
-                                        <span class="description">Cadastrado em - <?= date_fmt($kyu->created_at, "d/m/y \à\s H\hi"); ?></span>
-                                        <span class="description">Faixa - <strong class="badge" style="background-color: <?= $kyu->belt()->color ?>"><?= $kyu->belt()->title ?></strong> | Status - <strong class="badge bg-<?= ($kyu->status == 'activated') ? 'success': (($kyu->status == 'pending') ? 'warning' : 'danger') ?>"><?= ($kyu->status == 'activated') ? 'Ativo': (($kyu->status == 'pending') ? 'Pendente' : 'Desativado') ?></strong>  | Dojo: <?= $kyu->dojo ?></span>
-                                        </div>
-                                    </div>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <div class="alert alert-info alert-dismissible">
-                                    <h5><i class="icon fas fa-info"></i> Aviso!</h5>
-                                    Nenhum kyus desse professor foi encontrado! 
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                    <?php endif; ?>
-                    <div class="<?php if($user->level == 5): ?>active<?php endif; ?> tab-pane" id="profile">
-                        <?= $this->insert("inc/students"); ?>
-                    </div>
-                    <div class="tab-pane" id="system">
-                    <form class="app_form" enctype="multipart/form-data" action="<?= url("admin/conf") ?>" method="post">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label for="exampleInputFile">Logo: (600x600px)</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                            <input type="file" accept="image/png, image/jpeg" class="custom-file-input" id="exampleInputFile" name="photo">
-                                            <label class="custom-file-label" for="exampleInputFile">Escolher imagens</label>
-                                            </div>
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">Upload</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label>*Titulo</label>
-                                        <input type="text"
-                                        name="title" value="<?= conf()->title ?? null ?>" class="form-control" placeholder="Titulo" required>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Atualizar</button>
-                        </div>
-                    </form>
-                    </div>
-                    <!-- /.tab-pane -->
-                </div>
-                <!-- /.tab-content -->
-                </div><!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-        </div>
-        <!-- /.col -->
     </div>
-    <!-- /.row -->
-    </div><!-- /.container-fluid -->
-</section>
-    <?php endif; ?>
-</section>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-success">
+        <div class="inner">
+            <h3><?= $students["kyu1"]["count"] ?></h3>
+            <p>Kyus até 12 anos</p>
+        </div>
+        <div class="icon">
+            <i class="ion ion-person"></i>
+        </div>
+        <a href="<?= url("admin/students/{$user->id}/kyus/home/menor") ?>" class="small-box-footer">Ver todos <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-danger">
+        <div class="inner">
+            <h3><?= $students["kyu2"]["count"] ?></h3>
+            <p>Kyus a partir de 13 anos</p>
+        </div>
+        <div class="icon">
+            <i class="ion ion-person-add"></i>
+        </div>
+        <a href="<?= url("admin/students/{$user->id}/kyus/home/maior") ?>" class="small-box-footer">Ver todos <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3><?= str_limit_chars($user->first_name, 15) ?></h3>
+                <p>Perfil</p>
+            </div>
+            <div class="icon">
+                <i class="ion ion-person"></i>
+            </div>
+            <a href="<?= url("admin/instructors/instructor/{$user->id}/profile") ?>" class="small-box-footer">Editar <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="div col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="ion ion-clipboard mr-1"></i> Todos os alunos desse instrutor
+                </h3>
+            </div>
+
+            <div class="card-body">
+            <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Foto</th>
+                        <th>Nome</th>
+                        <th>Professor</th>
+                        <th>Graduação</th>
+                        <th>Status</th>
+                        <th>Opções</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($students["all"]["data"]  as $student):
+                    $studentPhoto = ($student->photo() ? image($student->photo, 300, 300) :
+                        theme("/assets/images/avatar.jpg", CONF_VIEW_ADMIN));
+                    ?>
+                    <tr>
+                        <td>
+                            <img class="profile-user-img img-fluid img-circle img-table" src="<?= $studentPhoto; ?>" alt="<?= $student->fullName(); ?>">
+                        </td>
+                        <td><?= $student->fullName(); ?> <?= (calcularIdade($student->datebirth) < 13) ? "<strong class='badge bg-warning'>Até 12 anos</strong>": "" ?></td>
+                        <td><?= $student->teacher()->first_name; ?></td>
+                        <td><?= $student->belt()->title; ?></td>
+                        <td><?php if($student->status == "activated"){
+                            echo "<strong class='badge bg-success'>Ativado</strong>";
+                        }else if($student->status == "deactivated"){
+                            echo "<strong class='badge bg-danger'>Desativado</strong>";
+                        }else{
+
+                            echo "<strong class='badge bg-warning'>Pendente</strong>";
+                        } ?></td>
+                        <td>
+                            <a href="<?= url("/admin/students/{$student->type}/student/{$student->id}"); ?>" class="btn btn-primary btn-block"><b>Gerênciar</b></a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Foto</th>
+                        <th>Nome</th>
+                        <th>Professor</th>
+                        <th>Graduação</th>
+                        <th>Status</th>
+                        <th>Opções</th>
+                    </tr>
+                </tfoot>
+            </table>
+            </div>
+        </div>
+    </div>
+</div>
