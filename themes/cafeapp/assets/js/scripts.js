@@ -255,11 +255,12 @@ $(function () {
         if (response.pix) {
           $(".div_pix")
             .html(
-              "<div><p>" +
+              "<div style='margin: auto; text-align: center'><p><img src='data:image/png;base64," +
+                response.pix.qrCode +
+                "' width='300' height='300'/></p>\
+                <p><input type='text' value='" +
                 response.pix.code +
-                "</p><p>" +
-                response.pix.code +
-                "</p></div>"
+                "'></p></div>"
             )
             .fadeIn(100)
             .effect("bounce", 300);

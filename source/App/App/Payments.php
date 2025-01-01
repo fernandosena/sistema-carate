@@ -43,28 +43,68 @@ class Payments extends App
             return;
         }
 
-        //Gera PIX
-        
-        //Cadastra dados
         $valor = (!empty($data["value"]) ? str_replace([".", ","], ["", "."], $data["value"]) : 0);
+
+
+        //Cadastra dados
+        $paymentCreate = new AppPayments();
+        $paymentCreate->user_id = $this->user->id;
+        $paymentCreate->value = $valor;
+        $paymentCreate->qtd_alunos = $data["students"];
         
-        $payment = new AppPayments();
-        $payment->user_id = $this->user->id;
-        $payment->value = $valor;
-        $payment->qtd_alunos = $data["students"];
-        
-        if (!$payment->save()) {
-            var_dump($payment->fail());
-            $json["message"] = $payment->message()->render();
+        if (!$paymentCreate->save()) {
+            var_dump($paymentCreate->fail());
+            $json["message"] = $paymentCreate->message()->render();
             echo json_encode($json);
             return;
         }
 
-        $json["message"] = $this->message->success("Tudo certo, seu PIX foi gerado com sucesso")->render();
-        $json["pix"] = [
-            "code" => 0,
-            "qrCode" => 0
+        //Gera PIX
+        $payer = [
+            "first_name" => $this->user->first_name,
+            "email"      => $this->user->email
         ];
+
+        $informations = [
+            "description"        => "Pagamento de {$this->user->fullName()}",
+            "external_reference" => $paymentCreate->id,
+            "transaction_amount" => (float) $valor,
+            "payment_method_id"  => "pix"
+        ];
+
+        $payment = array_merge(["payer" => $payer], $informations);
+        $payment = json_encode($payment);
+        
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+            CURLOPT_URL            => "https://api.mercadopago.com/v1/payments",
+            CURLOPT_CUSTOMREQUEST  => 'POST',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POSTFIELDS     => $payment,
+            CURLOPT_HTTPHEADER => [
+                'Authorization: Bearer '.CONF_MERCADOPAGO_TOKEN,
+                'Content-Type: application/json',
+                'X-Idempotency-Key: '.$paymentCreate->id
+            ]
+        ]);
+    
+        // Resposta do Mercado Pago com os dados de pagamento.
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        if($response){            
+            $response = json_decode($response, true);
+            $response = $response['point_of_interaction']['transaction_data'];
+                        
+            $json["message"] = $this->message->success("Tudo certo, seu PIX foi gerado com sucesso")->render();
+            $json["pix"] = [
+                "code" => $response['qr_code'],
+                "qrCode" => $response['qr_code_base64']
+            ];
+        }else{
+            $json["message"] = $this->message->error("Erro ao gerar PIX tente novamnete mais tarde")->render();            
+        }
         echo json_encode($json);
     }
 }
