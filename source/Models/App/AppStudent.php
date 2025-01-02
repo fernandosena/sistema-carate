@@ -64,10 +64,14 @@ class AppStudent extends Model
     /**
      * @return null|Belt
      */
-    public function belt(): ?Belt
+    public function belt(): ?HistoricBelt
     {
-        if($this->graduation){
-            return (new Belt())->find("id = :id", "id={$this->graduation}")->fetch();
+        if($this->type){
+            if($this->type == "black"){
+                return (new HistoricBelt())->find("black_belt_id = :id", "id={$this->id}")->order("created_at desc")->fetch();
+            }else{
+                return (new HistoricBelt())->find("kyus_id = :id", "id={$this->id}")->order("created_at desc")->fetch();
+            }
         }
         return null;
     }
@@ -163,7 +167,7 @@ class AppStudent extends Model
         $chartData->categories = "'" . implode("','", $dateChart) . "'";
         $chartData->students = "0,0,0,0,0,0";
 
-        $chart = (new AppBlackBelt())
+        $chart = $this
             ->find("user_id = :user AND created_at >= DATE(now() - INTERVAL 6 MONTH) GROUP BY year(created_at) ASC, month(created_at) ASC",
                 "user={$user->id}",
                 "year(created_at) AS due_year,

@@ -73,7 +73,7 @@ class Dash extends Admin
             false
         );
 
-        $infoBlacks = (new AppBlackBelt())->find("next_graduation IS NOT NULL AND DATEDIFF(next_graduation, CURDATE()) BETWEEN 0 AND 185")->order("next_graduation DESC")->fetch(true);
+        $infoBlacks = (new AppStudent())->find("next_graduation IS NOT NULL AND DATEDIFF(next_graduation, CURDATE()) BETWEEN 0 AND 185")->order("next_graduation DESC")->fetch(true);
         $infoInstructors = (new User())->find("next_graduation IS NOT NULL AND DATEDIFF(next_graduation, CURDATE()) BETWEEN 0 AND 185")->order("next_graduation DESC")->fetch(true);
 
         echo $this->view->render("widgets/dash/home", [

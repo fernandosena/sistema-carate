@@ -329,8 +329,8 @@ class Instructors extends Admin
             false
         );
 
-        $blacks = (new AppBlackBelt())->findByTeacher($userId);
-        $kyus = (new AppKyus())->findByTeacher($userId);
+        $blacks = (new AppStudent())->findByTeacher($userId);
+        $kyus = (new AppStudent())->findByTeacher($userId);
         
         $graduations = (new Belt())->find("title LIKE '%IOGKF%'  OR title LIKE '%dan%'")->fetch(true);
 
@@ -353,8 +353,6 @@ class Instructors extends Admin
                 "graduations" => $graduations,
                 "data" => $user
             ],
-            "blacks" => $blacks,
-            "kyus" => $kyus,
             "students" => [
                 "all"=> [
                     "count" => $all->count(),

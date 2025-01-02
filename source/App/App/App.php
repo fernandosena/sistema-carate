@@ -145,7 +145,7 @@ class App extends Controller
         );
 
         //CHART
-        $chartData = (new AppBlackBelt())->chartData($this->user);
+        $chartData = (new AppStudent())->chartData($this->user);
         //END CHART
 
         //INCOME && EXPENSE
@@ -172,7 +172,7 @@ class App extends Controller
         //END WALLET
         
         //STUDENTS
-        $student = (new AppBlackBelt())->find("user_id = :id", "id={$this->user->id}")->count();
+        $student = (new AppStudent())->find("user_id = :id", "id={$this->user->id}")->count();
         //END STUDENTS
 
         echo $this->view->render("home", [

@@ -32,18 +32,23 @@ class Students extends Admin
      */
     public function home(?array $data): void
     {   
+        if($data['instructor'] != "all"){
+            $instructor = "user_id = {$data['instructor']} AND";
+        }
+        
         if($data["type"] != "black"){
             if($data['filter'] == 'maior'){
                 $filter = " >= 13";
-            }else{
+            }elseif($data['filter'] == 'kyus'){
                 $filter = " < 13";
             }
 
             $date = date('Y-01-01');
-            $students = (new AppStudent())->query("SELECT * FROM app_students WHERE user_id = :id AND `type` = :t AND TIMESTAMPDIFF(YEAR, datebirth, '$date') $filter", "id={$data['instructor']}&t={$data["type"]}")->fetch(true);
+            $students = (new AppStudent())->query("SELECT * FROM app_students WHERE {$instructor} `type` = :t AND TIMESTAMPDIFF(YEAR, datebirth, '$date') $filter", "t={$data["type"]}")->fetch(true);
         }else{
-            $students = (new AppStudent())->find("type = :t AND user_id = :id", "t={$data["type"]}&id={$data['instructor']}")->fetch(true);
+            $students = (new AppStudent())->find("{$instructor} type = :t", "t={$data["type"]}")->fetch(true);
         }
+
 
 
         $head = $this->seo->render(
@@ -142,7 +147,6 @@ class Students extends Admin
             echo json_encode($json);
             return;
         }
-
 
         $this->message->success("Aluno Atualizado com sucesso")->flash();
         $json["reload"] = true;

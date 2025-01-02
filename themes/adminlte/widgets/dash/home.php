@@ -25,7 +25,7 @@
             <div class="icon">
                 <i class="ion ion-person"></i>
             </div>
-            <a href="<?= url("admin/students/black/home") ?>" class="small-box-footer">Ver todos <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="<?= url("admin/students/all/black/home/all") ?>" class="small-box-footer">Ver todos <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <!-- ./col -->
@@ -39,7 +39,7 @@
         <div class="icon">
             <i class="ion ion-person"></i>
         </div>
-        <a href="<?= url("admin/students/kyus/home") ?>" class="small-box-footer">Ver todos <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="<?= url("admin/students/all/kyus/home/all") ?>" class="small-box-footer">Ver todos <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
     <!-- ./col -->
