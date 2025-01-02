@@ -376,4 +376,51 @@ class Instructors extends Admin
         ]);
 
     }
+
+
+
+    public function payment(?array $data): void
+    {
+        if(empty($data['type'])){
+            $json["message"] = $this->message->warning("O tipo do processso não foi informado")->render();
+            echo json_encode($json);
+            return;
+        }
+
+        if(empty($data['id'])){
+            $json["message"] = $this->message->warning("O ID do pagamento não foi informado")->render();
+            echo json_encode($json);
+            return;
+        }
+
+        $payment = (new AppPayments())->findById($data['id']);
+        if(empty($payment)){
+            $json["message"] = $this->message->warning("O pagamento informado não foi encontrado")->render();
+            echo json_encode($json);
+            return;
+        }
+
+        if($data["type"] == 'activated'){
+            $payment->status = 'activated';
+            if(!$payment->save()){
+                $json["message"] = $this->message->error("Não foi possivel atualizar o pagamento")->render();
+                echo json_encode($json);
+                return;
+            }
+            $this->message->success("Pagamento Atualizado com sucesso")->flash();
+            $json["reload"] = true;
+            echo json_encode($json);
+            return;
+        }else{
+            if(!$payment->destroy()){
+                $json["message"] = $this->message->error("Não foi possivel excluir o pagamento")->render();
+                echo json_encode($json);
+                return;
+            }
+            $this->message->success("Pagamento Excluido com sucesso")->flash();
+            $json["reload"] = true;
+            echo json_encode($json);
+            return;
+        }
+    }
 }

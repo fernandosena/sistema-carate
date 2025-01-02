@@ -194,7 +194,6 @@ class Students extends Admin
             echo json_encode($json);
             return;
         }
-
     }
 
     /**

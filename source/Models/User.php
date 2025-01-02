@@ -5,6 +5,7 @@ namespace Source\Models;
 use Source\Core\Model;
 use Source\Models\App\AppBlackBelt;
 use Source\Models\App\AppKyus;
+use Source\Models\App\AppPayments;
 use Source\Models\Belt;
 
 /**
@@ -116,6 +117,24 @@ class User extends Model
             "deactivated" => (new AppBlackBelt())->find("user_id = :u AND status = :s", "u={$this->id}&s=deactivated")->count(),
             "pending" => (new AppBlackBelt())->find("user_id = :u AND status = :s", "u={$this->id}&s=pending")->count(),
         ];
+    }
+
+    public function paymentsPendingLast()
+    {
+        $instructor =  (new AppPayments())->find("instructor_id = :id AND status = :s", "id={$this->id}&s=pending")->order("created_at desc")->fetch();
+        if($instructor){
+            return $instructor;
+        }
+        return null;
+    }
+    public function paymentsActivatedLast()
+    {
+        $instructor =  (new AppPayments())->find("instructor_id = :id AND status = :s", "id={$this->id}&s=activated")->order("created_at desc")->fetch();
+
+        if($instructor){
+            return $instructor;
+        }
+        return null;
     }
 
     /**

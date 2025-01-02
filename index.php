@@ -130,6 +130,9 @@ $route->post("/students/{type}/student/{student_id}", "Students:student");
 $route->post("/post/students/status", "Students:status");
 $route->post("/post/students/payment", "Students:payment");
 
+$route->post("/post/instructor/payment", "Instructors:payment");
+
+
 //belts
 $route->get("/belts/home", "Belts:home");
 $route->post("/belts/home", "Belts:home");

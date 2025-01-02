@@ -5,6 +5,7 @@ namespace Source\App\App;
 use Source\Core\Controller;
 use Source\Core\Session;
 use Source\Core\View;
+use Source\Models\App\AppPayments;
 use Source\Models\Auth;
 use Source\Models\Belt;
 use Source\Models\App\AppCategory;
@@ -54,15 +55,25 @@ class App extends Controller
         (new AppWallet())->start($this->user);
         (new AppInvoice())->fixed($this->user, 3);
 
-        //UNCONFIRMED EMAIL
-        // if ($this->user->status != "confirmed") {
-        //     $session = new Session();
-        //     if (!$session->has("appconfirmed")) {
-        //         $this->message->info("IMPORTANTE: Acesse seu e-mail para confirmar seu cadastro e ativar todos os recursos.")->flash();
-        //         $session->set("appconfirmed", true);
-        //         (new Auth())->register($this->user);
-        //     }
-        // }
+        $msg = false;
+        $lastPayment = $this->user->paymentsPendingLast();
+        //Verifica se existe um ultimo pagamento (oportunidade para cancelar)
+        $paymentsActivatedLast = $this->user->paymentsActivatedLast();
+
+        if(!$lastPayment){
+            if($paymentsActivatedLast){
+                $budges = verify_renew($paymentsActivatedLast->created_at);
+            }else{
+                $budges = verify_renew($this->user->created_at);
+            }
+            if($budges){
+                $msg = true;
+            }
+        }
+
+        if($msg){
+            $this->message->info("IMPORTANTE: realize o pagamento para continuar usando o sistema ")->after("<a href='".url("/app/regularization'")."'>Clique aqui</a>")->flash();
+        }
 
         $data_obj = new \DateTime("now");
         $mes = $data_obj->format('m');;
@@ -658,36 +669,39 @@ class App extends Controller
             false
         );
 
-        if (!empty($data["action"]) && $data["action"] == "payment") {
-            $user_id = $data["user_id"];
+        $user = (new User())->findById($this->user->id);
+        if(!$user){
+            echo json_encode([
+                "message" => $this->message->warning("Usuario informado não existe")->render()
+            ]);
+            return;
+        }
 
-            $user = (new User())->findById($user_id);
-            if(!$user){
-                echo json_encode([
-                    "message" => $this->message->warning("Usuario informado não existe")->render()
-                ]);
-                return;
+        //Realiza as renovações
+        if (!empty($data["action"]) && $data["action"] == "payment") {
+            if($data["type"] == "create"){
+                $historic = (new AppPayments());
+                $historic->user_id = $this->user->id;
+                $historic->instructor_id = $this->user->id;
+                $historic->save();
             }
 
-            $user->renewal = 'pending';
-            $user->renewal_data = date("Y-m-d");
-
-            if(!$user->save()){
-                var_dump($user->fail());
-                echo json_encode([
-                    "message" => $this->message->error("Erro ao atualizar usuario")->render()
-                ]);
-                return;
+            if($data["type"] == "cancel"){
+                $historics = (new AppPayments())->find("user_id = :ud AND instructor_id = :si AND status = :s","ud={$this->user->id}&si={$this->user->id}&s=pending")->fetch(true);
+                foreach ($historics as $historic) {
+                    $historic->destroy();
+                }
             }
 
             echo json_encode([
-                "renewal" => true
+                "reload" => true
             ]);
             return;
         }
 
         echo $this->view->render("regularization", [
             "head" => $head,
+            "user" => $user
         ]);
     }
 
