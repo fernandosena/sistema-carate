@@ -116,9 +116,9 @@
                                             <?php if($budges || $btnCancel || $btnOptions): ?>
                                                 <?php 
                                                     $penalty = verify_penalty($paymentsPending->create_at);
-                                                    if($verify):  
+                                                    if($penalty):  
                                                 ?>
-                                                        <strong class="badge bg-danger">Multa de <?= $verify *100 ?>%</strong>
+                                                        <strong class="badge bg-danger">Multa de <?= $penalty*100 ?>%</strong>
                                                 <?php else: ?>
                                                     <strong class="badge bg-success">Sem multa</strong>
                                                 <?php endif; ?>
