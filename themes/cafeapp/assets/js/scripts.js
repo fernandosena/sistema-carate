@@ -51,7 +51,7 @@ $(function () {
       },
       success: function (response) {
         if (response.renewal) {
-          clicked.replaceWith("Em analise");
+          window.location.reload();
         }
 
         if (response.pix) {

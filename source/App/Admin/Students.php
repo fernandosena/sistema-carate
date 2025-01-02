@@ -106,6 +106,49 @@ class Students extends Admin
         ]);
     }
 
+
+
+    public function status(?array $data): void
+    {
+        if(empty($data['type'])){
+            $json["message"] = $this->message->warning("O tipo do processso não foi informado")->render();
+            echo json_encode($json);
+            return;
+        }
+
+        if(empty($data['student_id'])){
+            $json["message"] = $this->message->warning("O estudante não foi informado")->render();
+            echo json_encode($json);
+            return;
+        }
+
+        $student = (new AppStudent())->findById($data['student_id']);
+        if(empty($student)){
+            $json["message"] = $this->message->warning("O estudante informado não foi encontrado")->render();
+            echo json_encode($json);
+            return;
+        }
+
+        //Atualiza para pendente
+        if($data["type"] == 'pending'){
+            $student->status = 'pending';
+        }else{
+            $student->status = 'activated';            
+        }
+
+        if(!$student->save()){
+            $json["message"] = $this->message->error("Não foi possivel atualizar aluno")->render();
+            echo json_encode($json);
+            return;
+        }
+
+
+        $this->message->success("Aluno Atualizado com sucesso")->flash();
+        $json["reload"] = true;
+        echo json_encode($json);
+        return;
+    }
+
     /**
      * @param array|null $data
      * @throws \Exception

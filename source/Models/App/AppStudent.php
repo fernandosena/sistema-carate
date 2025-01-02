@@ -81,6 +81,18 @@ class AppStudent extends Model
     }
 
     /**
+     * @return null|array
+     */
+    public function payments(): ?array
+    {
+        return (new AppPayments())->find("student_id = :id", "id={$this->id}")->order("created_at desc")->fetch(true);
+    }
+    public function paymentsPendingCount()
+    {
+        return (new AppPayments())->find("student_id = :id AND status = :s", "id={$this->id}&s=pending")->order("created_at desc")->count();
+    }
+
+    /**
      * @param string $email
      * @param string $columns
      * @return null|AppBlackBelt

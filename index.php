@@ -119,12 +119,15 @@ $route->post("/instructors/instructor/{instructor_id}", "Instructors:instructor"
 //student
 $route->get("/students/{instructor}/{type}/home/{filter}", "Students:home");
 $route->post("/students/home", "Students:home");
+
 $route->get("/students/novos", "Students:news");
 $route->get("/students/{type}/home/{search}/{page}", "Students:home");
 $route->get("/students/{type}/student", "Students:student");
 $route->post("/students/{type}/student", "Students:student");
 $route->get("/students/{type}/student/{student_id}", "Students:student");
 $route->post("/students/{type}/student/{student_id}", "Students:student");
+
+$route->post("/post/students/status", "Students:status");
 
 //belts
 $route->get("/belts/home", "Belts:home");

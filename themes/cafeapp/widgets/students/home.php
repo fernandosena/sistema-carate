@@ -58,17 +58,24 @@
                         <td>
                             <?php
                                 $verify = verify_renewal_data($student->renewal, $student->last_renewal_data);
-                                if($verify && ($student->renewal != "pending")){
+                                if($verify && !$student->paymentsPendingCount()){
                             ?>
                                 <a href="#" class="btn bg-success"
-                                data-post="<?= url("/app/pagamentos/gerar"); ?>"
-                                data-user_id="<?= user()->id; ?>"
-                                data-type="instructor">
-                                <i class="fa-solid fa-circle-check"></i> Realizar o Pagamento</a>
+                                data-post="<?= url("app/alunos") ?>"
+                                data-action="payment"
+                                data-type="create"
+                                data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Informar Pagamento</a>
                             <?php
                                 }else{
-                                    if($student->renewal == "pending"){
-                                        echo "Em analise";
+                                    $paymentsPending = $student->paymentsPendingCount();
+                                    if($paymentsPending){
+                            ?>
+                                <a href="#" class="btn bg-warning"
+                                data-post="<?= url("app/alunos") ?>"
+                                data-action="payment"
+                                data-type="cancel"
+                                data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Cancelar </a>
+                            <?php
                                     }else{
                                         echo "Usuário atualizado";
                                     }

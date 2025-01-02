@@ -36,11 +36,18 @@
                                         <td><?= $student->teacher()->first_name; ?></td>
                                         <td><?= $student->belt()->title; ?></td>
                                         <td><?php if($student->status == "activated"){
-                                            echo "<strong class='badge bg-success'>Ativado</strong>";
-                                        }else if($student->status == "deactivated"){
-                                            echo "<strong class='badge bg-danger'>Desativado</strong>";
+                                        ?><a href="#" class="btn bg-warning"
+                                            data-postbtn="<?= url("admin/post/students/status") ?>"
+                                            data-type="pending"
+                                            data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Pendente</a>
+                                        <?php
                                         }else{
-                                            echo "<strong class='badge bg-warning'>Pendente</strong>";
+                                            ?>
+                                            <a href="#" class="btn bg-success"
+                                            data-postbtn="<?= url("admin/post/students/status") ?>"
+                                            data-type="activated"
+                                            data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Aprovar</a>
+                                            <?php
                                         } ?></td>
                                         <td class="text-center">
                                         <?php 
