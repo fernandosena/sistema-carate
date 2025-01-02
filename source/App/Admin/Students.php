@@ -32,13 +32,14 @@ class Students extends Admin
     public function home(?array $data): void
     {   
         if($data["type"] != "black"){
-            if($data['filter'] == 'menor'){
-                $filter = 1;
+            if($data['filter'] == 'maior'){
+                $filter = " >= 13";
             }else{
-                $filter = 2;
+                $filter = " < 13";
             }
 
-            $students = (new AppStudent())->query("SELECT s.id, s.first_name, s.last_name, s.user_id, s.graduation, s.status, b.age_range, b.type_student FROM app_students s JOIN belts b ON s.graduation = b.id WHERE b.type_student = :ts AND b.age_range = :ar AND s.user_id = :ud", "ud={$data['instructor']}&ts={$data["type"]}&ar={$filter}")->fetch(true);
+            $date = date('Y-01-01');
+            $students = (new AppStudent())->query("SELECT * FROM app_students WHERE user_id = :id AND `type` = :t AND TIMESTAMPDIFF(YEAR, datebirth, '$date') $filter", "id={$data['instructor']}&t={$data["type"]}")->fetch(true);
         }else{
             $students = (new AppStudent())->find("type = :t AND user_id = :id", "t={$data["type"]}&id={$data['instructor']}")->fetch(true);
         }
@@ -430,6 +431,28 @@ class Students extends Admin
                     $historic->destroy();
                 }
                 $this->message->success("Graduação reprovada com sucesso...")->flash();
+            }
+
+            echo json_encode(["reload" => true]);
+            return;
+        }
+
+        //delete graduation
+        if (!empty($data["action"]) && $data["action"] == "delete_graduation") {
+            $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
+            
+            $historic = (new HistoricBelt())->findById($data["historic_id"]);
+
+            if (!$historic) {
+                $this->message->error("Você tentou gerênciar um historico que não existe")->flash();
+                echo json_encode(["redirect" => url("/admin/students/{$data["type"]}/home")]);
+                return;
+            }
+            
+            if($historic->destroy()){
+                $this->message->success("Graduação excluida com sucesso...")->flash();
+            }else{
+                $this->message->error("Erro ao excluir graduação")->flash();
             }
 
             echo json_encode(["reload" => true]);

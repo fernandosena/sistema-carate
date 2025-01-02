@@ -137,35 +137,8 @@
                                     "title"=>"Dashboard",
                                 ],
                             );
-                            echo '<li class="nav-header">Lista</li>';
-
                             $renewals = count_renewals();
 
-                            echo $nav(
-                                [
-                                    "icon"=>"fa-refresh",
-                                    "href"=>"renewals",
-                                    "title"=>"Renovações",
-                                    "badge" => "info",
-                                    "badgeText" => $renewals["all"],
-                                    "submenu"=> [
-                                        [
-                                            "icon"=>"fa-refresh",
-                                            "href"=>"renewals/students",
-                                            "title"=>"Alunos",
-                                            "badge" => "info",
-                                            "badgeText" => $renewals["students"],
-                                        ],
-                                        [
-                                            "icon"=>"fa-refresh",
-                                            "href"=>"renewals/instrunctos",
-                                            "title"=>"Instrutores",
-                                            "badge" => "info",
-                                            "badgeText" => $renewals["user"],
-                                        ]
-                                    ],
-                                ],
-                            );
                             echo '<li class="nav-header">Gerênciar</li>';
                             echo $nav(
                                 [

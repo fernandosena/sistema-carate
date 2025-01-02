@@ -142,7 +142,7 @@ class Students extends App
             }
 
             $hbelt->graduation_id = $data["graduation"];
-            $hbelt->status = "activated";
+            $hbelt->status = "approved";
             $hbelt->description = "Cadastro inserido pelo Instrutor {$this->user->fullName()}, na data de ";
             $hbelt->save();
 

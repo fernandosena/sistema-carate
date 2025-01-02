@@ -156,6 +156,7 @@ class Instructors extends Admin
 
             $hbelt->graduation_id = $data["graduation"];
             $hbelt->description = "Definido ao cadastrar instrutor";
+            $hbelt->status = "approved";
             $hbelt->save();
 
             $this->message->success("Instrutor cadastrado com sucesso...")->flash();
@@ -335,10 +336,12 @@ class Instructors extends Admin
 
         $payments = (new AppPayments())->find("user_id = :id", "id={$user->id}")->fetch(true);
 
+        $date = date('Y-01-01');
+
         $all = (new AppStudent())->find("user_id = :id", "id={$user->id}");
         $dan = (new AppStudent())->find("user_id = :id AND type = :t", "id={$user->id}&t=black");
-        $kyu1 = (new AppStudent())->query("SELECT s.id, s.user_id, s.first_name, s.last_name FROM belts b JOIN app_students s ON b.id = s.graduation WHERE b.age_range = :ar AND b.type_student = :ts AND s.user_id = :ud", "ar=1&ts=kyus&ud={$user->id}");
-        $kyu2 = (new AppStudent())->query("SELECT s.id, s.user_id, s.first_name, s.last_name FROM belts b JOIN app_students s ON b.id = s.graduation WHERE b.age_range = :ar AND b.type_student = :ts AND s.user_id = :ud", "ar=2&ts=kyus&ud={$user->id}");
+        $kyu1 = (new AppStudent())->query("SELECT * FROM app_students WHERE user_id = :id AND `type` = :t AND TIMESTAMPDIFF(YEAR, datebirth, '$date') < :y", "id={$user->id}&t=kyus&y=13");
+        $kyu2 = (new AppStudent())->query("SELECT * FROM app_students WHERE user_id = :id AND `type` = :t AND TIMESTAMPDIFF(YEAR, datebirth, '$date') >= :y", "id={$user->id}&t=kyus&y=13");
 
         echo $this->view->render("widgets/instructors/instructor", [
             "app" => "users/user",

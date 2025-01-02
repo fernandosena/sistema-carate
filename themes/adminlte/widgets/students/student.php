@@ -67,6 +67,12 @@
                                                 data-type_action="disapprove"
                                                 data-confirm="ATENÇÃO: Tem certeza que deseja REPROVAR essa o graduação?"
                                                 data-historic_id="<?= $historic->id; ?>"><i class="fa-sharp fa-solid fa-xmark"></i> Reprovar</a>
+                                            <?php else: ?>
+                                                <a href="#" class="p-1 rounded bg-danger"
+                                                data-post="<?= $form["url"] ?>"
+                                                data-action="delete_graduation"
+                                                data-confirm="ATENÇÃO: Tem certeza que deseja DELETAR essa raduação?"
+                                                data-historic_id="<?= $historic->id; ?>"><i class="fa-sharp fa-solid fa-trash"></i> Deletar</a>
                                             <?php endif; ?>
                                         </li>
                                     <?php 
