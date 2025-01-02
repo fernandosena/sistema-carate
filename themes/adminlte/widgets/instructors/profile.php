@@ -91,6 +91,15 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>*Preço por aluno</label>
+                                        <input type="text"
+                                        name="price" value="<?= conf()->price ?? 0 ?>" class="form-control mask-money" placeholder="Preço por aluno" required>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-footer">
                             <button type="submit" class="btn btn-primary">Atualizar</button>

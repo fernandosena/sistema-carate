@@ -33,6 +33,7 @@
     "coffeecode/optimizer": "2.*",
     "coffeecode/paginator": "2.*",
     "coffeecode/router": "2.*",
-    "fpdf/fpdf": "^1.86"
+    "fpdf/fpdf": "^1.86",
+    "elemke/sicoob-pix": "^2.1"
   }
 }

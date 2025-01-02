@@ -1,12 +1,5 @@
 <?php $this->layout("_theme"); ?>
 
-<div class="app_launch_header">
-    <div class="app_launch_form_filter app_form"></div>
-    <div class="app_launch_btn income radius transition icon-plus-circle"
-        data-modalopen=".app_modal_payment"> Gerar Pagamento
-    </div>
-</div>
-
 <section class="app_launch_box">
     <?php if (!$payments): ?>
         <?php if (empty($filter->status)): ?>

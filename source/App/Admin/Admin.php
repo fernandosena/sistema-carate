@@ -43,6 +43,7 @@ class Admin extends Controller
         }
 
         $find->title = $data["title"];
+        $find->price = (!empty($data["price"]) ? str_replace([".", ","], ["", "."], $data["price"]) : 0);;
 
         if (!empty($_FILES["photo"])) {
             $files = $_FILES["photo"];

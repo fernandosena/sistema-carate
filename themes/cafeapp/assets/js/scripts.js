@@ -54,6 +54,23 @@ $(function () {
           clicked.replaceWith("Em analise");
         }
 
+        if (response.pix) {
+          $(".div_pix")
+            .html(
+              "<div style='margin: auto; text-align: center'><p><img src='data:image/png;base64," +
+                response.pix.qrCode +
+                "' width='300' height='300'/></p>\
+                <p><input type='text' value='" +
+                response.pix.code +
+                "'></p></div>"
+            )
+            .fadeIn(100)
+            .effect("bounce", 300);
+          $(".app_modal_payment").fadeIn(effecttime);
+        } else {
+          load.fadeOut(200);
+        }
+
         //message
         if (response.message) {
           if (flash.length) {

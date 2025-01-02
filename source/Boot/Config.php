@@ -95,11 +95,6 @@ define("CONF_MAIL_OPTION_SECURE", "ssl");
 define("CONF_MAIL_OPTION_CHARSET", "utf-8");
 
 /**
- * MAERCADO PAGO
- */
-define("CONF_MERCADOPAGO_TOKEN", "TEST-988280021669258-121810-bf24b0a76db69f0be065fbcfc9c24452-1021107046");
-
-/**
  * PAGAR.ME
  */
 define("CONF_PAGARME_MODE", "test");

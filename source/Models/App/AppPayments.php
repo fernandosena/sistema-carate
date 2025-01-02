@@ -16,6 +16,6 @@ class AppPayments extends Model
      */
     public function __construct()
     {
-        parent::__construct("app_payments", ["id"], ["user_id", "value", "qtd_alunos"]);
+        parent::__construct("app_payments", ["id"], ["user_id", "value"]);
     }
 }

@@ -61,10 +61,10 @@
                                 if($verify && ($student->renewal != "pending")){
                             ?>
                                 <a href="#" class="btn bg-success"
-                                data-post="<?= url("app/alunos") ?>"
-                                data-action="payment"
+                                data-post="<?= url("/app/pagamentos/gerar"); ?>"
                                 data-user_id="<?= user()->id; ?>"
-                                data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Realizar o Pagamento</a>
+                                data-type="instructor">
+                                <i class="fa-solid fa-circle-check"></i> Realizar o Pagamento</a>
                             <?php
                                 }else{
                                     if($student->renewal == "pending"){
