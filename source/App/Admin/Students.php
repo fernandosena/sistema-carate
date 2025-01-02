@@ -39,7 +39,7 @@ class Students extends Admin
         if($data["type"] != "black"){
             if($data['filter'] == 'maior'){
                 $filter = " >= 13";
-            }elseif($data['filter'] == 'kyus'){
+            }elseif($data['filter'] == 'menor'){
                 $filter = " < 13";
             }
 
