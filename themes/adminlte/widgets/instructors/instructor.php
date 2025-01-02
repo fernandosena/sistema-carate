@@ -58,36 +58,33 @@
     </div>
 </div>
 <div class="row">
-    <div class="div col-md-12">
+<div class="div col-md-6"></div>
+    <div class="div col-md-6">
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">
-                    <i class="ion ion-clipboard mr-1"></i> Todos os Pagamentos o instrutor
+                    <i class="ion ion-clipboard mr-1"></i> Todos os Pagamentos do instrutor
                 </h3>
             </div>
-
             <div class="card-body">
-            <table id="example1" class="table table-bordered table-striped">
+                <table id="example1" class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>Valor</th>
-                        <th>Qtd. Alunos</th>
+                        <th>ID</th>
                         <th>Cadastro</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($payments as $payment): ?>
                     <tr>
-                        <td>R$ <?= number_format($payment->value, 2, ',', '.') ?></td>
-                        <td><?= $payment->qtd_alunos ?></td>
+                        <td><?= $payment->id ?></td>
                         <td><?= date("d/m/Y H:m:s", strtotime($payment->created_at)) ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>Valor</th>
-                        <th>Qtd. Alunos</th>
+                        <th>ID</th>
                         <th>Cadastro</th>
                     </tr>
                 </tfoot>
