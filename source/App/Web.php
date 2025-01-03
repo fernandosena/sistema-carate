@@ -5,6 +5,7 @@ namespace Source\App;
 use Source\Core\Controller;
 use Source\Models\App\AppBlackBelt;
 use Source\Models\App\AppKyus;
+use Source\Models\App\AppPayments;
 use Source\Models\App\AppStudent;
 use Source\Models\Auth;
 use Source\Models\Category;
@@ -220,7 +221,7 @@ class Web extends Controller
     }
 
     public function student(?array $data){
-        $student_id = $data["student_id"];
+        $student_id = $data["user_id"];
         $student = (new AppStudent())->findById($student_id);
         if(!$student){
             echo json_encode([
@@ -228,15 +229,19 @@ class Web extends Controller
             ]);
             return;
         }
+        if($data["type"] == "create"){
+            $historic = (new AppPayments());
+            $historic->user_id = $student_id;
+            $historic->student_id = $student_id;
+            $historic->save();
+            
+        }
 
-        $student->renewal = 'pending';
-        $student->renewal_data = date("Y-m-d");
-
-        if(!$student->save()){
-            echo json_encode([
-                "message" => $this->message->error("Erro ao atualizar usuario")->render()
-            ]);
-            return;
+        if($data["type"] == "cancel"){
+            $historics = (new AppPayments())->find("user_id = :ud AND student_id = :si AND status = :s","ud={$student_id}&si={$student_id}&s=pending")->fetch(true);
+            foreach ($historics as $historic) {
+                $historic->destroy();
+            }
         }
 
         echo json_encode([
@@ -339,14 +344,8 @@ class Web extends Controller
             }
             
             $user = (new User())->find("id = :id AND document = :d", "id={$id}&d={$document}")->fetch();
-            $student = false;
             if(!$user){
                 $user = (new AppStudent())->find("id = :id AND document = :d", "id={$id}&d={$document}")->fetch();
-                if($user->type == "black"){
-                    $student = (new AppBlackBelt())->findById($user->id);
-                }else{
-                    $student = (new AppKyus())->findById($user->id);
-                }
             }
 
             if(!$user){
@@ -365,7 +364,6 @@ class Web extends Controller
                 "user" => $user,
                 "verify" => verify_renewal_data($user->renewal, $user->last_renewal_data),
                 "renew" => $renew,
-                "student" => $student
             ]);
             return;
         }

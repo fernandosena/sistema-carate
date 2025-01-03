@@ -28,19 +28,49 @@
         <div class="home text">
             <div class="title">Certificado</div>
             <?php if(!empty($verify)): ?>
-                <?php if($student->renewal != "pending"): ?>
+                <?php 
+                    $budges = false;
+                    $btnOptions = false;
+                    $btnCancel = false;
+                    $lastPayment = $user->paymentsPendingLast();
+                    //Verifica se existe um ultimo pagamento (oportunidade para cancelar)
+                    $paymentsActivatedLast = $user->paymentsActivatedLast();
+                    if(!$lastPayment){
+                        if($paymentsActivatedLast){
+                            $budges = verify_renew($paymentsActivatedLast->created_at);
+                        }else{
+                            $budges = verify_renew($user->created_at);
+                        }
+                        if($budges){
+                            $btnOptions = true;
+                        }
+                    }else{
+                        $dataPayment = new DateTime($lastPayment->created_at);
+                        $now = new DateTime();
+                        $diferenca = $now->diff($dataPayment);
+
+                        if($diferenca->days <= 0){
+                            $btnCancel = true;
+                        }
+                    }
+                ?>
+                <?php if($btnOptions || $btnCancel): ?>
                     <p>Seu perfil está pendente para a regularização, clique no botão abaixo para confirmar o pagamento.</p>
+                <?php endif; ?>
+                <?php if($btnOptions): ?>
                     <a href="#" class="btn bg-success"
                     data-post="<?= url("web/alunos") ?>"
                     data-action="payment"
-                    data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> confirmar Pagamento</a>
-                <?php endif ?>
-            <?php endif; ?>
-            <?php if(empty($renew)): ?>
-                <p>Clique no botão abaixo para gerar o seu certificado</p>
-                <a style="text-decoration: none" href="<?= url("certificado/{$document}/certificado/{$user->id}") ?>">
-                    <button class="auth_form_btn transition gradient gradient-green gradient-hover">Gerar certificado</button>
-                </a>
+                    data-type="create"
+                    data-user_id="<?= $user->id; ?>"><i class="fa-solid fa-circle-check"></i> Informar Pagamento</a>
+                <?php endif; ?>
+                <?php  if($btnCancel): ?>
+                    <a href="#" class="btn bg-warning"
+                    data-post="<?= url("web/alunos") ?>"
+                    data-action="payment"
+                    data-type="cancel"
+                    data-user_id="<?= $user->id; ?>"><i class="fa-solid fa-circle-check"></i> Cancelar </a>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
         <div class="blog text">
@@ -109,8 +139,8 @@
         </div>
         <div class="help text">
             <ul class="timeline">
-            <?php if(!empty($student)): ?>
-                <?php $c=0; foreach($student->historic() as $historic):?>
+            <?php if(!empty($user)): ?>
+                <?php $c=0; foreach($user->historic() as $historic):?>
                     <?php if($historic->status == "disapprove"){continue;} ?>
                     <?php  if($historic->status == "approved" && $c == 0){$c = 1;} ?>
                     <li <?= ($c == 1) ? 'class="active"': null?>>
