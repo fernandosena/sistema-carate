@@ -2,15 +2,12 @@
 
 namespace Source\App\Admin;
 
-use Source\Models\App\AppKyus;
 use Source\Models\App\AppPayments;
 use Source\Models\App\AppStudent;
 use Source\Models\Belt;
 use Source\Models\User;
 use Source\Support\Thumb;
 use Source\Support\Upload;
-use Source\Models\App\AppBlackBelt;
-use Source\Models\HistoricBelt;
 
 /**
  * Class Instructors
@@ -248,17 +245,9 @@ class Instructors extends Admin
 
                     $diferenca1 = implode(",", array_diff($dojodb, $data["dojo"]));
 
-
-                    $appKyus = (new AppKyus())->find("user_id = :id AND dojo IN (:dojo)", "id=$userUpdate->id, &dojo=$diferenca1");
-                    if($appKyus->count()){
-                        $json["message"] = $this->message->warning("Não foi possivel atualizar pois já existe Kyus cadastrados no dojo retirado")->render();
-                        echo json_encode($json);
-                        return;
-                    }
-
-                    $appBlackBelt = (new AppBlackBelt())->find("user_id = :id AND dojo IN (:dojo)", "id=$userUpdate->id, &dojo=$diferenca1");
-                    if($appBlackBelt->count()){
-                        $json["message"] = $this->message->warning("Não foi possivel atualizar pois já existe Faixas pretas cadastrados no dojo retirado")->render();
+                    $student = (new AppStudent())->find("user_id = :id AND dojo IN (:dojo)", "id=$userUpdate->id,&dojo=$diferenca1");
+                    if($student->count()){
+                        $json["message"] = $this->message->warning("Não foi possivel atualizar pois já existe um estuante cadastrados no dojo retirado")->render();
                         echo json_encode($json);
                         return;
                     }

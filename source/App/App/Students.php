@@ -77,14 +77,14 @@ class Students extends App
             #cadastra faixa preta
             if($data["type"] == "black"){
                 $graduation = (new Belt())->findById($data["graduation"]);
-                $studentCreate = new AppBlackBelt();
+                $studentCreate = new AppStudent();
 
                 if(!empty($graduation->graduation_time)){
                     $studentCreate->next_graduation = date("Y-m-d", strtotime("+{$graduation->graduation_time} years"));
                 }
             }else{
                 #cadastra faixa Kyus
-                $studentCreate = new AppKyus();
+                $studentCreate = new AppStudent();
                 if(!empty($data["mother_name"])){
                     $studentCreate->mother_name = $data["mother_name"];
                 }
@@ -152,11 +152,11 @@ class Students extends App
         if ((!empty($data["action"]) && $data["action"] == "update") && !empty($data["id"])) {
             #cadastra faixa preta
             if($data["type"] == "black"){
-                $student = (new AppBlackBelt())->find("user_id = :user AND id = :id",
+                $student = (new AppStudent())->find("user_id = :user AND id = :id",
                 "user={$this->user->id}&id={$data["id"]}")->fetch();
             }else{
                 #cadastra faixa Kyus
-                $student = (new AppKyus())->find("user_id = :user AND id = :id",
+                $student = (new AppStudent())->find("user_id = :user AND id = :id",
                 "user={$this->user->id}&id={$data["id"]}")->fetch();;
                 if(!empty($data["mother_name"])){
                     $student->mother_name = $data["mother_name"];
@@ -262,11 +262,11 @@ class Students extends App
     {
         if($data["action"] == "update-reverse"){
             if($data["type"] == "black"){
-                $studentUpdate = (new AppBlackBelt())->find("id = :id AND user_id = :u","id={$data["id"]}&u={$this->user->id}")->fetch();   
+                $studentUpdate = (new AppStudent())->find("id = :id AND user_id = :u","id={$data["id"]}&u={$this->user->id}")->fetch();   
                 $historics = (new HistoricBelt())->find("black_belt_id = :h AND status = 'pending'", "h={$studentUpdate->id}")->fetch(true);                  
             }else{
                 #atualizar faixa Kyus
-                $studentUpdate = (new AppKyus())->find("id = :id AND user_id = :u","id={$data["id"]}&u={$this->user->id}")->fetch(); 
+                $studentUpdate = (new AppStudent())->find("id = :id AND user_id = :u","id={$data["id"]}&u={$this->user->id}")->fetch(); 
                 $historics = (new HistoricBelt())->find("kyus_id = :k AND status = 'pending'", "k={$studentUpdate->id}")->fetch(true);
             }
 
@@ -291,10 +291,10 @@ class Students extends App
         if($data["action"] == "update-graduation"){
             //update-graduation
             if($data["type"] == "black"){
-                $student = (new AppBlackBelt())->find("user_id = :user AND id = :id",
+                $student = (new AppStudent())->find("user_id = :user AND id = :id",
             "user={$this->user->id}&id={$data["id"]}")->fetch();
             }else{
-                $student = (new AppKyus())->find("user_id = :user AND id = :id",
+                $student = (new AppStudent())->find("user_id = :user AND id = :id",
             "user={$this->user->id}&id={$data["id"]}")->fetch();
             }
 
@@ -378,10 +378,10 @@ class Students extends App
         
 
         if($data["type"] == "black"){
-            $student = (new AppBlackBelt())->find("user_id = :user AND id = :id",
+            $student = (new AppStudent())->find("user_id = :user AND id = :id",
                 "user={$this->user->id}&id={$data["id"]}")->fetch();
         }else{
-            $student = (new AppKyus())->find("user_id = :user AND id = :id",
+            $student = (new AppStudent())->find("user_id = :user AND id = :id",
                     "user={$this->user->id}&id={$data["id"]}")->fetch();
         }
 

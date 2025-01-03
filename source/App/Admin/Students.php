@@ -7,8 +7,6 @@ use Source\Models\User;
 use Source\Support\Pager;
 use Source\Support\Thumb;
 use Source\Support\Upload;
-use Source\Models\App\AppBlackBelt;
-use Source\Models\App\AppKyus;
 use Source\Models\App\AppStudent;
 use Source\Models\Belt;
 use Source\Models\HistoricBelt;
@@ -80,16 +78,7 @@ class Students extends Admin
         }
 
         $search = null;
-        $students = (new AppBlackBelt())->find("status = 'pending'");
-
-        if (!empty($data["search"]) && str_search($data["search"]) != "all") {
-            $search = str_search($data["search"]);
-            $students = (new AppBlackBelt())->find("status = 'pending' AND MATCH(first_name, last_name, email) AGAINST(:s)", "s={$search}");
-            if (!$students->count()) {
-                $this->message->info("Sua pesquisa não retornou resultados")->flash();
-                redirect("/admin/students/home");
-            }
-        }
+        $students = (new AppStudent())->find("status = 'pending'");
 
         $all = ($search ?? "all");
         $pager = new Pager(url("/admin/students/home/{$all}/"));
@@ -206,78 +195,6 @@ class Students extends Admin
      */
     public function student(?array $data): void
     {
-        //create
-        if (!empty($data["action"]) && $data["action"] == "create") {
-            $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
-
-            if($data["type"] == "black"){
-                $studentCreate = new AppBlackBelt();
-                $studentCreate->user_id = $data["teacher"]; 
-                $studentCreate->first_name = $data["first_name"];
-                $studentCreate->last_name = $data["last_name"];
-                $studentCreate->email = $data["email"];
-                $studentCreate->datebirth = date_fmt_back($data["datebirth"]);
-                $studentCreate->document = preg_replace("/[^0-9]/", "", $data["document"]);
-                $studentCreate->status = $data["status"];
-                $studentCreate->zip = preg_replace("/[^0-9]/", "", $data["zip"]);
-                $studentCreate->state = $data["state"];
-                $studentCreate->city = $data["city"];
-                $studentCreate->address = $data["address"];
-                $studentCreate->neighborhood = $data["neighborhood"];
-                $studentCreate->number = $data["number"];
-                $studentCreate->complement = $data["complement"];
-                $studentCreate->phone = $data["phone"];
-                $studentCreate->graduation = $data["graduation"];
-                $studentCreate->description = $data["description"];
-            }else{
-                $studentCreate = new AppKyus();
-                $studentCreate->user_id = $data["teacher"]; 
-                $studentCreate->first_name = $data["first_name"];
-                $studentCreate->last_name = $data["last_name"];
-                $studentCreate->datebirth = date_fmt_back($data["datebirth"]);
-                $studentCreate->document = preg_replace("/[^0-9]/", "", $data["document"]);
-                $studentCreate->graduation = $data["graduation"];
-                $studentCreate->description = $data["description"];
-            }
-
-            //upload photo
-            if (!empty($_FILES["photo"])) {
-                $files = $_FILES["photo"];
-                $upload = new Upload();
-                $image = $upload->image($files, $studentCreate->fullName(), 600);
-
-                if (!$image) {
-                    $json["message"] = $upload->message()->render();
-                    echo json_encode($json);
-                    return;
-                }
-
-                $studentCreate->photo = $image;
-            }
-
-            if (!$studentCreate->save()) {
-                $json["message"] = $studentCreate->message()->render();
-                echo json_encode($json);
-                return;
-            }
-
-            $hbelt = (new HistoricBelt());
-            if($data["type"] == "black"){
-                $hbelt->black_belt_id = $studentCreate->id;
-            }else{
-                $hbelt->kyus_id = $studentCreate->id;
-            }
-            $hbelt->graduation_id = $data["graduation"];
-            $hbelt->description = "Definido ao cadastrar aluno";
-            $hbelt->save();
-            
-            $this->message->success("Aluno cadastrado com sucesso...")->flash();
-            $json["redirect"] = url("/admin/students/{$data["type"]}/student/{$studentCreate->id}");
-
-            echo json_encode($json);
-            return;
-        }
-
         if (!empty($data["action"]) && $data["action"] == "status") {
             $user_id = $data["user_id"];
             $student_id = $data["student_id"];
@@ -350,17 +267,12 @@ class Students extends Admin
             ]);
             return;
         }
+
         //update
         if (!empty($data["action"]) && $data["action"] == "update") {
             $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
-            
-            #atualizar faixa preta
-            if($data["type"] == "black"){
-                $studentUpdate = (new AppBlackBelt())->findById($data["student_id"]);
-            }else{
-                #atualizar faixa Kyus
-                $studentUpdate = (new AppKyus())->findById($data["student_id"]);
-            }
+ 
+            $studentUpdate = (new AppStudent())->findById($data["student_id"]);
 
             if (!$studentUpdate) {
                 $this->message->error("Você tentou gerenciar um aluno que não existe")->flash();
@@ -466,12 +378,13 @@ class Students extends Admin
         if (!empty($data["action"]) && $data["action"] == "delete") {
             $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
             #atualizar faixa preta
+
+            $studentDelete = (new AppStudent())->findById($data["student_id"]);
+
             if($data["type"] == "black"){
-                $studentDelete = (new AppBlackBelt())->findById($data["student_id"]);
                 $historics = (new HistoricBelt())->find("black_belt_id = :id", "id={$data["student_id"]}'")->fetch(true);
             }else{
                 #atualizar faixa Kyus
-                $studentDelete = (new AppKyus())->findById($data["student_id"]);
                 $historics = (new HistoricBelt())->find("kyus_id = :id", "id={$data["student_id"]}'")->fetch(true);
             }
 

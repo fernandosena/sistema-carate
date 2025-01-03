@@ -177,7 +177,7 @@ class User extends Model
             }
             
             if(!empty($this->document)){
-                if ((new AppBlackBelt())->find("document = :d", "d={$this->document}", "id")->fetch()) {
+                if ((new AppStudent())->find("document = :d", "d={$this->document}", "id")->fetch()) {
                     $this->message->warning("O CPF informado já está cadastrado");
                     return false;
                 }
@@ -212,7 +212,7 @@ class User extends Model
             }
 
             if(!empty($this->document)){
-                if ((new AppBlackBelt())->find("document = :d", "d={$this->document}", "id")->fetch()) {
+                if ((new AppStudent())->find("document = :d", "d={$this->document}", "id")->fetch()) {
                     $this->message->warning("O CPF informado já está cadastrado");
                     return false;
                 }

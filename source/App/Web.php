@@ -3,8 +3,6 @@
 namespace Source\App;
 
 use Source\Core\Controller;
-use Source\Models\App\AppBlackBelt;
-use Source\Models\App\AppKyus;
 use Source\Models\App\AppPayments;
 use Source\Models\App\AppStudent;
 use Source\Models\Auth;

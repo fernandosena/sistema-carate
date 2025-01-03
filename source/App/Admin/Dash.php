@@ -2,7 +2,6 @@
 
 namespace Source\App\Admin;
 
-use Source\Models\App\AppKyus;
 use Source\Models\App\AppStudent;
 use Source\Models\Auth;
 use Source\Models\App\AppPlan;
@@ -12,8 +11,6 @@ use Source\Models\Post;
 use Source\Models\Report\Online;
 use Source\Models\User;
 use Source\Models\Belt;
-use Source\Models\App\AppBlackBelt;
-use Source\Models\HistoricBelt;
 
 /**
  * Class Dash

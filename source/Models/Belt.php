@@ -27,9 +27,9 @@ class Belt extends Model
     public function student(): array
     {
         return [
-            "all" => (new AppBlackBelt())->find("graduation = :b AND status != :s", "b={$this->id}&s=deactivated")->count()+(new AppKyus())->find("graduation = :b AND status != :s", "b={$this->id}&s=deactivated")->count(),
-            "activated" => (new AppBlackBelt())->find("graduation = :b AND status = :s", "b={$this->id}&s=activated")->count()+(new AppKyus())->find("graduation = :b AND status = :s", "b={$this->id}&s=activated")->count(),
-            "deactivated" => (new AppBlackBelt())->find("graduation = :b AND status = :s", "b={$this->id}&s=deactivated")->count()+(new AppKyus())->find("graduation = :b AND status = :s", "b={$this->id}&s=deactivated")->count(),
+            "all" => (new AppStudent())->find("graduation = :b AND status != :s", "b={$this->id}&s=deactivated")->count()+(new AppStudent())->find("graduation = :b AND status != :s", "b={$this->id}&s=deactivated")->count(),
+            "activated" => (new AppStudent())->find("graduation = :b AND status = :s", "b={$this->id}&s=activated")->count()+(new AppStudent())->find("graduation = :b AND status = :s", "b={$this->id}&s=activated")->count(),
+            "deactivated" => (new AppStudent())->find("graduation = :b AND status = :s", "b={$this->id}&s=deactivated")->count()+(new AppStudent())->find("graduation = :b AND status = :s", "b={$this->id}&s=deactivated")->count(),
         ];
     }
 

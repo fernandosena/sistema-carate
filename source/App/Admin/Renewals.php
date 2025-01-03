@@ -6,8 +6,6 @@ use Source\Models\App\AppStudent;
 use Source\Models\User;
 use Source\Models\HistoricBelt;
 use Source\Models\Belt;
-use Source\Models\App\AppBlackBelt;
-use Source\Models\App\AppKyus;
 
 /**
  * Class Renewals
@@ -38,13 +36,7 @@ class Renewals extends Admin
                 return;
             }
 
-            #atualizar faixa preta
-            if($data["type_student"] == "black"){
-                $studentUpdate = (new AppBlackBelt())->findById($data["student_id"]);                
-            }else{
-                #atualizar faixa Kyus
-                $studentUpdate = (new AppKyus())->findById($data["student_id"]);
-            }
+            $studentUpdate = (new AppStudent())->findById($data["student_id"]);         
 
             if (!$studentUpdate) {
                 $json["message"] = $this->message->warning("O aluno informado não foi encontrado")->render();
