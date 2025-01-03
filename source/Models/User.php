@@ -120,6 +120,11 @@ class User extends Model
         ];
     }
 
+    public function getLastGraduation()
+    {
+        return null;
+    }
+
     public function paymentsPendingLast()
     {
         $instructor =  (new AppPayments())->find("instructor_id = :id AND status = :s", "id={$this->id}&s=pending")->order("created_at desc")->fetch();

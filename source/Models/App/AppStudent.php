@@ -150,6 +150,21 @@ class AppStudent extends Model
     {
         return (new User())->find("id = :id", "id={$this->user_id}")->fetch();
     }
+    public function getLastGraduation(): Belt|null
+    {
+        $historic = false;
+        if($this->type == 'black'){
+            $historic = (new HistoricBelt())->find("black_belt_id = :id AND status = 'approved'", "id={$this->id}")->order("created_at desc")->fetch();
+        }else{
+            $historic = (new HistoricBelt())->find("kyus_id = :id AND status = 'approved'", "id={$this->id}")->order("created_at desc")->fetch();
+        }
+
+        if($historic){
+            return (new Belt())->findById($historic->graduation_id);
+        }
+        return null;
+    }
+
 
     /**
      * @param User $user

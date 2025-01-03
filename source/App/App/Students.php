@@ -50,12 +50,12 @@ class Students extends App
                 ]);
                 return;
             }
-
             if($data["type"] == "create"){
                 $historic = (new AppPayments());
                 $historic->user_id = $this->user->id;
                 $historic->student_id = $student_id;
                 $historic->save();
+                
             }
 
             if($data["type"] == "cancel"){

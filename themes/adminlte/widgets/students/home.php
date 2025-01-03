@@ -65,13 +65,10 @@
                                         </td>
                                         <td><?= $student->fullName(); ?> <?= (calcularIdade($student->datebirth) < 13) ? "<strong class='badge bg-warning'>Até 12 anos</strong>": "" ?></td>
                                         <td><?= $student->teacher()->first_name; ?></td>
-                                        <td><?= $student->belt()->title; ?></td>
+                                        <td><?= $student->getLastGraduation()->title; ?></td>
                                         <td>
                                             <?php if($student->status == "activated"): ?>
-                                                <a href="#" class="btn bg-warning"
-                                                data-postbtn="<?= url("admin/post/students/status") ?>"
-                                                data-type="pending"
-                                                data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Pendente</a>
+                                                <strong class="badge bg-success">Ativado</strong>
                                             <?php else:?>
                                                 <a href="#" class="btn bg-success"
                                                 data-postbtn="<?= url("admin/post/students/status") ?>"

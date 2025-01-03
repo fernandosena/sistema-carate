@@ -68,10 +68,8 @@
                         <td><a title="<?= $student->fullName(); ?>"
                         href="<?= url("/app/aluno/{$type}/{$student->id}"); ?>"><?= str_limit_words($student->fullName(), 3, "...") ?> <?= (calcularIdade($student->datebirth) < 13) ? "<strong class='badge bg-success'>Até 12 anos</strong>": "" ?></a></td>
 
-                        <?php if(!empty($type) && $type == "black"): ?>
-                            <td><?= $student->email ?></td>
-                        <?php endif; ?>
-                        <td><strong class="badge"><?= $student->belt()->title ?></strong></td>
+                        <td><?= $student->email ?></td>
+                        <td><strong class="badge"><?= $student->getLastGraduation()->title ?></strong></td>
                         <td><?= $student->dojo ?></td>
                         <td><strong class="badge bg-<?= ($student->status == 'activated') ? 'success': (($student->status == 'pending') ? 'warning' : 'danger') ?>"><?= ($student->status == 'activated') ? 'Ativo': (($student->status == 'pending') ? 'Pendente' : 'Desativado') ?></strong></span></td>
                         <td>
