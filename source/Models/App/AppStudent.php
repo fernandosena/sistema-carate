@@ -87,9 +87,32 @@ class AppStudent extends Model
     {
         return (new AppPayments())->find("student_id = :id", "id={$this->id}")->order("created_at desc")->fetch(true);
     }
-    public function paymentsPendingCount()
+    public function paymentsPendingId()
     {
-        return (new AppPayments())->find("student_id = :id AND status = :s", "id={$this->id}&s=pending")->order("created_at desc")->count();
+        $student =  (new AppPayments())->find("student_id = :id AND status = :s", "id={$this->id}&s=pending")->order("created_at desc")->fetch();
+
+        if($student){
+            return $student->id;
+        }
+        return null;
+    }
+    public function paymentsPendingLast()
+    {
+        $student =  (new AppPayments())->find("student_id = :id AND status = :s", "id={$this->id}&s=pending")->order("created_at desc")->fetch();
+
+        if($student){
+            return $student;
+        }
+        return null;
+    }
+    public function paymentsActivatedLast()
+    {
+        $student =  (new AppPayments())->find("student_id = :id AND status = :s", "id={$this->id}&s=activated")->order("created_at desc")->fetch();
+
+        if($student){
+            return $student;
+        }
+        return null;
     }
 
     /**

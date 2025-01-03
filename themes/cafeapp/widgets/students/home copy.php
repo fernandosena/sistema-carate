@@ -37,32 +37,9 @@
             <tbody>
                 <?php
                     foreach ($students as $student):
-                    $budges = false;
-                    $btnOptions = false;
-                    $btnCancel = false;
-                    $lastPayment = $student->paymentsPendingLast();
-
-                    //Verifica se existe um ultimo pagamento (oportunidade para cancelar)
-                    $paymentsActivatedLast = $student->paymentsActivatedLast();
-
-                    if(!$lastPayment){
-                        if($paymentsActivatedLast){
-                            $budges = verify_renew($paymentsActivatedLast->created_at);
-                        }else{
-                            $budges = verify_renew($student->created_at);
-                        }
-                        if($budges){
-                            $btnOptions = true;
-                        }
-                    }else{
-                        $dataPayment = new DateTime($lastPayment->created_at);
-                        $now = new DateTime();
-                        $diferenca = $now->diff($dataPayment);
-
-                        if($diferenca->days <= 0){
-                            $btnCancel = true;
-                        }
-                    }
+                    $data_banco_obj = new DateTime($student->updated_at);
+                    $data_atual_obj = new DateTime();
+                    $intervalo = $data_atual_obj->diff($data_banco_obj);
                 ?>
                     <tr>
                         <td><a title="<?= $student->fullName(); ?>"
@@ -75,23 +52,31 @@
                         <td><?= $student->dojo ?></td>
                         <td><strong class="badge bg-<?= ($student->status == 'activated') ? 'success': (($student->status == 'pending') ? 'warning' : 'danger') ?>"><?= ($student->status == 'activated') ? 'Ativo': (($student->status == 'pending') ? 'Pendente' : 'Desativado') ?></strong></span></td>
                         <td>
-                            <?php if($btnOptions): ?>
+                            <?php
+                                $verify = verify_renewal_data($student->renewal, $student->last_renewal_data);
+                                if($verify && !$student->paymentsPendingId()){
+                            ?>
                                 <a href="#" class="btn bg-success"
                                 data-post="<?= url("app/alunos") ?>"
                                 data-action="payment"
                                 data-type="create"
                                 data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Informar Pagamento</a>
-                            <?php endif; ?>
-                            <?php  if($btnCancel): ?>
+                            <?php
+                                }else{
+                                    $paymentsPending = $student->paymentsPendingId();
+                                    if($paymentsPending){
+                            ?>
                                 <a href="#" class="btn bg-warning"
                                 data-post="<?= url("app/alunos") ?>"
                                 data-action="payment"
                                 data-type="cancel"
                                 data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Cancelar </a>
-                            <?php endif; ?>
-                            <?php  if(!$budges && !$btnCancel && !$btnOptions): ?>
-                                Atualizado
-                            <?php endif; ?>
+                            <?php
+                                    }else{
+                                        echo "Usuário atualizado";
+                                    }
+                                }
+                            ?>
                         </td>
                         <td>
                             <?php
