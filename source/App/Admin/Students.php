@@ -489,6 +489,7 @@ class Students extends Admin
         echo $this->view->render("widgets/students/student", [
             "app" => "students/student",
             "head" => $head,
+            "payments" => (new AppPayments())->find("student_id = :id", "id={$data["student_id"]}")->fetch(true),
             "form" => [
                 "url" => url("admin/students/{$data["type"]}/student/{$studentEdit->id}"),
                 "graduations" => $graduations,

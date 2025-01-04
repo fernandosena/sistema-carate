@@ -15,7 +15,7 @@ foreach($users as $user){
 }
 
 
-$blacks = (new \Source\Models\App\AppStudent())->find("next_graduation IS NULL")->fetch(true);
+$blacks = (new \Source\Models\App\AppStudent())->find("next_graduation IS NULL AND type = 'black'")->fetch(true);
 foreach($blacks as $black){
   $graduation = (new \Source\Models\Belt())->findById($black->graduation);
   if(!empty($graduation->graduation_time)){

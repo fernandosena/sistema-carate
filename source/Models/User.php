@@ -120,6 +120,46 @@ class User extends Model
         ];
     }
 
+    public function quantityMonth($user = null, $month = null){
+        
+        $m = date("Y");
+        if(!empty($month)){
+            $m = $month;
+        }
+
+        $u = null;
+        if(!empty($user)){
+            $u = "AND id = {$user}";
+        }
+
+        $datas = $this->query("SELECT meses.mes, COALESCE(COUNT(u.created_at), 0) AS quantidade_registros
+        FROM (
+            SELECT 1 AS mes UNION ALL
+            SELECT 2 UNION ALL
+            SELECT 3 UNION ALL
+            SELECT 4 UNION ALL
+            SELECT 5 UNION ALL
+            SELECT 6 UNION ALL
+            SELECT 7 UNION ALL
+            SELECT 8 UNION ALL
+            SELECT 9 UNION ALL
+            SELECT 10 UNION ALL
+            SELECT 11 UNION ALL
+            SELECT 12
+        ) AS meses
+        LEFT JOIN users u ON MONTH(u.created_at) = meses.mes AND YEAR(u.created_at) = {$m} {$u}
+        GROUP BY meses.mes
+        ORDER BY meses.mes")->fetch(true);
+
+
+        $dadosPorMes = [];
+        foreach($datas as $data){
+            $dadosPorMes[$data->mes] = (int)$data->quantidade_registros;
+        }
+
+        return $dadosPorMes;
+    }
+
     public function getLastGraduation()
     {
         return null;

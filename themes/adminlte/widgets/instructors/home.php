@@ -61,7 +61,6 @@
                                         </td>
                                         <td><h3 class="profile-username"><?= $user->fullName(); ?></h3></td>
                                         <td><a class="float-right"><?= $user->student()["all"]; ?></a></td>
-                                        
                                         <td class="text-center">
                                             <?php if($btnOptions): ?>
                                                 <a href="#" class="btn bg-success"

@@ -5,6 +5,7 @@ namespace Source\App\Admin;
 use Source\Models\App\AppPayments;
 use Source\Models\App\AppStudent;
 use Source\Models\Belt;
+use Source\Models\HistoricBelt;
 use Source\Models\User;
 use Source\Support\Thumb;
 use Source\Support\Upload;
@@ -317,9 +318,6 @@ class Instructors extends Admin
             url("/admin/assets/images/image.jpg"),
             false
         );
-
-        $blacks = (new AppStudent())->findByTeacher($userId);
-        $kyus = (new AppStudent())->findByTeacher($userId);
         
         $graduations = (new Belt())->find("title LIKE '%IOGKF%'  OR title LIKE '%dan%'")->fetch(true);
 
@@ -342,6 +340,11 @@ class Instructors extends Admin
                 "graduations" => $graduations,
                 "data" => $user
             ],
+            "amount_month" => [
+                "dan" => (new AppStudent())->quantityMonth('black', $user->id),
+                "kyus1" => (new AppStudent())->quantityMonth('kyus', $user->id, "< 13"),
+                "kyus2" => (new AppStudent())->quantityMonth('kyus', $user->id, ">= 13"),
+            ],
             "students" => [
                 "all"=> [
                     "count" => $all->count(),
@@ -363,9 +366,7 @@ class Instructors extends Admin
         ]);
 
     }
-
-
-
+    
     public function payment(?array $data): void
     {
         if(empty($data['type'])){

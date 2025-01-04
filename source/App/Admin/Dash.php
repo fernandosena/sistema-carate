@@ -86,6 +86,11 @@ class Dash extends Admin
                 "kyus" => (new AppStudent())->find("type = 'kyus'")->count(),
                 "belts" => (new Belt())->find()->count(),
             ],
+            "amount_month" => [
+                "instrutores" => (new User())->quantityMonth(),
+                "dan" => (new AppStudent())->quantityMonth('black'),
+                "kyus" => (new AppStudent())->quantityMonth('kyus'),
+            ],
             "control" => (object)[
                 "subscribers" => (new AppSubscription())->find("pay_status = :s", "s=active")->count(),
                 "plans" => (new AppPlan())->find("status = :s", "s=active")->count(),

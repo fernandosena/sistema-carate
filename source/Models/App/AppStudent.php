@@ -109,6 +109,58 @@ class AppStudent extends Model
         }
         return null;
     }
+
+
+    public function quantityMonth($type = null, $user = null, $younger_age = null, $year = null){
+        $m = date(format: "Y");
+        if(!empty($year)){
+            $m = $year;
+        }
+
+        $t = null;
+        if(!empty($type)){
+            $t = "AND type = '{$type}'";
+        }
+
+        $u = null;
+        if(!empty($user)){
+            $u = "AND user_id = {$user}";
+        }
+        
+        $y = null;
+        if(!empty($younger_age)){
+            $date = date("Y-01-01");
+            $y = "AND TIMESTAMPDIFF(YEAR, datebirth, '{$date}') {$younger_age}";
+        }
+
+        $sql = "SELECT meses.mes, COALESCE(COUNT(u.created_at), 0) AS quantidade_registros
+        FROM (
+            SELECT 1 AS mes UNION ALL
+            SELECT 2 UNION ALL
+            SELECT 3 UNION ALL
+            SELECT 4 UNION ALL
+            SELECT 5 UNION ALL
+            SELECT 6 UNION ALL
+            SELECT 7 UNION ALL
+            SELECT 8 UNION ALL
+            SELECT 9 UNION ALL
+            SELECT 10 UNION ALL
+            SELECT 11 UNION ALL
+            SELECT 12
+        ) AS meses
+        LEFT JOIN app_students u ON MONTH(u.created_at) = meses.mes AND YEAR(u.created_at) = {$m} {$t} {$u} {$y}
+        GROUP BY meses.mes
+        ORDER BY meses.mes";
+
+        $datas = $this->query($sql)->fetch(true);
+        $dadosPorMes = [];
+        foreach($datas as $data){
+            $dadosPorMes[$data->mes] = (int)$data->quantidade_registros;
+        }
+
+        return $dadosPorMes;
+    }
+
     public function paymentsActivatedLast()
     {
         $student =  (new AppPayments())->find("student_id = :id AND status = :s", "id={$this->id}&s=activated")->order("created_at desc")->fetch();

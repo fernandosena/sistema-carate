@@ -291,5 +291,6 @@
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="<?= theme("dist/js/pages/dashboard.js", CONF_VIEW_ADMIN); ?>"></script>
     <script src="<?= theme("assets/js/scripts.js", CONF_VIEW_ADMIN); ?>"></script>
+    <?= $this->section("scripts"); ?>
     </body>
 </html>
