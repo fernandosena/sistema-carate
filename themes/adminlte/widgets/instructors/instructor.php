@@ -74,7 +74,7 @@
         <!-- /.card -->
     </div>
     <div class="div col-md-6">
-        <div class="card">
+        <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">
                     <i class="ion ion-clipboard mr-1"></i> Todos os Pagamentos do instrutor
