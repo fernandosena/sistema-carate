@@ -327,6 +327,7 @@ $(function () {
       responsive: true,
       lengthChange: false,
       autoWidth: false,
+      searching: false,
       buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"],
       language: {
         search: "Pequisar",

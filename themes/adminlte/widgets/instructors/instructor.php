@@ -65,6 +65,21 @@
                 <h3 class="card-title">Quantidade de alunos - <?= date("Y") ?></h3>
             </div>
             <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="filterChart">Filtro ano</label>
+                            <select class="custom-select form-control-border" id="filterChart" data-url="<?= url("admin/chart/quantity") ?>" data-filter="2" data-user="<?= $user->id ?>">
+                                <?php 
+                                    $yeaNow = (int) date("Y");
+                                    for($i = 2024; $i <= $yeaNow; $i++):
+                                ?>
+                                <option value="<?= $i ?>" <?= ($i == $yeaNow) ? "selected" : null ?>><?= $i ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div class="chart">
                     <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                 </div>
@@ -112,96 +127,144 @@
 </div>
 <?php $this->start("scripts"); ?>
 <script>
+    window.i = [<?= implode(",", $amount_month["dan"] ?? []) ?>];
+    window.d = [<?= implode(",", $amount_month["kyus1"] ?? []) ?>];
+    window.k = [<?= implode(",", $amount_month["kyus2"] ?? []) ?>];
+
     $(function () {
+        let myChart;
+        $("#filterChart").change(function (e) {
+            e.preventDefault();
+
+            var data = $(this).data();
+            var load = $(".ajax_load");
+
+            $.ajax({
+                url: data.url,
+                type: "POST",
+                data: { year: $(this).val(), filter: data.filter, user: data.user },
+                dataType: "json",
+                beforeSend: function () {
+                    load.fadeIn(200).css("display", "flex");
+                },
+                success: function (data) {
+                    if (data.result) {
+                        if (data.result.i) {
+                            window.i = Object.values(data.result.i);
+                        }
+                        if (data.result.d) {
+                            window.d = Object.values(data.result.d);
+                        }
+                        if (data.result.k) {
+                            window.k = Object.values(data.result.k);
+                        }
+                        chart(window.i, window.d, window.k)
+                    }
+                    load.fadeOut();
+                },
+                error: function () {
+                    load.fadeOut();
+                },
+            });
+        });
+
+
         //-------------
         //- BAR CHART -
         //-------------
-        var areaChartData = {
-            labels: [
-            "Janeiro",
-            "Fevereiro",
-            "Março",
-            "Abril",
-            "Maio",
-            "Junho",
-            "Julho",
-            "Agosto",
-            "Setebro",
-            "Outubro",
-            "Novembro",
-            "Dezembro",
-            ],
-            datasets: [
-            {
-                label: "Dan",
-                backgroundColor: "rgba(255, 193, 7,0.9)",
-                borderColor: "rgba(60,141,188,0.8)",
-                pointRadius: false,
-                pointColor: "#3b8bba",
-                pointStrokeColor: "rgba(60,141,188,1)",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(60,141,188,1)",
-                data: [<?= implode(",", $amount_month["dan"] ?? []) ?>],
-            },
-            {
-                label: "Kyus até 12 anos",
-                backgroundColor: "rgba(40, 167, 69, 1)",
-                borderColor: "rgba(210, 214, 222, 1)",
-                pointRadius: false,
-                pointColor: "rgba(210, 214, 222, 1)",
-                pointStrokeColor: "#c1c7d1",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
-                data: [<?= implode(",", $amount_month["kyus1"] ?? []) ?>],
-            },
-            {
-                label: "Kyus a partir de 13 anos",
-                backgroundColor: "rgba(220, 53, 69, 1)",
-                borderColor: "rgba(210, 214, 222, 1)",
-                pointRadius: false,
-                pointColor: "rgba(210, 214, 222, 1)",
-                pointStrokeColor: "#c1c7d1",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(220,220,220,1)",
-                data: [<?= implode(",", $amount_month["kyus2"] ?? []) ?>],
-            },
-            ],
-        };
+        function chart(i, d, k){
+            var areaChartData = {
+                labels: [
+                "Janeiro",
+                "Fevereiro",
+                "Março",
+                "Abril",
+                "Maio",
+                "Junho",
+                "Julho",
+                "Agosto",
+                "Setebro",
+                "Outubro",
+                "Novembro",
+                "Dezembro",
+                ],
+                datasets: [
+                    {
+                        label: "Dan",
+                        backgroundColor: "rgba(255, 193, 7,0.9)",
+                        borderColor: "rgba(60,141,188,0.8)",
+                        pointRadius: false,
+                        pointColor: "#3b8bba",
+                        pointStrokeColor: "rgba(60,141,188,1)",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(60,141,188,1)",
+                        data: i,
+                    },
+                    {
+                        label: "Kyus até 12 anos",
+                        backgroundColor: "rgba(40, 167, 69, 1)",
+                        borderColor: "rgba(210, 214, 222, 1)",
+                        pointRadius: false,
+                        pointColor: "rgba(210, 214, 222, 1)",
+                        pointStrokeColor: "#c1c7d1",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: d,
+                    },
+                    {
+                        label: "Kyus a partir de 13 anos",
+                        backgroundColor: "rgba(220, 53, 69, 1)",
+                        borderColor: "rgba(210, 214, 222, 1)",
+                        pointRadius: false,
+                        pointColor: "rgba(210, 214, 222, 1)",
+                        pointStrokeColor: "#c1c7d1",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: k,
+                    },
+                ],
+            };
 
-        var barChartCanvas = $("#barChart").get(0).getContext("2d");
-        var barChartData = $.extend(true, {}, areaChartData);
-        var temp0 = areaChartData.datasets[0];
-        barChartData.datasets[0] = temp0;
+            var barChartCanvas = $("#barChart").get(0).getContext("2d");
+            var barChartData = $.extend(true, {}, areaChartData);
+            var temp0 = areaChartData.datasets[0];
+            barChartData.datasets[0] = temp0;
 
-        var barChartOptions = {
-            responsive: true,
-            maintainAspectRatio: false,
-            datasetFill: false,
-            scales: {
-                y: { // Para Chart.js v3+
-                    beginAtZero: true, // Começa o eixo Y em 0
-                    ticks: {
-                        stepSize: 1, // Define o intervalo entre os ticks como 1
-                        precision: 0, // Remove casas decimais dos ticks
-                        callback: function(value) { if (value % 1 === 0) { return value; } } // Exibe apenas números inteiros
-                    }
-                },
-                yAxes: [{ // Para Chart.js v2 (se você estiver usando uma versão antiga)
-                    ticks: {
-                        beginAtZero: true,
-                        stepSize: 1,
-                        precision: 0,
-                        callback: function(value) {if (value % 1 === 0) {return value;}}
-                    }
-                }]
+            var barChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                datasetFill: false,
+                scales: {
+                    y: { // Para Chart.js v3+
+                        beginAtZero: true, // Começa o eixo Y em 0
+                        ticks: {
+                            stepSize: 1, // Define o intervalo entre os ticks como 1
+                            precision: 0, // Remove casas decimais dos ticks
+                            callback: function(value) { if (value % 1 === 0) { return value; } } // Exibe apenas números inteiros
+                        }
+                    },
+                    yAxes: [{ // Para Chart.js v2 (se você estiver usando uma versão antiga)
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 1,
+                            precision: 0,
+                            callback: function(value) {if (value % 1 === 0) {return value;}}
+                        }
+                    }]
+                }
+            };
+         
+            if (myChart) {
+                myChart.destroy();
             }
-        };
-
-        new Chart(barChartCanvas, {
-            type: "bar",
-            data: barChartData,
-            options: barChartOptions,
-        });
+         
+            myChart = new Chart(barChartCanvas, {
+                type: "bar",
+                data: barChartData,
+                options: barChartOptions,
+            });
+        }
+        chart(window.i, window.d, window.k);
     });
 </script>
 <?php $this->end(); ?>

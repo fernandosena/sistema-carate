@@ -92,6 +92,8 @@ $route->get("/", "Login:root");
 $route->get("/login", "Login:login");
 $route->post("/login", "Login:login");
 
+$route->post("/chart/quantity", "Chart:quantity");
+
 $route->post("/dojo", "Admin:getdojo");
 $route->post("/conf", "Admin:conf");
 
