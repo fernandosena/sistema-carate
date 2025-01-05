@@ -147,7 +147,7 @@ class User extends Model
             SELECT 11 UNION ALL
             SELECT 12
         ) AS meses
-        LEFT JOIN users u ON MONTH(u.created_at) = meses.mes AND YEAR(u.created_at) = {$m} {$u}
+        LEFT JOIN users u ON MONTH(u.created_at) = meses.mes AND YEAR(u.created_at) = {$m} AND u.level != 5 {$u}
         GROUP BY meses.mes
         ORDER BY meses.mes")->fetch(true);
 
