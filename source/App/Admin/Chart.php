@@ -27,6 +27,7 @@ class Chart extends Admin
         $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
 
         $result = null;
+        $table = null;
         if(!empty($data)){
             //Filtra Instrutor/Dan e Kyus
             if($data["filter"] == 1){
@@ -35,16 +36,25 @@ class Chart extends Admin
                     "dan" => (new AppStudent())->quantityMonth('black', null, null, $data["year"]),
                     "kyus" => (new AppStudent())->quantityMonth('kyus', null, null, $data["year"]),
                 ];
+                $table = [
+                    "instrutores" => (new User())->table($data["year"]),
+                ];
             }else{
                 $result = [
                     "i" => (new AppStudent())->quantityMonth('black', $data["user"], null, $data["year"]),
                     "d" => (new AppStudent())->quantityMonth('kyus', $data["user"], "< 13", $data["year"]),
                     "k" => (new AppStudent())->quantityMonth('kyus', $data["user"], ">= 13", $data["year"]),
                 ];
+                $table = [
+                    "dan" => (new AppStudent())->table('black', $data["user"], null, $data["year"]),
+                    "kyu1" => (new AppStudent())->table('kyus', $data["user"], "< 13", $data["year"]),
+                    "kyu2" => (new AppStudent())->table('kyus', $data["user"], ">= 13", $data["year"]),                
+                ];
             }
         }
 
         $json["result"] = $result;
+        $json["table"] = $table;
         echo json_encode($json);
     }
 }

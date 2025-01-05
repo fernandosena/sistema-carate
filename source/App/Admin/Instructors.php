@@ -345,6 +345,11 @@ class Instructors extends Admin
                 "kyus1" => (new AppStudent())->quantityMonth('kyus', $user->id, "< 13"),
                 "kyus2" => (new AppStudent())->quantityMonth('kyus', $user->id, ">= 13"),
             ],
+            "table" => [
+                "dan" => (new AppStudent())->table('black', $user->id),
+                "kyus1" => (new AppStudent())->table('kyus', $user->id, "< 13"),
+                "kyus2" => (new AppStudent())->table('kyus', $user->id, ">= 13"),
+            ],
             "students" => [
                 "all"=> [
                     "count" => $all->count(),

@@ -60,9 +60,21 @@
 <div class="row">
     <div class="div col-md-6">
         <!-- BAR CHART -->
-        <div class="card card-success">
+        <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Quantidade de alunos/instrutores</h3>
+                <h3 class="card-title">Relátorio Alunos e instrutores</h3>
+            </div>
+            <div class="card-header">
+                <div class="d-block card-tools">
+                  <ul class="nav nav-pills ml-auto">
+                    <li class="nav-item">
+                      <a class="nav-link active" href="#chart" data-toggle="tab">Gŕafico</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#instrutores" data-toggle="tab">Instrutores</a>
+                    </li>
+                  </ul>
+                </div>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -80,8 +92,39 @@
                         </div>
                     </div>
                 </div>
-                <div class="chart">
-                    <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                <div class="tab-content p-0">
+                  <div class="chart tab-pane active" id="chart"
+                       style="position: relative; height: 300px;">
+                        <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                   </div>
+                  <div class="chart tab-pane" id="instrutores" style="position: relative; height: 300px;">
+                    <table id="example2" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Cadastro</th>
+                            </tr>
+                        </thead>
+                        <tbody id="instrutorestable">
+                            <?php foreach ($table["instrutores"] as $t): ?>
+                                <tr>
+                                    <td>
+                                        <?= $t->fullname() ?>
+                                    </td>
+                                    <td>
+                                        <?= date("d/m/Y", strtotime($t->created_at)) ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Cadastro</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                  </div>
                 </div>
             </div>
             <!-- /.card-body -->
@@ -140,7 +183,6 @@
         </div>
     </div>
 </div>
-
 <?php $this->start("scripts"); ?>
 <script>
     window.instrutores = [<?= implode(",", $amount_month["instrutores"] ?? []) ?>];
@@ -175,6 +217,25 @@
                             window.kyus = Object.values(data.result.kyus);
                         }
                         chart(window.instrutores, window.dan, window.kyus)
+                    }
+
+                    if(data.table){
+                        if(data.table.instrutores){
+                            console.log(data.table.instrutores)
+                            $("#instrutorestable").empty();
+                            $.each(data.table.instrutores, function (index, item) {
+                                let row = $("<tr>"); // Cria a linha <tr>
+
+                                // Adiciona as células <td> com os dados do item
+                                row.append($("<td>").text(item.name)); // Exemplo: adiciona o nome
+                                row.append($("<td>").text(item.created_at)); // Exemplo: adiciona a idade
+                                
+                                // Adicione outras células conforme necessário, acessando as propriedades do seu objeto 'item'
+
+                                $("#instrutorestable").append(row); // Adiciona a linha à tabela
+                            
+                            });
+                        }
                     }
                     load.fadeOut();
                 },

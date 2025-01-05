@@ -60,9 +60,27 @@
 <div class="row">
     <div class="div col-md-6">
     <!-- BAR CHART -->
-    <div class="card card-success">
+    <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Quantidade de alunos</h3>
+                <h3 class="card-title">Relátorio Alunos </h3>
+            </div>
+            <div class="card-header">
+                <div class="d-block card-tools">
+                  <ul class="nav nav-pills ml-auto">
+                    <li class="nav-item">
+                      <a class="nav-link active" href="#chart" data-toggle="tab">Gŕafico</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#dan" data-toggle="tab">Dan</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#kyu1" data-toggle="tab">Kyus até 12 anos</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#kyu2" data-toggle="tab">Kyus a partir de 13 anos</a>
+                    </li>
+                  </ul>
+                </div>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -80,8 +98,94 @@
                         </div>
                     </div>
                 </div>
-                <div class="chart">
-                    <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                <div class="tab-content p-0">
+                    <div class="chart tab-pane active" id="chart">
+                        <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    </div>
+                    <div class="chart tab-pane" id="dan">
+                        <table id="example2" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Cadastro</th>
+                                </tr>
+                            </thead>
+                            <tbody id="danstable">
+                                <?php foreach ($table["dan"] as $t): ?>
+                                    <tr>
+                                        <td>
+                                            <?= $t->fullname() ?>
+                                        </td>
+                                        <td>
+                                            <?= date("d/m/Y", strtotime($t->created_at)) ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Cadastro</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="chart tab-pane" id="kyu1">
+                        <table id="example2" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Cadastro</th>
+                                </tr>
+                            </thead>
+                            <tbody id="kyu1table">
+                                <?php foreach ($table["kyu1"] as $t): ?>
+                                    <tr>
+                                        <td>
+                                            <?= $t->fullname() ?>
+                                        </td>
+                                        <td>
+                                            <?= date("d/m/Y", strtotime($t->created_at)) ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Cadastro</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="chart tab-pane" id="kyu2">
+                        <table id="example2" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Cadastro</th>
+                                </tr>
+                            </thead>
+                            <tbody id="kyu2table">
+                                <?php foreach ($table["kyu2"] as $t): ?>
+                                    <tr>
+                                        <td>
+                                            <?= $t->fullname() ?>
+                                        </td>
+                                        <td>
+                                            <?= date("d/m/Y", strtotime($t->created_at)) ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Cadastro</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
             </div>
             <!-- /.card-body -->
@@ -160,6 +264,52 @@
                         }
                         chart(window.i, window.d, window.k)
                     }
+
+                    if(data.table){
+                        if(data.table.dan){
+                            $("#danstable").empty();
+                            $.each(data.table.dan, function (index, item) {
+                                let row = $("<tr>"); // Cria a linha <tr>
+
+                                // Adiciona as células <td> com os dados do item
+                                row.append($("<td>").text(item.name)); // Exemplo: adiciona o nome
+                                row.append($("<td>").text(item.created_at)); // Exemplo: adiciona a idade
+                                
+                                // Adicione outras células conforme necessário, acessando as propriedades do seu objeto 'item'
+
+                                $("#danstable").append(row); // Adiciona a linha à tabela
+                            });
+                        }
+                        if(data.table.kyu1){
+                            $("#kyu1table").empty();
+                            $.each(data.table.kyu1, function (index, item) {
+                                let row = $("<tr>"); // Cria a linha <tr>
+
+                                // Adiciona as células <td> com os dados do item
+                                row.append($("<td>").text(item.name)); // Exemplo: adiciona o nome
+                                row.append($("<td>").text(item.created_at)); // Exemplo: adiciona a idade
+                                
+                                // Adicione outras células conforme necessário, acessando as propriedades do seu objeto 'item'
+
+                                $("#kyu1table").append(row); // Adiciona a linha à tabela
+                            });
+                        }
+                        if(data.table.kyu1){
+                            $("#kyu2table").empty();
+                            $.each(data.table.kyu2, function (index, item) {
+                                let row = $("<tr>"); // Cria a linha <tr>
+
+                                // Adiciona as células <td> com os dados do item
+                                row.append($("<td>").text(item.name)); // Exemplo: adiciona o nome
+                                row.append($("<td>").text(item.created_at)); // Exemplo: adiciona a idade
+                                
+                                // Adicione outras células conforme necessário, acessando as propriedades do seu objeto 'item'
+
+                                $("#kyu2table").append(row); // Adiciona a linha à tabela
+                            });
+                        }
+                    }
+
                     load.fadeOut();
                 },
                 error: function () {

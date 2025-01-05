@@ -73,6 +73,7 @@ class Dash extends Admin
         $infoBlacks = (new AppStudent())->find("next_graduation IS NOT NULL AND DATEDIFF(next_graduation, CURDATE()) BETWEEN 0 AND 185")->order("next_graduation DESC")->fetch(true);
         $infoInstructors = (new User())->find("next_graduation IS NOT NULL AND DATEDIFF(next_graduation, CURDATE()) BETWEEN 0 AND 185")->order("next_graduation DESC")->fetch(true);
 
+        $year = date("Y");
         echo $this->view->render("widgets/dash/home", [
             "app" => "dash",
             "head" => $head,
@@ -90,6 +91,9 @@ class Dash extends Admin
                 "instrutores" => (new User())->quantityMonth(),
                 "dan" => (new AppStudent())->quantityMonth('black'),
                 "kyus" => (new AppStudent())->quantityMonth('kyus'),
+            ],
+            "table" => [
+                "instrutores" => (new User())->find("YEAR(created_at) = :y AND level != 5", "y={$year}")->fetch(true),
             ],
             "control" => (object)[
                 "subscribers" => (new AppSubscription())->find("pay_status = :s", "s=active")->count(),

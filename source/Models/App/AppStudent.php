@@ -161,6 +161,42 @@ class AppStudent extends Model
         return $dadosPorMes;
     }
 
+    public function table($type = null, $user = null, $younger_age = null, $year = null){
+        $m = date(format: "Y");
+        if(!empty($year)){
+            $m = $year;
+        }
+
+        $t = null;
+        if(!empty($type)){
+            $t = "AND type = '{$type}'";
+        }
+
+        $u = null;
+        if(!empty($user)){
+            $u = "AND user_id = {$user}";
+        }
+        
+        $y = null;
+        if(!empty($younger_age)){
+            $date = date("Y-01-01");
+            $y = "AND TIMESTAMPDIFF(YEAR, datebirth, '{$date}') {$younger_age}";
+        }
+
+        $sql = "SELECT * FROM app_students WHERE YEAR(created_at) = {$m} {$t} {$u} {$y}";
+
+        $rows = $this->query($sql)->fetch(true);
+        $datas = [];
+        foreach($rows as $row){
+            $datas[] = [
+                "id" => $row->id,
+                "name" => $row->fullName(),
+                "created_at" => $row->created_at
+            ];
+        }
+        return $datas;
+    }
+
     public function paymentsActivatedLast()
     {
         $student =  (new AppPayments())->find("student_id = :id AND status = :s", "id={$this->id}&s=activated")->order("created_at desc")->fetch();

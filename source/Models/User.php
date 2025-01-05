@@ -160,6 +160,26 @@ class User extends Model
         return $dadosPorMes;
     }
 
+    public function table($year = null){
+        $y = date("Y");
+        if(!empty($year)){
+            $y = $year;
+        }
+
+        $rows = $this->find("YEAR(created_at) = :y AND level != 5", "y={$y}")->fetch(true);
+        
+        $data = [];
+        foreach ($rows as $row) {
+            $data[] = [
+                "id" => $row->id,
+                "name" => $row->fullname(),
+                "created_at" => date("d/m/Y", strtotime($row->created_at))
+            ];
+        }
+
+        return $data;
+    }
+
     public function getLastGraduation()
     {
         return null;
