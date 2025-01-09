@@ -28,13 +28,14 @@ class Chart extends Admin
 
         $result = null;
         $table = null;
+        $label = null;
         if(!empty($data)){
             //Filtra Instrutor/Dan e Kyus
             if($data["filter"] == 1){
                 $result = [
-                    "instrutores" => (new User())->quantityMonth(null,$data["year"]),
-                    "dan" => (new AppStudent())->quantityMonth('black', null, null, $data["year"]),
-                    "kyus" => (new AppStudent())->quantityMonth('kyus', null, null, $data["year"]),
+                    "instrutores" => (new User())->quantityDays(null,$data["year"],$data["month"]),
+                    "dan" => (new AppStudent())->quantityDays('black', null, null, $data["year"], $data["month"]),
+                    "kyus" => (new AppStudent())->quantityDays('kyus', null, null, $data["year"], $data["month"]),
                 ];
                 $table = [
                     "instrutores" => (new User())->table($data["year"]),
@@ -51,10 +52,13 @@ class Chart extends Admin
                     "kyu2" => (new AppStudent())->table('kyus', $data["user"], ">= 13", $data["year"]),                
                 ];
             }
+            $label = arrayDaysRanger($data["year"], $data["month"]);
         }
+
 
         $json["result"] = $result;
         $json["table"] = $table;
+        $json["label"] = $label;
         echo json_encode($json);
     }
 }

@@ -78,6 +78,7 @@ class Students extends App
             if($data["type"] == "black"){
                 $graduation = (new Belt())->findById($data["graduation"]);
                 $studentCreate = new AppStudent();
+                $studentCreate->type = "black";
 
                 if(!empty($graduation->graduation_time)){
                     $studentCreate->next_graduation = date("Y-m-d", strtotime("+{$graduation->graduation_time} years"));
@@ -85,6 +86,7 @@ class Students extends App
             }else{
                 #cadastra faixa Kyus
                 $studentCreate = new AppStudent();
+                $studentCreate->type = "kyus";
                 if(!empty($data["mother_name"])){
                     $studentCreate->mother_name = $data["mother_name"];
                 }

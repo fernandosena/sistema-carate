@@ -58,7 +58,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="div col-md-6">
+    <div class="div col-md-12">
         <!-- BAR CHART -->
         <div class="card">
             <div class="card-header">
@@ -78,10 +78,10 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-5">
                         <div class="form-group">
-                            <label for="filterChart">Filtro ano</label>
-                            <select class="custom-select form-control-border" id="filterChart" data-url="<?= url("admin/chart/quantity") ?>" data-filter="1">
+                            <label for="yearChart">Ano</label>
+                            <select class="custom-select form-control-border" id="yearChart" data-url="<?= url("admin/chart/quantity") ?>" data-filter="1">
                                 <?php 
                                     $yeaNow = (int) date("Y");
                                     for($i = 2024; $i <= $yeaNow; $i++):
@@ -89,6 +89,26 @@
                                 <option value="<?= $i ?>" <?= ($i == $yeaNow) ? "selected" : null ?>><?= $i ?></option>
                                 <?php endfor; ?>
                             </select>
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <div class="form-group">
+                            <label for="monthChart">Mês</label>
+                            <select class="custom-select form-control-border" id="monthChart" data-url="<?= url("admin/chart/quantity") ?>" data-filter="1">
+                                <?php 
+                                    $monthNow = (int) date("m");
+                                    $meses = arrayMonthRanger();
+                                    foreach($meses as $key => $value):
+                                ?>
+                                <option value="<?= $key ?>" <?= ($key == $monthNow) ? "selected" : null ?>><?= $value ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label for="filterChart"></label>
+                            <button type="button" id="atualizar" class="btn btn-block btn-primary">Atualizar</button>
                         </div>
                     </div>
                 </div>
@@ -131,7 +151,7 @@
         </div>
         <!-- /.card -->
     </div>
-    <div class="div col-md-6">
+    <div class="div col-md-12">
         <div class="card  card-primary">
             <div class="card-header">
                 <h3 class="card-title">
@@ -185,28 +205,37 @@
 </div>
 <?php $this->start("scripts"); ?>
 <script>
+    window.label = [<?= implode(",", array: array_map(function($dia) {
+        return "'" . $dia . "'";
+    }, arrayDaysRanger() ?? [])) ?>];
     window.instrutores = [<?= implode(",", $amount_month["instrutores"] ?? []) ?>];
     window.dan = [<?= implode(",", $amount_month["dan"] ?? []) ?>];
     window.kyus = [<?= implode(",", $amount_month["kyus"] ?? []) ?>];
 
     $(function () {
         let myChart;
-        $("#filterChart").change(function (e) {
+        $("#atualizar").on("click",function (e) {
             e.preventDefault();
 
-            var data = $(this).data();
+            var year = $("#yearChart")
+            var month = $("#monthChart")
+
+            var data = year.data();
             var load = $(".ajax_load");
 
             $.ajax({
                 url: data.url,
                 type: "POST",
-                data: { year: $(this).val(), filter: data.filter },
+                data: { year: year.val(), month: month.val(), filter: data.filter },
                 dataType: "json",
                 beforeSend: function () {
                     load.fadeIn(200).css("display", "flex");
                 },
                 success: function (data) {
                     if (data.result) {
+                        if (data.label) {
+                            window.label = Object.values(data.label);
+                        }
                         if (data.result.instrutores) {
                             window.instrutores = Object.values(data.result.instrutores);
                         }
@@ -216,7 +245,7 @@
                         if (data.result.kyus) {
                             window.kyus = Object.values(data.result.kyus);
                         }
-                        chart(window.instrutores, window.dan, window.kyus)
+                        chart(window.label, window.instrutores, window.dan, window.kyus)
                     }
 
                     if(data.table){
@@ -233,7 +262,6 @@
                                 // Adicione outras células conforme necessário, acessando as propriedades do seu objeto 'item'
 
                                 $("#instrutorestable").append(row); // Adiciona a linha à tabela
-                            
                             });
                         }
                     }
@@ -249,22 +277,9 @@
         //-------------
         //- BAR CHART -
         //-------------
-        function chart(i, d, k){
+        function chart(l, i, d, k){
             var areaChartData = {
-                labels: [
-                "Janeiro",
-                "Fevereiro",
-                "Março",
-                "Abril",
-                "Maio",
-                "Junho",
-                "Julho",
-                "Agosto",
-                "Setebro",
-                "Outubro",
-                "Novembro",
-                "Dezembro",
-                ],
+                labels: l,
                 datasets: [
                 {
                     label: "Instrutores",
@@ -341,7 +356,7 @@
                 options: barChartOptions,
             });
         }
-        chart(window.instrutores, window.dan, window.kyus);
+        chart(window.label, window.instrutores, window.dan, window.kyus);
     });
 </script>
 <?php $this->end(); ?>

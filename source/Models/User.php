@@ -160,6 +160,60 @@ class User extends Model
         return $dadosPorMes;
     }
 
+    public function quantityDays($user = null, $year = null, $month = null){
+        
+        $y = date("Y");
+        if(!empty($year)){
+            $y = $year;
+        }
+
+        $m = date("m");
+        if(!empty($month)){
+            $m = $month;
+        }
+
+        $u = null;
+        if(!empty($user)){
+            $u = "AND users.id = {$user}";
+        }
+
+        $datas = $this->query("SELECT 
+            n.dia,
+            COALESCE(COUNT(users.id), 0) AS total_cadastrados
+        FROM 
+            (
+                SELECT 1 AS dia UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5
+                UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10
+                UNION ALL SELECT 11 UNION ALL SELECT 12 UNION ALL SELECT 13 UNION ALL SELECT 14 UNION ALL SELECT 15
+                UNION ALL SELECT 16 UNION ALL SELECT 17 UNION ALL SELECT 18 UNION ALL SELECT 19 UNION ALL SELECT 20
+                UNION ALL SELECT 21 UNION ALL SELECT 22 UNION ALL SELECT 23 UNION ALL SELECT 24 UNION ALL SELECT 25
+                UNION ALL SELECT 26 UNION ALL SELECT 27 UNION ALL SELECT 28 UNION ALL SELECT 29 UNION ALL SELECT 30
+                UNION ALL SELECT 31
+            ) AS n
+        LEFT JOIN 
+            users 
+        ON 
+            DAY(users.created_at) = n.dia
+            AND YEAR(users.created_at) = {$y}
+            AND MONTH(users.created_at) = {$m}
+            AND users.level != 5 
+            {$u}            
+        WHERE 
+            n.dia <= DAY(LAST_DAY('{$y}-{$m}-01'))
+        GROUP BY 
+            n.dia
+        ORDER BY 
+            n.dia")->fetch(true);
+
+
+        $dadosPorDia = [];
+        foreach($datas as $data){
+            $dadosPorDia[$data->dia] = (int)$data->total_cadastrados;
+        }
+
+        return $dadosPorDia;
+    }
+
     public function table($year = null){
         $y = date("Y");
         if(!empty($year)){

@@ -102,6 +102,46 @@ function verify_renew($data){
     return false;
 }
 
+function arrayDaysRanger($year = null, $month = null, $format = "d/m/Y"){
+    $hoje = new DateTime();
+
+    if(!empty($year) && !empty($month)){
+        $hoje = new DateTime("{$year}-{$month}-01");
+    }
+
+    $primeiroDia = new DateTime($hoje->format('Y-m-01'));
+    $ultimoDia = new DateTime($hoje->format('Y-m-t'));
+
+    $diasDoMes = [];
+    $diaAtual = clone $primeiroDia;
+
+    while ($diaAtual <= $ultimoDia) {
+        $diasDoMes[] = $diaAtual->format($format); 
+        $diaAtual->modify('+1 day');
+    }
+
+    return $diasDoMes;
+}
+
+function arrayMonthRanger(){
+    $meses = [
+        1 => 'Janeiro',
+        2 => 'Fevereiro',
+        3 => 'Março',
+        4 => 'Abril',
+        5 => 'Maio',
+        6 => 'Junho',
+        7 => 'Julho',
+        8 => 'Agosto',
+        9 => 'Setembro',
+        10 => 'Outubro',
+        11 => 'Novembro',
+        12 => 'Dezembro'
+    ];
+
+    return $meses;
+}
+
 function graduation_data($id){
     $belt = (new \Source\Models\Belt())->findById($id);
     if(!empty($belt->years)){

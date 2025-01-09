@@ -283,7 +283,8 @@ abstract class Model
     public function save(): bool
     {
         if (!$this->required()) {
-            $this->message->warning("Preencha todos os campos para continuar");
+            $list = implode(",", $this->requiredEmpty());
+            $this->message->warning("Preencha todos os campos para continuar ({$list})");
             return false;
         }
 
@@ -391,5 +392,19 @@ abstract class Model
             }
         }
         return true;
+    }
+    /**
+     * @return bool
+     */
+    protected function requiredEmpty(): array
+    {   
+        $list = [];
+        $data = (array)$this->data();
+        foreach ($this->required as $field) {
+            if (empty($data[$field])) {
+                $list[] = $field;
+            }
+        }
+        return $list;
     }
 }

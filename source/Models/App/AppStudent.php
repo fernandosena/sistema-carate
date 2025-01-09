@@ -161,6 +161,71 @@ class AppStudent extends Model
         return $dadosPorMes;
     }
 
+    public function quantityDays($type = null, $user = null, $younger_age = null, $year = null, $month = null){
+        $m = date(format: "m");
+        if(!empty($month)){
+            $m = $month;
+        }
+
+        $y = date(format: "Y");
+        if(!empty($year)){
+            $y = $year;
+        }
+
+        $t = null;
+        if(!empty($type)){
+            $t = "AND type = '{$type}'";
+        }
+
+        $u = null;
+        if(!empty($user)){
+            $u = "AND user_id = {$user}";
+        }
+        
+        $ya = null;
+        if(!empty($younger_age)){
+            $date = date("Y-m-d");
+            $ya = "AND TIMESTAMPDIFF(YEAR, datebirth, '{$date}') {$younger_age}";
+        }
+
+        $sql = "SELECT 
+                    n.dia,
+                    COALESCE(COUNT(s.id), 0) AS total_cadastrados
+                FROM 
+                    (
+                        SELECT 1 AS dia UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5
+                        UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10
+                        UNION ALL SELECT 11 UNION ALL SELECT 12 UNION ALL SELECT 13 UNION ALL SELECT 14 UNION ALL SELECT 15
+                        UNION ALL SELECT 16 UNION ALL SELECT 17 UNION ALL SELECT 18 UNION ALL SELECT 19 UNION ALL SELECT 20
+                        UNION ALL SELECT 21 UNION ALL SELECT 22 UNION ALL SELECT 23 UNION ALL SELECT 24 UNION ALL SELECT 25
+                        UNION ALL SELECT 26 UNION ALL SELECT 27 UNION ALL SELECT 28 UNION ALL SELECT 29 UNION ALL SELECT 30
+                        UNION ALL SELECT 31
+                    ) AS n
+                LEFT JOIN 
+                    app_students s 
+                ON 
+                    DAY(s.created_at) = n.dia
+                    AND YEAR(s.created_at) = {$y}
+                    AND MONTH(s.created_at) = {$m}
+                    {$u}       
+                    {$t}  
+                    {$ya}   
+                WHERE 
+                    n.dia <= DAY(LAST_DAY('{$y}-{$m}-01'))
+                GROUP BY 
+                    n.dia
+                ORDER BY 
+                    n.dia";
+                    
+        $datas = $this->query($sql)->fetch(true);
+        $dadosPorMes = [];
+        foreach($datas as $data){
+            $dadosPorMes[$data->mes] = (int)$data->quantidade_registros;
+        }
+
+        return $dadosPorMes;
+    }
+
     public function table($type = null, $user = null, $younger_age = null, $year = null){
         $m = date(format: "Y");
         if(!empty($year)){

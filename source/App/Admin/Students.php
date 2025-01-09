@@ -101,8 +101,6 @@ class Students extends Admin
         ]);
     }
 
-
-
     public function status(?array $data): void
     {
         if(empty($data['type'])){
