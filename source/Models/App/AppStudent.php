@@ -226,31 +226,43 @@ class AppStudent extends Model
         return $dadosPorDia;
     }
 
-    public function table($type = null, $user = null, $younger_age = null, $year = null){
-        $m = date(format: "Y");
+    public function table($type = null, $user = null, $younger_age = null, $year = null, $month = null, $search = null, $orderBy = "first_name asc", $start = 0, $length = 10){
+        $sqlParams = null;
+
+        $y = date("Y");
         if(!empty($year)){
-            $m = $year;
+            $y = $year;
         }
 
-        $t = null;
+        $m = date("m");
+        if(!empty($month)){
+            $m = $month;
+            $sqlParams .= " AND MONTH(created_at) = {$m}";
+        }
+
         if(!empty($type)){
-            $t = "AND type = '{$type}'";
+            $sqlParams .= " AND type = '{$type}'";
         }
 
-        $u = null;
+        if (!empty($search)) {
+            $sqlParams .= " AND name LIKE '%{$search}%'";
+        }
+
         if(!empty($user)){
-            $u = "AND user_id = {$user}";
+            $sqlParams .= " AND user_id = {$user}";
         }
         
-        $y = null;
         if(!empty($younger_age)){
             $date = date("Y-01-01");
-            $y = "AND TIMESTAMPDIFF(YEAR, datebirth, '{$date}') {$younger_age}";
+            $sqlParams .= " AND TIMESTAMPDIFF(YEAR, datebirth, '{$date}') {$younger_age}";
         }
 
-        $sql = "SELECT * FROM app_students WHERE YEAR(created_at) = {$m} {$t} {$u} {$y}";
+        $sql = "SELECT * FROM app_students WHERE YEAR(created_at) = {$y} {$sqlParams}";
 
-        $rows = $this->query($sql)->fetch(true);
+        $result = $this->query($sql);
+
+        $rows = $result->fetch(true);
+
         $datas = [];
         foreach($rows as $row){
             $datas[] = [
@@ -259,7 +271,11 @@ class AppStudent extends Model
                 "created_at" => $row->created_at
             ];
         }
-        return $datas;
+
+        return [
+            "quantity" => $result->count(),
+            "data" => $datas
+        ];
     }
 
     public function paymentsActivatedLast()

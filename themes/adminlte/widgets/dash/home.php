@@ -72,14 +72,20 @@
             <div class="card-body">
                 <div class="card-header">
                     <div class="d-block card-tools">
-                    <ul class="nav nav-pills ml-auto">
-                        <li class="nav-item">
-                        <a class="nav-link active" href="#chart" data-toggle="tab">Gŕafico</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href="#instrutores" data-toggle="tab">Instrutores</a>
-                        </li>
-                    </ul>
+                        <ul class="nav nav-pills ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#chart" data-toggle="tab">Gŕafico</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#instrutores" data-toggle="tab">Instrutores</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#dan" data-toggle="tab">Dan</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#kyus" data-toggle="tab">Kyus</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="row">
@@ -99,7 +105,7 @@
                     <div class="col-5">
                         <div class="form-group">
                             <label for="monthChart">Mês</label>
-                            <select class="custom-select form-control-border" id="monthChart" data-url="<?= url("admin/chart/quantity") ?>" data-filter="1">
+                            <select class="custom-select form-control-border" id="monthChart" data-url="<?= url("admin/chart/table") ?>" data-filter="1">
                                 <?php 
                                     $monthNow = (int) date("m");
                                     $meses = arrayMonthRanger();
@@ -122,30 +128,55 @@
                        style="position: relative; height: 300px;">
                         <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                    </div>
-                  <div class="chart tab-pane" id="instrutores" style="position: relative; height: 300px;">
-                    <table id="example2" class="table table-bordered table-striped">
+                  <div class="tab-pane" id="instrutores" style="position: relative">
+                    <table id="tableIntructorAjax" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Nome</th>
-                                <th>Cadastro</th>
+                                <th>Data</th>
                             </tr>
                         </thead>
-                        <tbody id="instrutorestable">
-                            <?php foreach ($table["instrutores"] as $t): ?>
-                                <tr>
-                                    <td>
-                                        <?= $t->fullname() ?>
-                                    </td>
-                                    <td>
-                                        <?= date("d/m/Y", strtotime($t->created_at)) ?>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
+                        <tbody>
                         </tbody>
                         <tfoot>
                             <tr>
                                 <th>Nome</th>
-                                <th>Cadastro</th>
+                                <th>Data</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                  </div>
+                  <div class="tab-pane" id="dan" style="position: relative">
+                    <table id="tableDanAjax" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Data</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                  </div><div class="tab-pane" id="kyus" style="position: relative">
+                    <table id="tableKyusAjax" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Data</th>
                             </tr>
                         </tfoot>
                     </table>
@@ -226,6 +257,7 @@
         let myChart;
         $("#atualizar").on("click",function (e) {
             e.preventDefault();
+            reloadTable();
 
             var year = $("#yearChart")
             var month = $("#monthChart")
@@ -256,24 +288,6 @@
                             window.kyus = Object.values(data.result.kyus);
                         }
                         chart(window.label, window.instrutores, window.dan, window.kyus)
-                    }
-
-                    if(data.table){
-                        if(data.table.instrutores){
-                            console.log(data.table.instrutores)
-                            $("#instrutorestable").empty();
-                            $.each(data.table.instrutores, function (index, item) {
-                                let row = $("<tr>"); // Cria a linha <tr>
-
-                                // Adiciona as células <td> com os dados do item
-                                row.append($("<td>").text(item.name)); // Exemplo: adiciona o nome
-                                row.append($("<td>").text(item.created_at)); // Exemplo: adiciona a idade
-                                
-                                // Adicione outras células conforme necessário, acessando as propriedades do seu objeto 'item'
-
-                                $("#instrutorestable").append(row); // Adiciona a linha à tabela
-                            });
-                        }
                     }
                     load.fadeOut();
                 },
@@ -367,6 +381,111 @@
             });
         }
         chart(window.label, window.instrutores, window.dan, window.kyus);
+
+        const optionTable = {
+            responsive: true,
+            lengthChange: false,
+            autoWidth: false,
+            buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"],
+            language: {
+                search: "Pequisar",
+                searchPlaceholder: "Digite a sua pesquisa aqui...",
+                zeroRecords: "Nenhum registro correspondente encontrado",
+                emptyTable: "Não há dados disponíveis na tabela",
+                info: "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                infoEmpty: "Mostrando 0 a 0 de 0 entradas",
+                infoFiltered: "(filtrado do total de _MAX_ entradas)",
+                loadingRecords: "Carregando...",
+                buttons: {
+                copy: "Copiar",
+                copyTitle: "Dados copiados",
+                copySuccess: {
+                    _: "%d linhas copiadas",
+                    1: "1 linha copiada",
+                },
+                copyKeys:
+                    "Pressione Ctrl+C para copiar os dados para a área de transferência",
+                csv: "CSV",
+                excel: "Excel",
+                pdf: "PDF",
+                print: "Imprimir",
+                colvis: "Colunas",
+                },
+                paginate: {
+                first: "Primeiro",
+                last: "Último",
+                next: "Próximo",
+                previous: "Anterior",
+                },
+                aria: {
+                orderable: "Ordenar por esta coluna",
+                orderableReverse: "Ordem inversa desta coluna",
+                },
+            },
+            "processing": true, // Mostra um indicador de carregamento
+            "serverSide": true, // Habilita o processamento no servidor
+            "columns": [
+                { "data": "name" },
+                { "data": "created_at"},
+            ],
+        };
+
+        $("#tableIntructorAjax").DataTable({
+            ...optionTable,
+            "ajax": {
+                "url": $("#monthChart").data('url'),
+                "type": "POST",
+                "data": function(d) {
+                    d.year = $("#yearChart").val();
+                    d.month = $("#monthChart").val();
+                    d.filter = $("#yearChart").data('filter');
+                    d.type = 'intructor';
+                }
+            }
+        })
+        .buttons()
+        .container()
+        .appendTo("#example1_wrapper .col-md-6:eq(0)");
+
+        $("#tableDanAjax").DataTable({
+            ...optionTable,
+            "ajax": {
+                "url": $("#monthChart").data('url'),
+                "type": "POST",
+                "data": function(d) {
+                    d.year = $("#yearChart").val();
+                    d.month = $("#monthChart").val();
+                    d.filter = $("#yearChart").data('filter');
+                    d.type = 'black';
+                }
+            }
+        })
+        .buttons()
+        .container()
+        .appendTo("#example1_wrapper .col-md-6:eq(0)");
+
+        $("#tableKyusAjax").DataTable({
+            ...optionTable,
+            "ajax": {
+                "url": $("#monthChart").data('url'),
+                "type": "POST",
+                "data": function(d) {
+                    d.year = $("#yearChart").val();
+                    d.month = $("#monthChart").val();
+                    d.filter = $("#yearChart").data('filter');
+                    d.type = 'kyus';
+                }
+            }
+        })
+        .buttons()
+        .container()
+        .appendTo("#example1_wrapper .col-md-6:eq(0)");
+
+        function reloadTable() {
+            $('#tableIntructorAjax').DataTable().ajax.reload()
+            $('#tableDanAjax').DataTable().ajax.reload()
+            $('#tableKyusAjax').DataTable().ajax.reload()
+        }
     });
 </script>
 <?php $this->end(); ?>

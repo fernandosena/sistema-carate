@@ -214,14 +214,33 @@ class User extends Model
         return $dadosPorDia;
     }
 
-    public function table($year = null){
+    public function table($year = null, $month = null, $search = null, $orderBy = "first_name asc", $start = 0, $length = 10){
+        $terms = null;
+        $params = null;
+
         $y = date("Y");
         if(!empty($year)){
             $y = $year;
+            $terms .= " AND YEAR(created_at) = :y";
+            $params .= "&y={$y}";
         }
 
-        $rows = $this->find("YEAR(created_at) = :y AND level != 5", "y={$y}")->fetch(true);
+        $m = date("m");
+        if(!empty($month)){
+            $m = $month;
+            $terms .= " AND MONTH(created_at) = :m";
+            $params .= "&m={$m}";
+        }
+
+        if (!empty($search)) {
+            $terms .= " AND name LIKE :search OR created_at LIKE :search";
+            $params .= "&search='%{$search}%'";
+        }
+
+        $result = $this->find("level != :l {$terms}", "l=5{$params}")->order($orderBy);
         
+        $rows = $result->limit($length )->offset($start)->fetch(true);
+
         $data = [];
         foreach ($rows as $row) {
             $data[] = [
@@ -231,7 +250,10 @@ class User extends Model
             ];
         }
 
-        return $data;
+        return [
+            "quantity" => $result->count(),
+            "data" => $data
+        ];
     }
 
     public function getLastGraduation()

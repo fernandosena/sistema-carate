@@ -93,6 +93,7 @@ $route->get("/login", "Login:login");
 $route->post("/login", "Login:login");
 
 $route->post("/chart/quantity", "Chart:quantity");
+$route->post("/chart/table", "Chart:table");
 
 $route->post("/dojo", "Admin:getdojo");
 $route->post("/conf", "Admin:conf");
