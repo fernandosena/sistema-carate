@@ -63,26 +63,31 @@
     <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Relátorio Alunos </h3>
-            </div>
-            <div class="card-header">
-                <div class="d-block card-tools">
-                  <ul class="nav nav-pills ml-auto">
-                    <li class="nav-item">
-                      <a class="nav-link active" href="#chart" data-toggle="tab">Gŕafico</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#dan" data-toggle="tab">Dan</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#kyu1" data-toggle="tab">Kyus até 12 anos</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#kyu2" data-toggle="tab">Kyus a partir de 13 anos</a>
-                    </li>
-                  </ul>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
                 </div>
             </div>
             <div class="card-body">
+                <div class="card-header">
+                    <div class="d-block card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item">
+                        <a class="nav-link active" href="#chart" data-toggle="tab">Gŕafico</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="#dan" data-toggle="tab">Dan</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="#kyu1" data-toggle="tab">Kyus até 12 anos</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="#kyu2" data-toggle="tab">Kyus a partir de 13 anos</a>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-6">
                         <div class="form-group">

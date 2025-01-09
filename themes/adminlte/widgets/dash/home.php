@@ -60,23 +60,28 @@
 <div class="row">
     <div class="div col-md-12">
         <!-- BAR CHART -->
-        <div class="card">
+        <div class="card card-primary">
             <div class="card-header">
                 <h3 class="card-title">Relátorio Alunos e instrutores</h3>
-            </div>
-            <div class="card-header">
-                <div class="d-block card-tools">
-                  <ul class="nav nav-pills ml-auto">
-                    <li class="nav-item">
-                      <a class="nav-link active" href="#chart" data-toggle="tab">Gŕafico</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#instrutores" data-toggle="tab">Instrutores</a>
-                    </li>
-                  </ul>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
                 </div>
             </div>
             <div class="card-body">
+                <div class="card-header">
+                    <div class="d-block card-tools">
+                    <ul class="nav nav-pills ml-auto">
+                        <li class="nav-item">
+                        <a class="nav-link active" href="#chart" data-toggle="tab">Gŕafico</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="#instrutores" data-toggle="tab">Instrutores</a>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-5">
                         <div class="form-group">
@@ -152,11 +157,16 @@
         <!-- /.card -->
     </div>
     <div class="div col-md-12">
-        <div class="card  card-primary">
+        <div class="card  card-warning">
             <div class="card-header">
                 <h3 class="card-title">
                     <i class="ion ion-clipboard mr-1"></i> Avisos
                 </h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
             </div>
 
             <div class="card-body">
@@ -208,9 +218,9 @@
     window.label = [<?= implode(",", array: array_map(function($dia) {
         return "'" . $dia . "'";
     }, arrayDaysRanger() ?? [])) ?>];
-    window.instrutores = [<?= implode(",", $amount_month["instrutores"] ?? []) ?>];
-    window.dan = [<?= implode(",", $amount_month["dan"] ?? []) ?>];
-    window.kyus = [<?= implode(",", $amount_month["kyus"] ?? []) ?>];
+    window.instrutores = [<?= implode(",", $amount_days["instrutores"] ?? []) ?>];
+    window.dan = [<?= implode(",", $amount_days["dan"] ?? []) ?>];
+    window.kyus = [<?= implode(",", $amount_days["kyus"] ?? []) ?>];
 
     $(function () {
         let myChart;

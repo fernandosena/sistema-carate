@@ -74,6 +74,7 @@ class Dash extends Admin
         $infoInstructors = (new User())->find("next_graduation IS NOT NULL AND DATEDIFF(next_graduation, CURDATE()) BETWEEN 0 AND 185")->order("next_graduation DESC")->fetch(true);
 
         $year = date("Y");
+
         echo $this->view->render("widgets/dash/home", [
             "app" => "dash",
             "head" => $head,
@@ -87,10 +88,10 @@ class Dash extends Admin
                 "kyus" => (new AppStudent())->find("type = 'kyus'")->count(),
                 "belts" => (new Belt())->find()->count(),
             ],
-            "amount_month" => [
-                "instrutores" => (new User())->quantityMonth(),
-                "dan" => (new AppStudent())->quantityMonth('black'),
-                "kyus" => (new AppStudent())->quantityMonth('kyus'),
+            "amount_days" => [
+                "instrutores" => (new User())->quantityDays(),
+                "dan" => (new AppStudent())->quantityDays('black'),
+                "kyus" => (new AppStudent())->quantityDays('kyus'),
             ],
             "table" => [
                 "instrutores" => (new User())->find("YEAR(created_at) = :y AND level != 5", "y={$year}")->fetch(true),

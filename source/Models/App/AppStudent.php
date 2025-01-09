@@ -216,14 +216,14 @@ class AppStudent extends Model
                     n.dia
                 ORDER BY 
                     n.dia";
-                    
+
         $datas = $this->query($sql)->fetch(true);
-        $dadosPorMes = [];
+        $dadosPorDia = [];
         foreach($datas as $data){
-            $dadosPorMes[$data->mes] = (int)$data->quantidade_registros;
+            $dadosPorDia[$data->dia] = (int)$data->total_cadastrados;
         }
 
-        return $dadosPorMes;
+        return $dadosPorDia;
     }
 
     public function table($type = null, $user = null, $younger_age = null, $year = null){
