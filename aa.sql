@@ -1,0 +1,1 @@
+ALTER TABLE `conf` ADD `json` JSON NULL AFTER `title`;

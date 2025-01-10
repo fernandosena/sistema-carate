@@ -34,6 +34,37 @@ class Admin extends Controller
         }
     }
 
+    public function card(?array $data): void
+    {
+        $dados = (new Conf())->findById(1);
+        $array = ["cards" => []];
+
+        $logo = $dados->logo;
+        $title = $dados->title;
+
+        if($dados->data !== null){
+            $array =  json_decode($dados->json, true); 
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                $array = ["cards" => []];
+            }
+        }
+
+        $mArray = [
+            $data["card_id"] => $data["estado"],
+        ];
+        
+        foreach ($mArray as $chave => $valor) {
+            $array["cards"][$chave] = $valor;
+        }
+
+
+        $dados->logo = $logo;
+        $dados->title = $title;
+        $dados->json = json_encode($array);
+
+        $dados->save();
+    }
+
     public function conf(?array $data): void
     {
         $config = (new Conf());

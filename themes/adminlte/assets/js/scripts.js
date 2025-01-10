@@ -322,6 +322,38 @@ $(function () {
     .container()
     .appendTo("#example1_wrapper .col-md-6:eq(0)");
 
+  function setCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+      expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+  }
+
+  // Função para ler cookies
+  function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(";");
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == " ") c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
+
+  $('.card-tools button[data-card-widget="collapse"]').click(function () {
+    var url = $(this).data("url");
+    var card = $(this).closest(".card");
+    var cardBody = card.find(".card-body");
+    var cardId = card.data("card-id");
+    var isCollapsed = card.hasClass("collapsed-card");
+
+    setCookie("card_state_" + cardId, isCollapsed, 7);
+  });
+
   $("#example2")
     .DataTable({
       responsive: true,

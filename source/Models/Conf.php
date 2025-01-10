@@ -15,6 +15,6 @@ class Conf extends Model
      */
     public function __construct()
     {
-        parent::__construct("conf", ["id"], ["logo", "title"]);
+        parent::__construct("conf", ["id"], ["logo", "title", "json"]);
     }
 }

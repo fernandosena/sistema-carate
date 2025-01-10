@@ -39,7 +39,6 @@
                         <div class="card-header p-2">
                         <ul class="nav nav-pills">
                             <li class="nav-item"><a class="nav-link active" href="#students" data-toggle="tab">Detalhes</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#payments" data-toggle="tab">Pagamentos</a></li>
                             <li class="nav-item"><a class="nav-link" href="#profile" data-toggle="tab">Perfil</a></li>
                         </ul>
                         </div><!-- /.card-header -->
@@ -80,35 +79,6 @@
                                         if($c == 1){$c = 2;}
                                         endforeach; ?>
                                 </ul>
-                            </div>
-                            <!-- /.tab-pane -->
-
-                            <div class="tab-pane" id="payments">
-                                <table id="example1" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Cadastro</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($payments as $payment): ?>
-                                        <tr>
-                                            <td><?= $payment->id ?></td>
-                                            <td><?= date("d/m/Y H:m:s", strtotime($payment->created_at)) ?></td>
-                                            <td><strong class="badge bg-<?= ($payment->status == "pending") ? "warning" : "success" ?>"><?= ($payment->status == "pending") ? "Pendente" : "Ativo" ?></strong></td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Cadastro</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
                             </div>
                             <div class="tab-pane" id="profile">
                                 <?= $this->insert("inc/students"); ?>

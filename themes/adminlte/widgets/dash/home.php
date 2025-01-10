@@ -59,12 +59,72 @@
 </div>
 <div class="row">
     <div class="div col-md-12">
-        <!-- BAR CHART -->
-        <div class="card card-primary">
+        <div class="card card-warning <?= ($_COOKIE["card_state_1"] === '') ? 'collapsed-card' : null ?>" 
+        data-card-id="1">
             <div class="card-header">
-                <h3 class="card-title">Relátorio Alunos e instrutores</h3>
+                <h3 class="card-title">
+                    <i class="ion ion-clipboard mr-1"></i> Avisos
+                </h3>
                 <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse" 
+                  data-url="<?= url("/admin/card"); ?>">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <?php if(!empty($info["instructors"]) || !empty($info["black"])): ?>
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Data da graduação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if(!empty($info["instructors"])): ?>
+                                <?php foreach ($info["instructors"] as $instructors): ?>
+                                <tr>
+                                    <td><a href="<?= url("/admin/instructors/instructor/{$instructors->id}"); ?>"><?= $instructors->fullName(); ?></a></td>
+                                    <td><?= date_fmt($instructors->next_graduation, "d/m/Y"); ?></td>
+                                </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                            <?php if(!empty($info["black"])): ?>
+                                <?php foreach ($info["black"] as $black):?>
+                                <tr>
+                                    <td><a href="<?= url("/admin/students/black/student/{$black->id}"); ?>"><?= $black->fullName(); ?></a></td>
+                                    <td><?= date_fmt($black->next_graduation, "d/m/Y"); ?></td>
+                                </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Data da graduação</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                <?php else: ?>
+                    <div class="alert alert-info alert-dismissible">
+                        <h5><i class="icon fas fa-info"></i> Alerta!</h5>
+                        Nenhum aviso encontrado
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+    <div class="div col-md-12">
+        <!-- BAR CHART -->
+        <div class="card card-primary <?= ($_COOKIE["card_state_2"] === '') ? 'collapsed-card' : null ?>"  
+        data-card-id="2">
+            <div class="card-header">
+                <h3 class="card-title">Relátorio Cadastro Alunos e instrutores</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse" 
+                  data-url="<?= url("/admin/card"); ?>">
                     <i class="fas fa-minus"></i>
                   </button>
                 </div>
@@ -188,60 +248,135 @@
         <!-- /.card -->
     </div>
     <div class="div col-md-12">
-        <div class="card  card-warning">
+        <!-- BAR CHART -->
+        <div class="card card-success <?= ($_COOKIE["card_state_3"] === '') ? 'collapsed-card' : null ?>"  
+        data-card-id="3">
             <div class="card-header">
-                <h3 class="card-title">
-                    <i class="ion ion-clipboard mr-1"></i> Avisos
-                </h3>
+                <h3 class="card-title">Relátorio Graduações Alunos e instrutores</h3>
                 <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse" 
+                  data-url="<?= url("/admin/card"); ?>">
                     <i class="fas fa-minus"></i>
                   </button>
                 </div>
             </div>
-
             <div class="card-body">
-                <?php if(!empty($info["instructors"]) || !empty($info["black"])): ?>
-                    <table id="example1" class="table table-bordered table-striped">
+                <div class="card-header">
+                    <div class="d-block card-tools">
+                        <ul class="nav nav-pills ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#chart2" data-toggle="tab">Gŕafico</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#instrutores2" data-toggle="tab">Instrutores</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#dan2" data-toggle="tab">Dan</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#kyus2" data-toggle="tab">Kyus</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-5">
+                        <div class="form-group">
+                            <label for="yearChart">Ano</label>
+                            <select class="custom-select form-control-border" id="yearChart" data-url="<?= url("admin/chart/quantity") ?>" data-filter="1">
+                                <?php 
+                                    $yeaNow = (int) date("Y");
+                                    for($i = 2024; $i <= $yeaNow; $i++):
+                                ?>
+                                <option value="<?= $i ?>" <?= ($i == $yeaNow) ? "selected" : null ?>><?= $i ?></option>
+                                <?php endfor; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-5">
+                        <div class="form-group">
+                            <label for="monthChart">Mês</label>
+                            <select class="custom-select form-control-border" id="monthChart" data-url="<?= url("admin/chart/table") ?>" data-filter="1">
+                                <?php 
+                                    $monthNow = (int) date("m");
+                                    $meses = arrayMonthRanger();
+                                    foreach($meses as $key => $value):
+                                ?>
+                                <option value="<?= $key ?>" <?= ($key == $monthNow) ? "selected" : null ?>><?= $value ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label for="filterChart"></label>
+                            <button type="button" id="atualizar" class="btn btn-block btn-primary">Atualizar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content p-0">
+                  <div class="chart tab-pane active" id="chart"
+                       style="position: relative; height: 300px;">
+                        <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                   </div>
+                  <div class="tab-pane" id="instrutores" style="position: relative">
+                    <table id="tableIntructorAjax" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Nome</th>
-                                <th>Data da graduação</th>
+                                <th>Data</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if(!empty($info["instructors"])): ?>
-                                <?php foreach ($info["instructors"] as $instructors): ?>
-                                <tr>
-                                    <td><a href="<?= url("/admin/instructors/instructor/{$instructors->id}"); ?>"><?= $instructors->fullName(); ?></a></td>
-                                    <td><?= date_fmt($instructors->next_graduation, "d/m/Y"); ?></td>
-                                </tr>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                            <?php if(!empty($info["black"])): ?>
-                                <?php foreach ($info["black"] as $black):?>
-                                <tr>
-                                    <td><a href="<?= url("/admin/students/black/student/{$black->id}"); ?>"><?= $black->fullName(); ?></a></td>
-                                    <td><?= date_fmt($black->next_graduation, "d/m/Y"); ?></td>
-                                </tr>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
                         </tbody>
                         <tfoot>
                             <tr>
                                 <th>Nome</th>
-                                <th>Data da graduação</th>
+                                <th>Data</th>
                             </tr>
                         </tfoot>
                     </table>
-                <?php else: ?>
-                    <div class="alert alert-info alert-dismissible">
-                        <h5><i class="icon fas fa-info"></i> Alerta!</h5>
-                        Nenhum aviso encontrado
-                    </div>
-                <?php endif; ?>
+                  </div>
+                  <div class="tab-pane" id="dan" style="position: relative">
+                    <table id="tableDanAjax" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Data</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                  </div><div class="tab-pane" id="kyus" style="position: relative">
+                    <table id="tableKyusAjax" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Data</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                  </div>
+                </div>
             </div>
+            <!-- /.card-body -->
         </div>
+        <!-- /.card -->
     </div>
 </div>
 <?php $this->start("scripts"); ?>

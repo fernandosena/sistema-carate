@@ -58,7 +58,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="div col-md-6">
+    <div class="div col-md-12">
     <!-- BAR CHART -->
     <div class="card">
             <div class="card-header">
@@ -70,168 +70,10 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="card-header">
-                    <div class="d-block card-tools">
-                    <ul class="nav nav-pills ml-auto">
-                        <li class="nav-item">
-                        <a class="nav-link active" href="#chart" data-toggle="tab">Gŕafico</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href="#dan" data-toggle="tab">Dan</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href="#kyu1" data-toggle="tab">Kyus até 12 anos</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link" href="#kyu2" data-toggle="tab">Kyus a partir de 13 anos</a>
-                        </li>
-                    </ul>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="form-group">
-                            <label for="filterChart">Filtro ano</label>
-                            <select class="custom-select form-control-border" id="filterChart" data-url="<?= url("admin/chart/quantity") ?>" data-filter="2" data-user="<?= $user->id ?>">
-                                <?php 
-                                    $yeaNow = (int) date("Y");
-                                    for($i = 2024; $i <= $yeaNow; $i++):
-                                ?>
-                                <option value="<?= $i ?>" <?= ($i == $yeaNow) ? "selected" : null ?>><?= $i ?></option>
-                                <?php endfor; ?>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-content p-0">
-                    <div class="chart tab-pane active" id="chart">
-                        <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                    </div>
-                    <div class="chart tab-pane" id="dan">
-                        <table id="example2" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>Cadastro</th>
-                                </tr>
-                            </thead>
-                            <tbody id="danstable">
-                                <?php foreach ($table["dan"] as $t): ?>
-                                    <tr>
-                                        <td>
-                                            <?= $t->fullname() ?>
-                                        </td>
-                                        <td>
-                                            <?= date("d/m/Y", strtotime($t->created_at)) ?>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>Cadastro</th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                    <div class="chart tab-pane" id="kyu1">
-                        <table id="example2" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>Cadastro</th>
-                                </tr>
-                            </thead>
-                            <tbody id="kyu1table">
-                                <?php foreach ($table["kyu1"] as $t): ?>
-                                    <tr>
-                                        <td>
-                                            <?= $t->fullname() ?>
-                                        </td>
-                                        <td>
-                                            <?= date("d/m/Y", strtotime($t->created_at)) ?>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>Cadastro</th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                    <div class="chart tab-pane" id="kyu2">
-                        <table id="example2" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>Cadastro</th>
-                                </tr>
-                            </thead>
-                            <tbody id="kyu2table">
-                                <?php foreach ($table["kyu2"] as $t): ?>
-                                    <tr>
-                                        <td>
-                                            <?= $t->fullname() ?>
-                                        </td>
-                                        <td>
-                                            <?= date("d/m/Y", strtotime($t->created_at)) ?>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>Cadastro</th>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                </div>
             </div>
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
-    </div>
-    <div class="div col-md-6">
-        <div class="card card-primary">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <i class="ion ion-clipboard mr-1"></i> Todos os Pagamentos do instrutor
-                </h3>
-            </div>
-            <div class="card-body">
-                <table id="example2" class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Cadastro</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($payments as $payment): ?>
-                    <tr>
-                        <td><?= $payment->id ?></td>
-                        <td><?= date("d/m/Y H:m:s", strtotime($payment->created_at)) ?></td>
-                        <td><?= $payment->status ?></td>
-                    </tr>
-                <?php endforeach; ?>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>ID</th>
-                        <th>Cadastro</th>
-                        <th>Status</th>
-                    </tr>
-                </tfoot>
-            </table>
-            </div>
-        </div>
     </div>
 </div>
 <?php $this->start("scripts"); ?>
