@@ -106,7 +106,7 @@
             <input type="hidden" class="app_modal_student_renew_id" name="id" value="">
             <label>
                 <span class="field icon-text">Data da graduação:</span>
-                <input type="date" min="<?= date("Y-m-d") ?>" class="radius" name="date" required></t>
+                <input type="date" class="radius" name="date" required></t>
             </label>
 
             <button class="btn radius transition icon-check-square-o">Atualizar Graduação</button>
