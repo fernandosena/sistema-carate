@@ -38,8 +38,10 @@
                     if(!$lastPayment){
                         if($paymentsActivatedLast){
                             $budges = verify_renew($paymentsActivatedLast->created_at);
+                            $multa = verify_penalty($paymentsActivatedLast->created_at);
                         }else{
                             $budges = verify_renew($user->created_at);
+                            $multa = verify_penalty($paymentsActivatedLast->created_at);
                         }
                         if($budges){
                             $btnOptions = true;
@@ -54,22 +56,13 @@
                         }
                     }
                 ?>
-                <?php if($btnOptions || $btnCancel): ?>
-                    <p>Seu perfil está pendente para a regularização, clique no botão abaixo para confirmar o pagamento.</p>
-                <?php endif; ?>
-                <?php if($btnOptions): ?>
-                    <a href="#" class="btn bg-success"
-                    data-post="<?= url("web/alunos") ?>"
-                    data-action="payment"
-                    data-type="create"
-                    data-user_id="<?= $user->id; ?>"><i class="fa-solid fa-circle-check"></i> Informar Pagamento</a>
-                <?php endif; ?>
-                <?php  if($btnCancel): ?>
-                    <a href="#" class="btn bg-warning"
-                    data-post="<?= url("web/alunos") ?>"
-                    data-action="payment"
-                    data-type="cancel"
-                    data-user_id="<?= $user->id; ?>"><i class="fa-solid fa-circle-check"></i> Cancelar </a>
+                <?php if($multa && $btnOptions || $btnCancel): ?>
+                    <p>Seu perfil está pendente para a regularização da filiação.</p>
+                <?php else: ?>
+                    <p>Clique no botão abaixo para gerar o seu certificado</p>
+                    <a style="text-decoration: none" href="<?= url("certificado/{$document}/certificado/{$user->id}") ?>">
+                        <button class="auth_form_btn transition gradient gradient-green gradient-hover">Gerar certificado</button>
+                    </a>
                 <?php endif; ?>
             <?php endif; ?>
         </div>
