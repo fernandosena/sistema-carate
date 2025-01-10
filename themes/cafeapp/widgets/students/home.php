@@ -104,11 +104,8 @@
                                 }else{
                             ?>  
                                 <?php if($student->status == "activated"): ?>
-                                <a href="#" class="btn bg-success"
-                                data-post="<?= url("/app/alunos/faixa"); ?>"
-                                data-action="update-graduation"
-                                data-id="<?= $student->id ?>"
-                                data-type="<?= $student->type; ?>"><i class="fa-solid fa-circle-check"></i> Subir de graduação</a>
+                                    <a href="#" class="btn bg-success" data-modalopen=".app_modal_student_renew" data-modelid="<?= $student->id ?>"
+                                    data-modeltype="<?= $student->type ?>">Subir de graduação</a>
                                 <?php else: ?>
                                     Atualizada
                                 <?php endif ?>

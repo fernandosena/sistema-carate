@@ -97,4 +97,19 @@
             </div>
         <?php endif; ?>
     </div>
+
+    <div class="app_modal_box app_modal_student_renew">
+        <p class="title icon-user">Subir de graduação:</p>
+        <form class="app_form" action="<?= url("/app/alunos/faixa"); ?>" method="post">
+            <input type="hidden" name="action" value="update-graduation"/>
+            <input type="hidden" class="app_modal_student_renew_type" name="type" value="">
+            <input type="hidden" class="app_modal_student_renew_id" name="id" value="">
+            <label>
+                <span class="field icon-text">Data da graduação:</span>
+                <input type="date" min="<?= date("Y-m-d") ?>" class="radius" name="date" required></t>
+            </label>
+
+            <button class="btn radius transition icon-check-square-o">Atualizar Graduação</button>
+        </form>
+    </div>
 </div>

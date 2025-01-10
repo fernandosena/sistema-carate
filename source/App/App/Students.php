@@ -292,14 +292,8 @@ class Students extends App
 
         if($data["action"] == "update-graduation"){
             //update-graduation
-            if($data["type"] == "black"){
-                $student = (new AppStudent())->find("user_id = :user AND id = :id",
+            $student = (new AppStudent())->find("user_id = :user AND id = :id",
             "user={$this->user->id}&id={$data["id"]}")->fetch();
-            }else{
-                $student = (new AppStudent())->find("user_id = :user AND id = :id",
-            "user={$this->user->id}&id={$data["id"]}")->fetch();
-            }
-
             if (!$student) {
                 $json["message"] = $this->message->error("Ooops! aluno inrormado não encontrado")->render();
                 echo json_encode($json);
@@ -314,12 +308,6 @@ class Students extends App
 
             $student->status = "pending";
 
-            // if (!$student->save()) {
-            //     $json["message"] = $student->message()->render();
-            //     echo json_encode($json);
-            //     return;
-            // }
-
             $dataNascimento = new \DateTime($student->datebirth);
             $dataAtual = new \DateTime();
             $diferenca = $dataAtual->diff($dataNascimento);
@@ -330,8 +318,9 @@ class Students extends App
                 $type_age = 2;
             }
 
-            //Consulta graduação
-            $findGraduation = (new Belt())->findById($student->graduation);
+            //Consulta ultima graduação
+            $findGraduation = $student->getLastGraduation();
+
             if (!$findGraduation) {
                 $json["message"] = $this->message->warning("A graduação do usuário não foi encontrada")->render();
                 echo json_encode($json);
@@ -356,10 +345,12 @@ class Students extends App
             
             $hbelt->graduation_id = $nextGraduation->id;
             $hbelt->description = "Graduação realizada pelo usuário: {$this->user->email}";
+            $hbelt->date = $data["date"];
             $hbelt->save();
 
             $json["message"] = $this->message->success("Pronto {$this->user->first_name}, A Graduação do aluno foi enviada com sucesso!")->render();
             $json["renewal"] = true;
+            $json["reload"] = true;
             echo json_encode($json);
             return;
         }

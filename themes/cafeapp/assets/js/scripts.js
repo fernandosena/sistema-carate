@@ -123,6 +123,14 @@ $(function () {
     var modal = clicked.data("modalopen");
     $(".app_modal").fadeIn(effecttime).css("display", "flex");
     $(modal).fadeIn(effecttime);
+
+    if (clicked.data("modelid")) {
+      $(modal + "_id").val(clicked.data("modelid"));
+    }
+
+    if (clicked.data("modeltype")) {
+      $(modal + "_type").val(clicked.data("modeltype"));
+    }
   });
 
   $("[data-modalclose]").click(function (e) {

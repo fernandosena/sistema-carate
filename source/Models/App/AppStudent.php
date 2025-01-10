@@ -110,7 +110,6 @@ class AppStudent extends Model
         return null;
     }
 
-
     public function quantityMonth($type = null, $user = null, $younger_age = null, $year = null){
         $m = date(format: "Y");
         if(!empty($year)){
