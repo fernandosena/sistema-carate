@@ -17,7 +17,7 @@
                                         <th>Professor</th>
                                         <th>Graduação</th>
                                         <th>Status</th>
-                                        <th>Pagamento</th>
+                                        <th>Renovar Afiliação</th>
                                         <th>Multa</th>
                                         <th>Atualizar Graduação</th>
                                         <th>Opções</th>
@@ -154,7 +154,7 @@
                                         <th>Professor</th>
                                         <th>Graduação</th>
                                         <th>Status</th>
-                                        <th>Pagamento</th>
+                                        <th>Renovar Afiliação</th>
                                         <th>Multa</th>
                                         <th>Atualizar Graduação</th>
                                         <th>Opções</th>

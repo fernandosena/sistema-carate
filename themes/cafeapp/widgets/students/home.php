@@ -78,7 +78,7 @@
                                 data-post="<?= url("app/alunos") ?>"
                                 data-action="payment"
                                 data-type="create"
-                                data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Informar Pagamento</a>
+                                data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Renovar afiliação</a>
                             <?php endif; ?>
                             <?php  if($btnCancel): ?>
                                 <a href="#" class="btn bg-warning"
