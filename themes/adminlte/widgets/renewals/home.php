@@ -16,7 +16,7 @@
                                         <th>Professor</th>
                                         <th>Graduação</th>
                                         <th>Status</th>
-                                        <th>Pagamento</th>
+                                        <th>Renovar Filiação</th>
                                         <th>Multa</th>
                                         <th>Atualizar Graduação</th>
                                     </tr>
@@ -70,7 +70,7 @@
                                                     <?php if(empty($student->renewal)): ?>
                                                         <strong class="badge bg-warning">Aguardando envio</strong>
                                                     <?php elseif($student->renewal == "approved"): ?>
-                                                        <strong class="badge bg-success">Pagamento realizado</strong></strong>
+                                                        <strong class="badge bg-success">Afiliação realizado</strong></strong>
                                                     <?php else: ?>
                                                         <?php if(!empty($student->user_id)): ?>
                                                             <a href="#" class="btn bg-success"
@@ -140,7 +140,7 @@
                                         <th>Professor</th>
                                         <th>Graduação</th>
                                         <th>Status</th>
-                                        <th>Pagamento</th>
+                                        <th>Renovar Filiação</th>
                                         <th>Multa</th>
                                         <th>Atualizar Graduação</th>
                                     </tr>

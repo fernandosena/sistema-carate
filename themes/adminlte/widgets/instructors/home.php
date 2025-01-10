@@ -15,7 +15,7 @@
                                         <th>Foto</th>
                                         <th>Nome</th>
                                         <th>Qtd. de alunos</th>
-                                        <th>Pagamento</th>
+                                        <th>Renovar Filiação</th>
                                         <th>Multa</th>
                                         <th>Atualizar Graduação</th>
                                         <th>Opções</th>
@@ -135,7 +135,7 @@
                                         <th>Foto</th>
                                         <th>Nome</th>
                                         <th>Qtd. de alunos</th>
-                                        <th>Pagamento</th>
+                                        <th>Renovar Filiação</th>
                                         <th>Multa</th>
                                         <th>Atualizar Graduação</th>
                                         <th>Opções</th>

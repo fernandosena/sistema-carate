@@ -36,7 +36,7 @@
             data-post="<?= url("app/regularization") ?>"
             data-action="payment"
             data-type="create"
-            data-user_id="<?= $user->id; ?>"><i class="fa-solid fa-circle-check"></i> Informar Pagamento</a>
+            data-user_id="<?= $user->id; ?>"><i class="fa-solid fa-circle-check"></i> Renovar afiliação</a>
         <?php endif; ?>
         <?php  if($btnCancel): ?>
             <a href="#" class="btn bg-warning"
