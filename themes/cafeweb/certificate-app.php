@@ -140,7 +140,7 @@
                         <?php $data = $historic->findBelt($historic->graduation_id) ?>
                         <h6><?= $data->title ?><?= ($historic->status == "pending") ? " - <span class='badge bg-warning'>Em Análise</span>" : (($historic->status == "disapprove") ? " - <span class='badge bg-danger'>Reprovado</span>" : null) ; ?></h6>
                         <p class="mb-0 text-muted"><?= $historic->description ?></p>
-                        <o class="text-muted"><?= date_fmt($historic->created_at, "d/m/y \à\s H\hi"); ?></p>
+                        <p class="text-muted"><?= (!empty($historic->date)) ? date_fmt($historic->date, "d/m/Y") : date_fmt($historic->created_at, "d/m/Y"); ?></p>
                     </li>
                 <?php if($c == 1){$c = 2;} endforeach; ?>
             <?php else: ?>
