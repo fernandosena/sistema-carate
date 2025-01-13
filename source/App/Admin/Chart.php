@@ -27,27 +27,17 @@ class Chart extends Admin
         $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
 
         $result = null;
-        $table = null;
         $label = null;
         if(!empty($data)){
             //Filtra Instrutor/Dan e Kyus
-            if($data["filter"] == 1){
-                $result = [
-                    "instrutores" => (new User())->quantityDays(null,$data["year"],$data["month"]),
-                    "dan" => (new AppStudent())->quantityDays('black', null, null, $data["year"], $data["month"]),
-                    "kyus" => (new AppStudent())->quantityDays('kyus', null, null, $data["year"], $data["month"]),
-                ];
-            }else{
-                $result = [
-                    "i" => (new AppStudent())->quantityMonth('black', $data["user"], null, $data["year"]),
-                    "d" => (new AppStudent())->quantityMonth('kyus', $data["user"], "< 13", $data["year"]),
-                    "k" => (new AppStudent())->quantityMonth('kyus', $data["user"], ">= 13", $data["year"]),
-                ];
-            }
+            $result = [
+                "instrutores" => (new User())->quantityDays($data["instructor"],$data["year"],$data["month"]),
+                "dan" => (new AppStudent())->quantityDays('black', $data["instructor"], null, $data["year"], $data["month"]),
+                "kyus" => (new AppStudent())->quantityDays('kyus', $data["instructor"], null, $data["year"], $data["month"]),
+            ];
             $label = arrayDaysRanger($data["year"], $data["month"]);
         }
         $json["result"] = $result;
-        $json["table"] = $table;
         $json["label"] = $label;
         echo json_encode($json);
     }
@@ -72,9 +62,9 @@ class Chart extends Admin
             //Filtra Instrutor/Dan e Kyus
             if($data["filter"] == 1){
                 if($data["type"] == "intructor"){
-                    $result = (new User())->table($data["year"], $data["month"], $search, $orderBy, $start, $length);
+                    $result = (new User())->table($data["instructor"], $data["year"], $data["month"], $search, $orderBy, $start, $length);
                 }else{
-                    $result = (new AppStudent())->table($data["type"],null, null, $data["year"], $data["month"], $search, $orderBy, $start, $length);
+                    $result = (new AppStudent())->table($data["type"],$data["instructor"], null, $data["year"], $data["month"], $search, $orderBy, $start, $length);
                 }
 
                 $response = array(
@@ -83,8 +73,6 @@ class Chart extends Admin
                     "recordsFiltered" => count($result["data"] ?? []), // Total de registros com filtro (neste exemplo, igual ao total)
                     "data" => $result["data"]
                 ); 
-            }else{
-                
             }
         }
         echo json_encode($response);

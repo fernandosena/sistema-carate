@@ -92,10 +92,11 @@ class Dash extends Admin
                 "instrutores" => (new User())->quantityDays(),
                 "dan" => (new AppStudent())->quantityDays('black'),
                 "kyus" => (new AppStudent())->quantityDays('kyus'),
+                "instrutoresG" => (new User())->quantityGDays(),
+                "danG" => (new AppStudent())->quantityGDays('black'),
+                "kyusG" => (new AppStudent())->quantityGDays('kyus'),
             ],
-            "table" => [
-                "instrutores" => (new User())->find("YEAR(created_at) = :y AND level != 5", "y={$year}")->fetch(true),
-            ],
+            "instructors" => (new User())->find("level != 5")->fetch(true),
             "control" => (object)[
                 "subscribers" => (new AppSubscription())->find("pay_status = :s", "s=active")->count(),
                 "plans" => (new AppPlan())->find("status = :s", "s=active")->count(),

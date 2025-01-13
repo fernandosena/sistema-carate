@@ -177,7 +177,7 @@ class AppStudent extends Model
         }
 
         $u = null;
-        if(!empty($user)){
+        if(!empty($user) && $user != "all"){
             $u = "AND user_id = {$user}";
         }
         
@@ -225,7 +225,73 @@ class AppStudent extends Model
         return $dadosPorDia;
     }
 
-    public function table($type = null, $user = null, $younger_age = null, $year = null, $month = null, $search = null, $orderBy = "first_name asc", $start = 0, $length = 10){
+    public function quantityGDays($type = null, $user = null, $year = null, $month = null){
+        $m = date(format: "m");
+        if(!empty($month)){
+            $m = $month;
+        }
+
+        $y = date(format: "Y");
+        if(!empty($year)){
+            $y = $year;
+        }
+
+        $t = null;
+        if(!empty($type)){
+            if($type == "black"){
+                $t = "AND h.black_belt_id IS NOT NULL";
+            }elseif($type == "kyus"){
+                $t = "AND h.kyus_id IS NOT NULL";
+            }
+        }
+
+        $u = null;
+        if(!empty($user) && $user != "all"){
+            if($type == "black"){
+                $u = "AND h.black_belt_id = {$user}";
+            }elseif($type == "kyus"){
+                $u = "AND h.kyus_id = {$user}";
+            }
+        }
+
+        $sql = "SELECT 
+                    n.dia,
+                    COALESCE(COUNT(h.id), 0) AS total_cadastrados
+                FROM 
+                    (
+                        SELECT 1 AS dia UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5
+                        UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10
+                        UNION ALL SELECT 11 UNION ALL SELECT 12 UNION ALL SELECT 13 UNION ALL SELECT 14 UNION ALL SELECT 15
+                        UNION ALL SELECT 16 UNION ALL SELECT 17 UNION ALL SELECT 18 UNION ALL SELECT 19 UNION ALL SELECT 20
+                        UNION ALL SELECT 21 UNION ALL SELECT 22 UNION ALL SELECT 23 UNION ALL SELECT 24 UNION ALL SELECT 25
+                        UNION ALL SELECT 26 UNION ALL SELECT 27 UNION ALL SELECT 28 UNION ALL SELECT 29 UNION ALL SELECT 30
+                        UNION ALL SELECT 31
+                    ) AS n
+                LEFT JOIN 
+                    historic_belts h 
+                ON 
+                    DAY(h.created_at) = n.dia
+                    AND YEAR(h.created_at) = {$y}
+                    AND MONTH(h.created_at) = {$m}
+                    {$u}       
+                    {$t}  
+                WHERE 
+                    n.dia <= DAY(LAST_DAY('{$y}-{$m}-01'))
+                GROUP BY 
+                    n.dia
+                ORDER BY 
+                    n.dia";
+
+        $datas = $this->query($sql)->fetch(true);
+        $dadosPorDia = [];
+        foreach($datas as $data){
+            $dadosPorDia[$data->dia] = (int)$data->total_cadastrados;
+        }
+
+        return $dadosPorDia;
+    }
+
+    public function table($type = null, $user = null, $younger_age = null, $year = null, $month = null, $search = null, $orderBy = "first_name asc", $start = 0, $length = 0){
         $sqlParams = null;
 
         $y = date("Y");
@@ -247,7 +313,7 @@ class AppStudent extends Model
             $sqlParams .= " AND name LIKE '%{$search}%'";
         }
 
-        if(!empty($user)){
+        if(!empty($user) && $user !== "all"){
             $sqlParams .= " AND user_id = {$user}";
         }
         
@@ -257,8 +323,16 @@ class AppStudent extends Model
         }
 
         $sql = "SELECT * FROM app_students WHERE YEAR(created_at) = {$y} {$sqlParams}";
-
         $result = $this->query($sql);
+        $count = $result->count();
+
+        if(!empty($length)){
+            $result->limit($length);
+        }
+
+        if(!empty($start)){
+            $result->offset($start);
+        }
 
         $rows = $result->fetch(true);
 
@@ -272,7 +346,7 @@ class AppStudent extends Model
         }
 
         return [
-            "quantity" => $result->count(),
+            "quantity" => $count,
             "data" => $datas
         ];
     }

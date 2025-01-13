@@ -1,1 +1,0 @@
-ALTER TABLE `historic_belts` ADD `date` DATE NULL AFTER `status`;

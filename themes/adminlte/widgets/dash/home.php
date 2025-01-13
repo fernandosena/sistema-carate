@@ -121,7 +121,7 @@
         <div class="card card-primary <?= ($_COOKIE["card_state_2"] === '') ? 'collapsed-card' : null ?>"  
         data-card-id="2">
             <div class="card-header">
-                <h3 class="card-title">Relátorio Cadastro Alunos e instrutores</h3>
+                <h3 class="card-title">Relátorio de Afiliações</h3>
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" 
                   data-url="<?= url("/admin/card"); ?>">
@@ -149,7 +149,20 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-5">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="yearChart">Intrutores</label>
+                            <select class="custom-select form-control-border" id="instructorChart">
+                                <option value="all">Todos</option>
+                                <?php 
+                                    foreach($instructors as $instructor):
+                                ?>
+                                <option value="<?= $instructor->id ?>"><?= $instructor->fullName() ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-3">
                         <div class="form-group">
                             <label for="yearChart">Ano</label>
                             <select class="custom-select form-control-border" id="yearChart" data-url="<?= url("admin/chart/quantity") ?>" data-filter="1">
@@ -162,7 +175,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-5">
+                    <div class="col-3">
                         <div class="form-group">
                             <label for="monthChart">Mês</label>
                             <select class="custom-select form-control-border" id="monthChart" data-url="<?= url("admin/chart/table") ?>" data-filter="1">
@@ -245,14 +258,11 @@
             </div>
             <!-- /.card-body -->
         </div>
-        <!-- /.card -->
-    </div>
-    <div class="div col-md-12">
-        <!-- BAR CHART -->
+
         <div class="card card-success <?= ($_COOKIE["card_state_3"] === '') ? 'collapsed-card' : null ?>"  
         data-card-id="3">
             <div class="card-header">
-                <h3 class="card-title">Relátorio Graduações Alunos e instrutores</h3>
+                <h3 class="card-title">Relátorio de Graduação</h3>
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" 
                   data-url="<?= url("/admin/card"); ?>">
@@ -265,25 +275,38 @@
                     <div class="d-block card-tools">
                         <ul class="nav nav-pills ml-auto">
                             <li class="nav-item">
-                                <a class="nav-link active" href="#chart2" data-toggle="tab">Gŕafico</a>
+                                <a class="nav-link active" href="#chartG" data-toggle="tab">Gŕafico</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#instrutores2" data-toggle="tab">Instrutores</a>
+                                <a class="nav-link" href="#instrutoresG" data-toggle="tab">Instrutores</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#dan2" data-toggle="tab">Dan</a>
+                                <a class="nav-link" href="#danG" data-toggle="tab">Dan</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#kyus2" data-toggle="tab">Kyus</a>
+                                <a class="nav-link" href="#kyusG" data-toggle="tab">Kyus</a>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-5">
+                    <div class="col-4">
                         <div class="form-group">
-                            <label for="yearChart">Ano</label>
-                            <select class="custom-select form-control-border" id="yearChart" data-url="<?= url("admin/chart/quantity") ?>" data-filter="1">
+                            <label for="instructorChartG">Intrutores</label>
+                            <select class="custom-select form-control-border" id="instructorChartG">
+                                <option value="all">Todos</option>
+                                <?php 
+                                    foreach($instructors as $instructor):
+                                ?>
+                                <option value="<?= $instructor->id ?>"><?= $instructor->fullName() ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="yearChartG">Ano</label>
+                            <select class="custom-select form-control-border" id="yearChartG" data-url="<?= url("admin/chart/quantity") ?>" data-filter="1">
                                 <?php 
                                     $yeaNow = (int) date("Y");
                                     for($i = 2024; $i <= $yeaNow; $i++):
@@ -293,10 +316,10 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-5">
+                    <div class="col-3">
                         <div class="form-group">
-                            <label for="monthChart">Mês</label>
-                            <select class="custom-select form-control-border" id="monthChart" data-url="<?= url("admin/chart/table") ?>" data-filter="1">
+                            <label for="monthChartG">Mês</label>
+                            <select class="custom-select form-control-border" id="monthChartG" data-url="<?= url("admin/chart/table") ?>" data-filter="1">
                                 <?php 
                                     $monthNow = (int) date("m");
                                     $meses = arrayMonthRanger();
@@ -309,18 +332,18 @@
                     </div>
                     <div class="col-2">
                         <div class="form-group">
-                            <label for="filterChart"></label>
-                            <button type="button" id="atualizar" class="btn btn-block btn-primary">Atualizar</button>
+                            <label for="atualizarG"></label>
+                            <button type="button" id="atualizarG" class="btn btn-block btn-primary">Atualizar</button>
                         </div>
                     </div>
                 </div>
                 <div class="tab-content p-0">
-                  <div class="chart tab-pane active" id="chart"
+                  <div class="chart tab-pane active" id="chartG"
                        style="position: relative; height: 300px;">
-                        <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                        <canvas id="barChartG" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                    </div>
-                  <div class="tab-pane" id="instrutores" style="position: relative">
-                    <table id="tableIntructorAjax" class="table table-bordered table-striped">
+                  <div class="tab-pane" id="instrutoresG" style="position: relative">
+                    <table id="tableIntructorAjaxG" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Nome</th>
@@ -337,8 +360,8 @@
                         </tfoot>
                     </table>
                   </div>
-                  <div class="tab-pane" id="dan" style="position: relative">
-                    <table id="tableDanAjax" class="table table-bordered table-striped">
+                  <div class="tab-pane" id="danG" style="position: relative">
+                    <table id="tableDanAjaxG" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Nome</th>
@@ -354,8 +377,8 @@
                             </tr>
                         </tfoot>
                     </table>
-                  </div><div class="tab-pane" id="kyus" style="position: relative">
-                    <table id="tableKyusAjax" class="table table-bordered table-striped">
+                  </div><div class="tab-pane" id="kyusG" style="position: relative">
+                    <table id="tableKyusAjaxG" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Nome</th>
@@ -381,21 +404,17 @@
 </div>
 <?php $this->start("scripts"); ?>
 <script>
-    window.label = [<?= implode(",", array: array_map(function($dia) {
-        return "'" . $dia . "'";
-    }, arrayDaysRanger() ?? [])) ?>];
-    window.instrutores = [<?= implode(",", $amount_days["instrutores"] ?? []) ?>];
-    window.dan = [<?= implode(",", $amount_days["dan"] ?? []) ?>];
-    window.kyus = [<?= implode(",", $amount_days["kyus"] ?? []) ?>];
-
     $(function () {
-        let myChart;
-        $("#atualizar").on("click",function (e) {
-            e.preventDefault();
-            reloadTable();
+        function reloadTable(code = '') {
+            console.log('#tableIntructorAjax'+code)
+            $('#tableIntructorAjax'+code).DataTable().ajax.reload()
+            $('#tableDanAjax'+code).DataTable().ajax.reload()
+            $('#tableKyusAjax'+code).DataTable().ajax.reload()
+        }
 
-            var year = $("#yearChart")
-            var month = $("#monthChart")
+        function atualizar(chartId, yearId, monthId, instructorId){
+            var year = $(yearId)
+            var month = $(monthId)
 
             var data = year.data();
             var load = $(".ajax_load");
@@ -403,7 +422,7 @@
             $.ajax({
                 url: data.url,
                 type: "POST",
-                data: { year: year.val(), month: month.val(), filter: data.filter },
+                data: { year: year.val(), month: month.val(), filter: data.filter, instructor: $(instructorId).val() },
                 dataType: "json",
                 beforeSend: function () {
                     load.fadeIn(200).css("display", "flex");
@@ -411,18 +430,18 @@
                 success: function (data) {
                     if (data.result) {
                         if (data.label) {
-                            window.label = Object.values(data.label);
+                            label = Object.values(data.label);
                         }
                         if (data.result.instrutores) {
-                            window.instrutores = Object.values(data.result.instrutores);
+                            instrutores = Object.values(data.result.instrutores);
                         }
                         if (data.result.dan) {
-                            window.dan = Object.values(data.result.dan);
+                            dan = Object.values(data.result.dan);
                         }
                         if (data.result.kyus) {
-                            window.kyus = Object.values(data.result.kyus);
+                            kyus = Object.values(data.result.kyus);
                         }
-                        chart(window.label, window.instrutores, window.dan, window.kyus)
+                        chart(chartId,label, instrutores, dan, kyus)
                     }
                     load.fadeOut();
                 },
@@ -430,13 +449,26 @@
                     load.fadeOut();
                 },
             });
+        }
+        
+        $("#atualizar").on("click",function (e) {
+            e.preventDefault();
+            reloadTable();
+            atualizar("#barChart", "#yearChart", "#monthChart", "#instructorChart");
         });
 
+        $("#atualizarG").on("click",function (e) {
+            e.preventDefault();
+            reloadTable("G");
+            atualizar("#barChartG", "#yearChartG", "#monthChartG", "#instructorChartG");
+        });
 
-        //-------------
-        //- BAR CHART -
-        //-------------
-        function chart(l, i, d, k){
+        function chart(chartId, l, i, d, k){
+            var chart = chartId.replace(/^#|\./g, "");
+            if (window.charts && window.charts[chart]) {
+                window.charts[chart].destroy();
+            }
+
             var areaChartData = {
                 labels: l,
                 datasets: [
@@ -476,7 +508,7 @@
                 ],
             };
 
-            var barChartCanvas = $("#barChart").get(0).getContext("2d");
+            var barChartCanvas = $(chartId).get(0).getContext("2d");
             var barChartData = $.extend(true, {}, areaChartData);
             var temp0 = areaChartData.datasets[0];
             barChartData.datasets[0] = temp0;
@@ -505,122 +537,154 @@
                 }
             };
          
-            if (myChart) {
-                myChart.destroy();
+            
+            if (!window.charts) {
+                window.charts = {};
             }
-         
-            myChart = new Chart(barChartCanvas, {
+
+            window.charts[chart] = new Chart(barChartCanvas, {
                 type: "bar",
                 data: barChartData,
                 options: barChartOptions,
             });
         }
-        chart(window.label, window.instrutores, window.dan, window.kyus);
+        
+        function table(table, type, instructorId, yearId, monthId){
+            const optionTable = {
+                responsive: true,
+                lengthChange: false,
+                autoWidth: false,
+                buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"],
+                language: {
+                    search: "Pequisar",
+                    searchPlaceholder: "Digite a sua pesquisa aqui...",
+                    zeroRecords: "Nenhum registro correspondente encontrado",
+                    emptyTable: "Não há dados disponíveis na tabela",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                    infoEmpty: "Mostrando 0 a 0 de 0 entradas",
+                    infoFiltered: "(filtrado do total de _MAX_ entradas)",
+                    loadingRecords: "Carregando...",
+                    buttons: {
+                    copy: "Copiar",
+                    copyTitle: "Dados copiados",
+                    copySuccess: {
+                        _: "%d linhas copiadas",
+                        1: "1 linha copiada",
+                    },
+                    copyKeys:
+                        "Pressione Ctrl+C para copiar os dados para a área de transferência",
+                        csv: "CSV",
+                        excel: "Excel",
+                        pdf: "PDF",
+                        print: "Imprimir",
+                        colvis: "Colunas",
+                    },
+                    paginate: {
+                        first: "Primeiro",
+                        last: "Último",
+                        next: "Próximo",
+                        previous: "Anterior",
+                    },
+                    aria: {
+                        orderable: "Ordenar por esta coluna",
+                        orderableReverse: "Ordem inversa desta coluna",
+                    },
+                },
+                pageLength: 100,
+                "processing": true, // Mostra um indicador de carregamento
+                "serverSide": true, // Habilita o processamento no servidor
+                "columns": [
+                    { "data": "name" },
+                    { "data": "created_at"},
+                ],
+            };
 
-        const optionTable = {
-            responsive: true,
-            lengthChange: false,
-            autoWidth: false,
-            buttons: ["copy", "csv", "excel", "pdf", "print", "colvis"],
-            language: {
-                search: "Pequisar",
-                searchPlaceholder: "Digite a sua pesquisa aqui...",
-                zeroRecords: "Nenhum registro correspondente encontrado",
-                emptyTable: "Não há dados disponíveis na tabela",
-                info: "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-                infoEmpty: "Mostrando 0 a 0 de 0 entradas",
-                infoFiltered: "(filtrado do total de _MAX_ entradas)",
-                loadingRecords: "Carregando...",
-                buttons: {
-                copy: "Copiar",
-                copyTitle: "Dados copiados",
-                copySuccess: {
-                    _: "%d linhas copiadas",
-                    1: "1 linha copiada",
-                },
-                copyKeys:
-                    "Pressione Ctrl+C para copiar os dados para a área de transferência",
-                csv: "CSV",
-                excel: "Excel",
-                pdf: "PDF",
-                print: "Imprimir",
-                colvis: "Colunas",
-                },
-                paginate: {
-                first: "Primeiro",
-                last: "Último",
-                next: "Próximo",
-                previous: "Anterior",
-                },
-                aria: {
-                orderable: "Ordenar por esta coluna",
-                orderableReverse: "Ordem inversa desta coluna",
-                },
-            },
-            "processing": true, // Mostra um indicador de carregamento
-            "serverSide": true, // Habilita o processamento no servidor
-            "columns": [
-                { "data": "name" },
-                { "data": "created_at"},
-            ],
-        };
-
-        $("#tableIntructorAjax").DataTable({
-            ...optionTable,
-            "ajax": {
-                "url": $("#monthChart").data('url'),
-                "type": "POST",
-                "data": function(d) {
-                    d.year = $("#yearChart").val();
-                    d.month = $("#monthChart").val();
-                    d.filter = $("#yearChart").data('filter');
-                    d.type = 'intructor';
+            $(table).DataTable({
+                ...optionTable,
+                "ajax": {
+                    "url": $(monthId).data('url'),
+                    "type": "POST",
+                    "data": function(d) {
+                        d.year = $(yearId).val();
+                        d.month = $(monthId).val();
+                        d.filter = $(yearId).data('filter');
+                        d.instructor = $(instructorId).val();
+                        d.type = type;
+                    }
                 }
-            }
-        })
-        .buttons()
-        .container()
-        .appendTo("#example1_wrapper .col-md-6:eq(0)");
-
-        $("#tableDanAjax").DataTable({
-            ...optionTable,
-            "ajax": {
-                "url": $("#monthChart").data('url'),
-                "type": "POST",
-                "data": function(d) {
-                    d.year = $("#yearChart").val();
-                    d.month = $("#monthChart").val();
-                    d.filter = $("#yearChart").data('filter');
-                    d.type = 'black';
-                }
-            }
-        })
-        .buttons()
-        .container()
-        .appendTo("#example1_wrapper .col-md-6:eq(0)");
-
-        $("#tableKyusAjax").DataTable({
-            ...optionTable,
-            "ajax": {
-                "url": $("#monthChart").data('url'),
-                "type": "POST",
-                "data": function(d) {
-                    d.year = $("#yearChart").val();
-                    d.month = $("#monthChart").val();
-                    d.filter = $("#yearChart").data('filter');
-                    d.type = 'kyus';
-                }
-            }
-        })
-        .buttons()
-        .container()
-        .appendTo("#example1_wrapper .col-md-6:eq(0)");
-
-        function reloadTable() {
-            $('#tableIntructorAjax').DataTable().ajax.reload()
-            $('#tableDanAjax').DataTable().ajax.reload()
-            $('#tableKyusAjax').DataTable().ajax.reload()
+            })
+            .buttons()
+            .container()
+            .appendTo("#example1_wrapper .col-md-6:eq(0)");
         }
+        
+        chart(
+            "#barChart",
+            [<?= implode(",", array: array_map(function($dia) {
+                return "'" . $dia . "'";
+            }, arrayDaysRanger() ?? [])) ?>],
+            [<?= implode(",", $amount_days["instrutores"] ?? []) ?>],
+            [<?= implode(",", $amount_days["dan"] ?? []) ?>],
+            [<?= implode(",", $amount_days["kyus"] ?? []) ?>]
+        );
+        
+        chart(
+            "#barChartG",
+            [<?= implode(",", array: array_map(function($dia) {
+                return "'" . $dia . "'";
+            }, arrayDaysRanger() ?? [])) ?>],
+            [<?= implode(",", $amount_days["instrutoresG"] ?? []) ?>],
+            [<?= implode(",", $amount_days["danG"] ?? []) ?>],
+            [<?= implode(",", $amount_days["kyusG"] ?? []) ?>]
+        );
+
+        table(
+            "#tableIntructorAjax",
+            'intructor', 
+            '#instructorChart',
+            '#yearChart',
+            '#monthChart'
+        );
+
+        table(
+            "#tableDanAjax",
+            'black',
+            '#instructorChart',
+            '#yearChart',
+            '#monthChart'
+        );
+
+        table(
+            "#tableKyusAjax",
+            'kyus',
+            '#instructorChart',
+            '#yearChart',
+            '#monthChart'
+        );
+
+        table(
+            "#tableIntructorAjaxG",
+            'intructor', 
+            '#instructorChartG',
+            '#yearChartG',
+            '#monthChartG'
+        );
+
+        table(
+            "#tableDanAjaxG",
+            'black',
+            '#instructorChartG',
+            '#yearChartG',
+            '#monthChartG'
+        );
+
+        table(
+            "#tableKyusAjaxG",
+            'kyus',
+            '#instructorChartG',
+            '#yearChartG',
+            '#monthChartG'
+        );
     });
 </script>
 <?php $this->end(); ?>
