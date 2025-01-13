@@ -95,7 +95,7 @@ $route->post("/login", "Login:login");
 $route->post("/card", "Admin:card");
 
 $route->post("/chart/quantity", "Chart:quantity");
-$route->post("/chart/table", "Chart:table");
+$route->post("/chart/table/{type_url}", "Chart:table");
 
 $route->post("/dojo", "Admin:getdojo");
 $route->post("/conf", "Admin:conf");

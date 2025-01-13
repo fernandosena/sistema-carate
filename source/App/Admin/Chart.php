@@ -3,6 +3,7 @@
 namespace Source\App\Admin;
 
 use Source\Models\App\AppStudent;
+use Source\Models\HistoricBelt;
 use Source\Models\User;
 
 /**
@@ -45,7 +46,7 @@ class Chart extends Admin
     public function table(?array $data): void
     {
         $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
-
+        
         // Parâmetros enviados pelo DataTables
         $draw = $data['draw'];
         $start = $data['start'];
@@ -61,18 +62,29 @@ class Chart extends Admin
         if(!empty($data)){
             //Filtra Instrutor/Dan e Kyus
             if($data["filter"] == 1){
-                if($data["type"] == "intructor"){
-                    $result = (new User())->table($data["instructor"], $data["year"], $data["month"], $search, $orderBy, $start, $length);
-                }else{
-                    $result = (new AppStudent())->table($data["type"],$data["instructor"], null, $data["year"], $data["month"], $search, $orderBy, $start, $length);
-                }
+                if($data['type_url'] == "affiliation"){
+                    if($data["type"] == "intructor"){
+                        $result = (new User())->table($data["instructor"], $data["year"], $data["month"], $search, $orderBy, $start, $length);
+                    }else{
+                        $result = (new AppStudent())->table($data["type"],$data["instructor"], null, $data["year"], $data["month"], $search, $orderBy, $start, $length);
+                    }
 
-                $response = array(
-                    "draw" => intval($_POST['draw']),
-                    "recordsTotal" => $result["quantity"], // Total de registros sem filtro
-                    "recordsFiltered" => count($result["data"] ?? []), // Total de registros com filtro (neste exemplo, igual ao total)
-                    "data" => $result["data"]
-                ); 
+                    $response = array(
+                        "draw" => intval($draw),
+                        "recordsTotal" => $result["quantity"], // Total de registros sem filtro
+                        "recordsFiltered" => count($result["data"] ?? []), // Total de registros com filtro (neste exemplo, igual ao total)
+                        "data" => $result["data"]
+                    ); 
+                }else if($data['type_url'] == "graduation"){
+                    $result = (new HistoricBelt())->table($data["type"],$data["instructor"], null, $data["year"], $data["month"], $search, $orderBy, $start, $length);
+
+                    $response = array(
+                        "draw" => intval($draw),
+                        "recordsTotal" => $result["quantity"], // Total de registros sem filtro
+                        "recordsFiltered" => count($result["data"] ?? []), // Total de registros com filtro (neste exemplo, igual ao total)
+                        "data" => $result["data"]
+                    ); 
+                }
             }
         }
         echo json_encode($response);

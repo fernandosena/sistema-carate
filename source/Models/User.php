@@ -172,11 +172,11 @@ class User extends Model
         }
 
         $u = null;
-        if(!empty($user)){
+        if(!empty($user) && $user != "all"){
             $u = "AND users.id = {$user}";
         }
 
-        $datas = $this->query("SELECT 
+        $sql = "SELECT 
             n.dia,
             COALESCE(COUNT(users.id), 0) AS total_cadastrados
         FROM 
@@ -202,7 +202,9 @@ class User extends Model
         GROUP BY 
             n.dia
         ORDER BY 
-            n.dia")->fetch(true);
+            n.dia";
+            
+        $datas = $this->query($sql)->fetch(true);
 
 
         $dadosPorDia = [];
@@ -313,7 +315,7 @@ class User extends Model
             "data" => $data
         ];
     }
-
+    
     public function getLastGraduation()
     {
         return null;

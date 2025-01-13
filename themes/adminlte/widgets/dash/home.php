@@ -178,7 +178,7 @@
                     <div class="col-3">
                         <div class="form-group">
                             <label for="monthChart">Mês</label>
-                            <select class="custom-select form-control-border" id="monthChart" data-url="<?= url("admin/chart/table") ?>" data-filter="1">
+                            <select class="custom-select form-control-border" id="monthChart" data-url="<?= url("admin/chart/table/affiliation") ?>" data-filter="1">
                                 <?php 
                                     $monthNow = (int) date("m");
                                     $meses = arrayMonthRanger();
@@ -319,7 +319,7 @@
                     <div class="col-3">
                         <div class="form-group">
                             <label for="monthChartG">Mês</label>
-                            <select class="custom-select form-control-border" id="monthChartG" data-url="<?= url("admin/chart/table") ?>" data-filter="1">
+                            <select class="custom-select form-control-border" id="monthChartG" data-url="<?= url("admin/chart/table/graduation") ?>" data-filter="1">
                                 <?php 
                                     $monthNow = (int) date("m");
                                     $meses = arrayMonthRanger();
@@ -526,7 +526,7 @@
                             callback: function(value) { if (value % 1 === 0) { return value; } } // Exibe apenas números inteiros
                         }
                     },
-                    yAxes: [{ // Para Chart.js v2 (se você estiver usando uma versão antiga)
+                    yAxes: [{ 
                         ticks: {
                             beginAtZero: true,
                             stepSize: 1,
@@ -591,8 +591,8 @@
                     },
                 },
                 pageLength: 100,
-                "processing": true, // Mostra um indicador de carregamento
-                "serverSide": true, // Habilita o processamento no servidor
+                "processing": true,
+                "serverSide": true,
                 "columns": [
                     { "data": "name" },
                     { "data": "created_at"},
