@@ -633,6 +633,22 @@ class App extends Controller
         ]);
     }
 
+    public function graduations(?array $data): void
+    {
+        $head = $this->seo->render(
+            "Minhas graduações - " . CONF_SITE_NAME,
+            CONF_SITE_DESC,
+            url(),
+            theme("/assets/images/share.jpg"),
+            false
+        );
+
+        echo $this->view->render("graduations", [
+            "head" => $head,
+            "historics" => $this->user->historic(),
+        ]);
+    }
+
     public function signature(?array $data): void
     {
         $head = $this->seo->render(

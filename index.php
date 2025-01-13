@@ -53,6 +53,7 @@ $route->post("/graduation", "App:getgraduation");
 $route->get("/regularization", "App:regularization");
 $route->post("/regularization", "App:regularization");
 $route->get("/perfil", "App:profile");
+$route->get("/graduations", "App:graduations");
 $route->get("/sair", "App:logout");
 $route->post("/dash", "App:dash");
 $route->post("/launch", "App:launch");

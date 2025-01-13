@@ -77,6 +77,14 @@ class User extends Model
     }
 
     /**
+     * @return null|array
+     */
+    public function historic($terms = null, $params = null): ?array
+    {
+        return (new HistoricBelt())->find("instructor_id = :id{$terms}", "id={$this->id}{$params}")->order("created_at desc")->fetch(true);
+    }
+
+    /**
      * @return null|Belt
      */
     public function belt(): ?Belt
