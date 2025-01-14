@@ -1,8 +1,8 @@
 <?php $this->layout("_theme"); ?>
 <article class="app_signature radius">
     <header class="app_signature_header gradient gradient-green">
-        <h2>Regulariação!</h2>
-        <p>Realize aregularização da sua matricula!</p><br>
+        <h2>REGULARIZAÇÂO!</h2>
+        <p>Após a renovação efetuar o pagamento.</p><br>
         <?php
             $budges = false;
             $btnOptions = false;
@@ -36,7 +36,7 @@
             data-post="<?= url("app/regularization") ?>"
             data-action="payment"
             data-type="create"
-            data-user_id="<?= $user->id; ?>"><i class="fa-solid fa-circle-check"></i> Renovar afiliação</a>
+            data-user_id="<?= $user->id; ?>"><i class="fa-solid fa-circle-check"></i> Renovar filiação</a>
         <?php endif; ?>
         <?php  if($btnCancel): ?>
             <a href="#" class="btn bg-warning"

@@ -14,14 +14,11 @@ use Source\Models\App\AppOrder;
 use Source\Models\App\AppPlan;
 use Source\Models\App\AppSubscription;
 use Source\Models\App\AppWallet;
-use Source\Models\App\AppBlackBelt;
 use Source\Models\App\AppStudent;
 use Source\Models\Report\Access;
 use Source\Models\Report\Online;
 use Source\Models\User;
 use Source\Support\Email;
-use Source\Support\Thumb;
-use Source\Support\Upload;
 
 /**
  * Class App
@@ -72,7 +69,7 @@ class App extends Controller
         }
 
         if($msg){
-            $this->message->info("IMPORTANTE: realize o pagamento para continuar usando o sistema ")->after("<a href='".url("/app/regularization'")."'>Clique aqui</a>")->flash();
+            $this->message->info("IMPORTANTE: Atualize a sua filiação de instrutor! ")->after("<a href='".url("/app/regularization'")."'>Clique aqui</a>")->flash();
         }
 
         $data_obj = new \DateTime("now");
