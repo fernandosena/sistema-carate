@@ -27,43 +27,41 @@
     <div class="text-content">
         <div class="home text">
             <div class="title">Certificado</div>
-            <?php if(!empty($verify)): ?>
                 <?php 
-                    $budges = false;
-                    $btnOptions = false;
-                    $btnCancel = false;
-                    $lastPayment = $user->paymentsPendingLast();
-                    //Verifica se existe um ultimo pagamento (oportunidade para cancelar)
-                    $paymentsActivatedLast = $user->paymentsActivatedLast();
-                    if(!$lastPayment){
-                        if($paymentsActivatedLast){
-                            $budges = verify_renew($paymentsActivatedLast->created_at);
-                            $multa = verify_penalty($paymentsActivatedLast->created_at);
-                        }else{
-                            $budges = verify_renew($user->created_at);
-                            $multa = verify_penalty($paymentsActivatedLast->created_at);
-                        }
-                        if($budges){
-                            $btnOptions = true;
-                        }
+                $budges = false;
+                $btnOptions = false;
+                $btnCancel = false;
+                $lastPayment = $user->paymentsPendingLast();
+                //Verifica se existe um ultimo pagamento (oportunidade para cancelar)
+                $paymentsActivatedLast = $user->paymentsActivatedLast();
+                if(!$lastPayment){
+                    if($paymentsActivatedLast){
+                        $budges = verify_renew($paymentsActivatedLast->created_at);
+                        $multa = verify_penalty($paymentsActivatedLast->created_at);
                     }else{
-                        $dataPayment = new DateTime($lastPayment->created_at);
-                        $now = new DateTime();
-                        $diferenca = $now->diff($dataPayment);
-
-                        if($diferenca->days <= 0){
-                            $btnCancel = true;
-                        }
+                        $budges = verify_renew($user->created_at);
+                        $multa = verify_penalty($paymentsActivatedLast->created_at);
                     }
-                ?>
-                <?php if($multa && $btnOptions || $btnCancel): ?>
-                    <p>Seu perfil está pendente para a regularização da filiação.</p>
-                <?php else: ?>
-                    <p>Clique no botão abaixo para gerar o seu certificado</p>
-                    <a style="text-decoration: none" href="<?= url("certificado/{$document}/certificado/{$user->id}") ?>">
-                        <button class="auth_form_btn transition gradient gradient-green gradient-hover">Gerar certificado</button>
-                    </a>
-                <?php endif; ?>
+                    if($budges){
+                        $btnOptions = true;
+                    }
+                }else{
+                    $dataPayment = new DateTime($lastPayment->created_at);
+                    $now = new DateTime();
+                    $diferenca = $now->diff($dataPayment);
+
+                    if($diferenca->days <= 0){
+                        $btnCancel = true;
+                    }
+                }
+            ?>
+            <?php if($multa && $btnOptions || $btnCancel): ?>
+                <p>Seu perfil está pendente para a regularização da filiação.</p>
+            <?php else: ?>
+                <p>Clique no botão abaixo para gerar o seu certificado</p>
+                <a style="text-decoration: none" href="<?= url("certificado/{$document}/certificado/{$user->id}") ?>">
+                    <button class="auth_form_btn transition gradient gradient-green gradient-hover">Gerar certificado</button>
+                </a>
             <?php endif; ?>
         </div>
         <div class="blog text">
