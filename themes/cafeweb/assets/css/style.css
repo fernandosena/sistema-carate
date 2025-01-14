@@ -89,6 +89,41 @@ ul.timeline > li.active:before {
   font-size: 30px;
   border: 2px solid #28a745;
 }
+.app_formbox_photo {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--area-box);
+}
+
+.app_formbox_photo .thumb {
+  width: 120px;
+  height: 120px;
+  border: 5px solid #cccccc;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.app_formbox_photo div {
+  width: calc(100% - 120px);
+  padding-left: var(--area-box);
+}
+.app_formbox_photo input {
+  display: block !important;
+  margin-left: 20px;
+}
+.app_form textarea,
+.app_form select,
+.app_form input {
+  font-size: 1em;
+  color: #888;
+  border: 2px solid #ccc;
+  display: block;
+  background: none;
+  width: 100%;
+  padding: 10px;
+}
+
 /*DEFAULT PAGINATOR*/
 .paginator {
   display: flex;

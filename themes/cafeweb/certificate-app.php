@@ -66,67 +66,82 @@
         </div>
         <div class="blog text">
             <div class="title">Perfil</div>
-            <form class="auth_form" method="post">
-                <?= csrf_input(); ?>
-                <div class="label_group_div">
+            <div>
+                <form class="auth_form app_form" action="<?= url("/profile") ?>" method="post">
+                    <?= csrf_input(); ?>
+                    <input type="hidden" name="document" value="<?= $user->document ?>">
+                    <input type="hidden" name="user" value="<?= $user->id ?>">
+                    <?php
+                        $photo = ($user->photo() ? image($user->photo, 300, 300) :
+                        theme("/assets/images/avatar.jpg", CONF_VIEW_ADMIN));
+                    ?>
+                    <div class="app_formbox_photo">
+                        <div class="rounded j_profile_image thumb" style="background-image: url('<?= $photo; ?>')"></div>
+                        <div><input data-image=".j_profile_image" type="file" required class="radius"  name="photo"/></div>
+                    </div>
+                    <button class="auth_form_btn transition gradient gradient-green gradient-hover">Alterar imagem</button>
+                </form>
+                <div class="auth_form" style="margin-top: 50px">
+                    <div class="label_group_div">
+                        <label>
+                            <div><span class="icon-user">Nome:</span></div>
+                            <input type="email" name="email" value="<?= $user->first_name ?>" readonly>
+                        </label>
+                        <label>
+                            <div><span class="icon-user">Sobrenome:</span></div>
+                            <input type="email" name="email" value="<?= $user->last_name ?>" readonly>
+                        </label>
+                    </div>
                     <label>
-                        <div><span class="icon-user">Nome:</span></div>
-                        <input type="email" name="email" value="<?= $user->first_name ?>" readonly>
+                        <div><span class="icon-envelope">E-mail:</span></div>
+                        <input type="email" name="email" value="<?= $user->email ?>" readonly>
                     </label>
+                    <div class="label_group_div">
+                        <label>
+                            <div><span class="icon-bird">Data de nascimento:</span></div>
+                            <input type="date" name="date" value="<?= $user->datebirth ?>" readonly>
+                        </label>
+                        <label>
+                            <div><span class="icon-bird">Dojo:</span></div>
+                            <input type="text" name="date" value="<?= $user->dojo ?>" readonly>
+                        </label>
+                    </div>
                     <label>
-                        <div><span class="icon-user">Sobrenome:</span></div>
-                        <input type="email" name="email" value="<?= $user->last_name ?>" readonly>
+                        <div><span class="icon-bird">Documento:</span></div>
+                        <input type="text" name="document" value="<?= $user->document ?>" readonly>
                     </label>
+                    <div class="label_group_div">
+                        <label>
+                            <div><span class="icon-user">CEP:</span></div>
+                            <input type="text" name="cep" value="<?= $user->zip ?>" readonly>
+                        </label>
+                        <label>
+                            <div><span class="icon-user">Estado:</span></div>
+                            <input type="text" name="email" value="<?= $user->state ?>" readonly>
+                        </label>
+                    </div>
+                    <div class="label_group_div">
+                        <label>
+                            <div><span class="icon-user">Cidade:</span></div>
+                            <input type="text" name="cep" value="<?= $user->city ?>" readonly>
+                        </label>
+                        <label>
+                            <div><span class="icon-user">Endereço:</span></div>
+                            <input type="text" name="email" value="<?= $user->address ?>" readonly>
+                        </label>
+                    </div>
+                    <div class="label_group_div">
+                        <label>
+                            <div><span class="icon-user">Complemento:</span></div>
+                            <input type="text" name="cep" value="<?= $user->complement ?>" readonly>
+                        </label>
+                        <label>
+                            <div><span class="icon-user">Telefone:</span></div>
+                            <input type="text" name="email" value="<?= $user->phone ?>" readonly>
+                        </label>
+                    </div>
                 </div>
-                <label>
-                    <div><span class="icon-envelope">E-mail:</span></div>
-                    <input type="email" name="email" value="<?= $user->email ?>" readonly>
-                </label>
-                <div class="label_group_div">
-                    <label>
-                        <div><span class="icon-bird">Data de nascimento:</span></div>
-                        <input type="date" name="date" value="<?= $user->datebirth ?>" readonly>
-                    </label>
-                    <label>
-                        <div><span class="icon-bird">Dojo:</span></div>
-                        <input type="text" name="date" value="<?= $user->dojo ?>" readonly>
-                    </label>
-                </div>
-                <label>
-                    <div><span class="icon-bird">Documento:</span></div>
-                    <input type="text" name="document" value="<?= $user->document ?>" readonly>
-                </label>
-                <div class="label_group_div">
-                    <label>
-                        <div><span class="icon-user">CEP:</span></div>
-                        <input type="text" name="cep" value="<?= $user->zip ?>" readonly>
-                    </label>
-                    <label>
-                        <div><span class="icon-user">Estado:</span></div>
-                        <input type="text" name="email" value="<?= $user->state ?>" readonly>
-                    </label>
-                </div>
-                <div class="label_group_div">
-                    <label>
-                        <div><span class="icon-user">Cidade:</span></div>
-                        <input type="text" name="cep" value="<?= $user->city ?>" readonly>
-                    </label>
-                    <label>
-                        <div><span class="icon-user">Endereço:</span></div>
-                        <input type="text" name="email" value="<?= $user->address ?>" readonly>
-                    </label>
-                </div>
-                <div class="label_group_div">
-                    <label>
-                        <div><span class="icon-user">Complemento:</span></div>
-                        <input type="text" name="cep" value="<?= $user->complement ?>" readonly>
-                    </label>
-                    <label>
-                        <div><span class="icon-user">Telefone:</span></div>
-                        <input type="text" name="email" value="<?= $user->phone ?>" readonly>
-                    </label>
-                </div>
-            </form>
+            </div>
         </div>
         <div class="help text">
             <ul class="timeline">

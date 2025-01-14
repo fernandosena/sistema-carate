@@ -14,6 +14,7 @@ use Source\Models\Report\Online;
 use Source\Models\User;
 use Source\Support\Certificate;
 use Source\Support\Pager;
+use Source\Support\Upload;
 
 /**
  * Web Controller
@@ -48,6 +49,56 @@ class Web extends Controller
             "head" => $head,
             "video" => "lDZGl9Wdc7Y",
         ]);
+    }
+    public function profile(array $data): void
+    {
+        if (!empty($data['csrf'])) {
+            if (!csrf_verify($data)) {
+                $json['message'] = $this->message->error("Erro ao enviar, favor use o formulário")->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $user = (new User())->find("document = :d AND id = :id", "d={$data["document"]}&id={$data["user"]}")->fetch();
+            if(!$user){
+                $user = (new AppStudent())->find("document = :d AND id = :id", "d={$data["document"]}&id={$data["user"]}")->fetch();
+            }
+
+            if(!$user){
+                $json['message'] = $this->message->warning("Usuário não encontrado")->render();
+                echo json_encode($json);
+                return;
+            }
+
+            //upload photo
+            if (!empty($_FILES["photo"])) {
+                $files = $_FILES["photo"];
+                $upload = new Upload();
+                $image = $upload->image($files, $user->fullName(), 600);
+
+                if (!$image) {
+                    $json["message"] = $upload->message()->render();
+                    echo json_encode($json);
+                    return;
+                }
+
+                $user->photo = $image;
+            }
+
+            if (!$user->save()) {
+                $json["message"] = $user->message()->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $json['message'] = $this->message->success("Usuário Atualizado com sucesso!")->render();
+            echo json_encode($json);
+            return;
+        }
+
+        $json['message'] = $this->message->warning("Erro ao enviar, favor use o formulário")->render();
+        echo json_encode($json);
+        return;
     }
 
     /**

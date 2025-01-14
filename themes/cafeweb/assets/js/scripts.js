@@ -56,6 +56,24 @@ $(function () {
       .animate({ right: "0" }, 200);
   });
 
+  $("[data-image]").change(function (e) {
+    var changed = $(this);
+    var file = this;
+
+    if (file.files && file.files[0]) {
+      var render = new FileReader();
+
+      render.onload = function (e) {
+        $(changed.data("image")).fadeTo(100, 0.1, function () {
+          $(this)
+            .css("background-image", "url('" + e.target.result + "')")
+            .fadeTo(100, 1);
+        });
+      };
+      render.readAsDataURL(file.files[0]);
+    }
+  });
+
   // mobile menu close
   $(".j_menu_mobile_close").click(function (e) {
     e.preventDefault();

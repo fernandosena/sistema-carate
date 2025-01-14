@@ -32,6 +32,7 @@ $route->get("/recuperar/{code}", "Web:reset");
 $route->post("/recuperar/resetar", "Web:reset");
 $route->post("/web/alunos", "Web:student");
 
+$route->post("/profile", "Web:profile");
 $route->get("/certificado", "Web:certificate");
 $route->get("/certificado/{document}/{type}", "Web:certificate");
 $route->get("/certificado/{document}/{type}/{id}", "Web:certificate");
