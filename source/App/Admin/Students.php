@@ -42,9 +42,9 @@ class Students extends Admin
             }
 
             $date = date('Y-01-01');
-            $students = (new AppStudent())->query("SELECT * FROM app_students WHERE {$instructor} `type` = :t AND TIMESTAMPDIFF(YEAR, datebirth, '$date') $filter", "t={$data["type"]}")->fetch(true);
+            $students = (new AppStudent())->query("SELECT * FROM app_students WHERE {$instructor} `type` = :t AND TIMESTAMPDIFF(YEAR, datebirth, '$date') $filter ORDER BY first_name ASC", "t={$data["type"]}")->fetch(true);
         }else{
-            $students = (new AppStudent())->find("{$instructor} type = :t", "t={$data["type"]}")->fetch(true);
+            $students = (new AppStudent())->find("{$instructor} type = :t", "t={$data["type"]}")->order("first_name asc")->fetch(true);
         }
 
 

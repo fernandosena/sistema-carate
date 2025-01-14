@@ -236,7 +236,7 @@ class Students extends App
 
         //Pesquisa os estuantes
         $students = (new AppStudent())->find("user_id = :user AND type = :type",
-        "user={$this->user->id}}&type={$data["type"]}")->fetch(true);
+        "user={$this->user->id}}&type={$data["type"]}")->order("first_name asc")->fetch(true);
 
         if($data["type"] == "black"){
             $type = "black";

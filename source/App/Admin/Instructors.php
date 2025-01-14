@@ -40,7 +40,7 @@ class Instructors extends Admin
             return;
         }
 
-        $users = (new User())->find("level < :l", "l=5")->fetch(true);
+        $users = (new User())->find("level < :l", "l=5")->order("first_name asc")->fetch(true);
 
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Usuários",
