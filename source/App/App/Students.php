@@ -140,19 +140,6 @@ class Students extends App
                 return;
             }
 
-            $hbelt = (new HistoricBelt());
-
-            if($data["type"] == "black"){
-                $hbelt->black_belt_id = $studentCreate->id;
-            }else{
-                $hbelt->kyus_id = $studentCreate->id;
-            }
-
-            $hbelt->graduation_id = $data["graduation"];
-            $hbelt->status = "approved";
-            $hbelt->description = "Cadastro inserido pelo Instrutor {$this->user->fullName()}, na data de ";
-            $hbelt->save();
-
             if (count($data["belt"]) === count($data["date"])) {
                 for ($i = 0; $i < count($data["belt"]); $i++) {
                     $hbelt = (new HistoricBelt());
@@ -170,6 +157,19 @@ class Students extends App
                     $hbelt->save();
                 }
             }
+
+            $hbelt = (new HistoricBelt());
+
+            if($data["type"] == "black"){
+                $hbelt->black_belt_id = $studentCreate->id;
+            }else{
+                $hbelt->kyus_id = $studentCreate->id;
+            }
+
+            $hbelt->graduation_id = $data["graduation"];
+            $hbelt->status = "approved";
+            $hbelt->description = "Cadastro inserido pelo Instrutor {$this->user->fullName()}, na data de ";
+            $hbelt->save();
 
             $this->message->success("Aluno cadastrado com sucesso...")->flash();
             $json["redirect"] = url("/app/alunos/{$data["type"]}");
