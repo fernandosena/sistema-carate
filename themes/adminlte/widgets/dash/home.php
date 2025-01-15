@@ -549,8 +549,28 @@
             });
         }
         
+        chart(
+            "#barChart",
+            [<?= implode(",", array: array_map(function($dia) {
+                return "'" . $dia . "'";
+            }, arrayDaysRanger() ?? [])) ?>],
+            [<?= implode(",", $amount_days["instrutores"] ?? []) ?>],
+            [<?= implode(",", $amount_days["dan"] ?? []) ?>],
+            [<?= implode(",", $amount_days["kyus"] ?? []) ?>]
+        );
+        
+        chart(
+            "#barChartG",
+            [<?= implode(",", array: array_map(function($dia) {
+                return "'" . $dia . "'";
+            }, arrayDaysRanger() ?? [])) ?>],
+            [<?= implode(",", $amount_days["instrutoresG"] ?? []) ?>],
+            [<?= implode(",", $amount_days["danG"] ?? []) ?>],
+            [<?= implode(",", $amount_days["kyusG"] ?? []) ?>]
+        );
+
         function table(table, type, instructorId, yearId, monthId){
-            const optionTable = {
+            var optionTable = {
                 responsive: true,
                 lengthChange: false,
                 autoWidth: false,
@@ -593,11 +613,12 @@
                 pageLength: 100,
                 "processing": true,
                 "serverSide": true,
-                "columns": [
-                    { "data": "name" },
-                    { "data": "created_at"},
-                ],
             };
+
+            optionTable["columns"] = [
+                { "data": "name" },
+                { "data": "created_at"},
+            ];
 
             $(table).DataTable({
                 ...optionTable,
@@ -618,26 +639,6 @@
             .appendTo("#example1_wrapper .col-md-6:eq(0)");
         }
         
-        chart(
-            "#barChart",
-            [<?= implode(",", array: array_map(function($dia) {
-                return "'" . $dia . "'";
-            }, arrayDaysRanger() ?? [])) ?>],
-            [<?= implode(",", $amount_days["instrutores"] ?? []) ?>],
-            [<?= implode(",", $amount_days["dan"] ?? []) ?>],
-            [<?= implode(",", $amount_days["kyus"] ?? []) ?>]
-        );
-        
-        chart(
-            "#barChartG",
-            [<?= implode(",", array: array_map(function($dia) {
-                return "'" . $dia . "'";
-            }, arrayDaysRanger() ?? [])) ?>],
-            [<?= implode(",", $amount_days["instrutoresG"] ?? []) ?>],
-            [<?= implode(",", $amount_days["danG"] ?? []) ?>],
-            [<?= implode(",", $amount_days["kyusG"] ?? []) ?>]
-        );
-
         table(
             "#tableIntructorAjax",
             'intructor', 

@@ -82,6 +82,27 @@ class App extends Controller
         }
     }
 
+    public function getBelts(?array $data): void
+    {
+        $belts = (new Belt())
+        ->find()
+        ->order("type_student ASC, age_range ASC, title DESC")
+        ->fetch(true);
+
+        $json = [];
+
+        foreach ($belts as $belt) {
+            $json[] = [
+                "id" => $belt->id,
+                "title" => $belt->title,
+                "type_student" => $belt->type_student,
+                "age_range" => $belt->age_range,
+            ];
+        };
+
+        echo json_encode($json);
+    }
+
     /**
      * @param array|null $data
      */

@@ -33,12 +33,6 @@
         ]);
 
         $this->insert("views/kyus");
-        // , [
-        //     "graduations" => (new \Source\Models\Belt())
-        //         ->find("title NOT LIKE '%dan%'")
-        //         ->order("position ASC")
-        //         ->fetch(true),
-        // ]
 
         $this->insert("views/payment");
     ?>

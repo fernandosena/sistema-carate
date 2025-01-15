@@ -121,7 +121,7 @@
             </label>
             <?php if (empty($student)): ?>
                 <label>
-                    <span class="field icon-filter">Graduação:</span>
+                    <span class="field icon-filter">Graduação atual:</span>
                     <?php
                         $graduation = $student->graduation;
                         $select = function ($value) use ($graduation) {
@@ -135,7 +135,10 @@
                     </select>
                 </label>
             <?php endif; ?>
-
+            <label style="display: flex; flex-direction: row;justify-content: space-between; align-items: center;">
+                <span class="field icon-filter" style="margin-bottom: 0">Graduações passadas:</span>
+                <span class="radius transition icon-plus add add-graduations" data-url="<?= url("app/get_belts") ?>">Adicionar</span>
+            </label>
             <label>
                 <span class="field icon-filter">Dojo:</span>
                 <?php

@@ -895,7 +895,53 @@ body {
   width: calc(100% - 120px);
   padding-left: var(--area-box);
 }
+.add {
+  padding: 5px;
+  border: none;
+  cursor: pointer;
+  background: var(--color-green);
+  color: #fff;
+  font-size: var(--font-normal);
+  text-transform: uppercase;
+  font-weight: var(--weight-black);
+}
+.add:hover {
+  background: var(--hover-color-green);
+}
 
+.label_group {
+  position: relative;
+}
+.del {
+  border: none;
+  cursor: pointer;
+  background: var(--color-red);
+  color: #fff;
+  font-size: var(--font-normal);
+  text-transform: uppercase;
+  font-weight: var(--weight-black);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.del i {
+  font-size: 15px;
+  display: block;
+}
+.del i::before {
+  top: 0 !important;
+  margin-right: 0 !important;
+}
+.del:hover {
+  background: var(--hover-color-red);
+}
 /*WALLETS*/
 .app_wallets {
   display: flex;

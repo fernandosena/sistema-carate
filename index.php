@@ -50,6 +50,7 @@ $route->namespace("Source\App\App");
 $route->group("/app");
 
 $route->get("/", handler: "App:home");
+$route->post("/get_belts", "App:getBelts");
 $route->post("/graduation", "App:getgraduation");
 $route->get("/regularization", "App:regularization");
 $route->post("/regularization", "App:regularization");

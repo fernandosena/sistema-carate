@@ -7,7 +7,6 @@
                 </header>
                 <div id="control"></div>
             </article>
-
         </section>
 
         <section class="app_main_right">

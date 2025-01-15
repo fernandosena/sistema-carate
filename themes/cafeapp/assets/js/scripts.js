@@ -1,6 +1,92 @@
 $(function () {
   var effecttime = 200;
 
+  let counter = 0;
+
+  $(".add-graduations").click(function () {
+    counter++;
+
+    let newDiv = $(
+      "<div class='label_group' style='border: 2px solid #ccc; padding: 10px; margin-bottom: 20px;'></div>"
+    );
+
+    // Cria o label e o select DENTRO dele
+    let labelGraduacao = $(
+      "<label style='margin-bottom: 0px;'><span class='field icon-filter'>Graduação</span><select name='belt[]'></select></label>"
+    );
+    let selectBelt = labelGraduacao.find("select");
+
+    let labelData = $(
+      "<label style='margin-bottom: 0px'><span class='field icon-heartbeat'>Data:</span><input type='date' name='date[]' class='radius' placeholder='dd/mm/yyyy' required/></label>"
+    );
+    let buttonDel = $(
+      "<span class='del del-graduations' title='Excluir'><i class='icon-trash'></i></span>"
+    );
+
+    newDiv.append(labelGraduacao); // Adiciona o label (que já contém o select)
+    newDiv.append(labelData);
+    newDiv.append(buttonDel);
+
+    newDiv.css("display", "flex");
+    newDiv.insertBefore($(this).parent().next());
+
+    buttonDel.click(function () {
+      $(this).parent().remove();
+    });
+
+    $.ajax({
+      url: $(this).data("url"),
+      type: "POST",
+      dataType: "json",
+      success: function (data) {
+        if (data && data.length > 0) {
+          let optgroupAtual = null;
+          $.each(data, function (index, belt) {
+            let type =
+              belt.type_student == "kyus"
+                ? belt.age_range == "1"
+                  ? "menor"
+                  : "maior"
+                : belt.type_student == "black"
+                ? "black"
+                : "both";
+
+            if (type != optgroupAtual) {
+              if (optgroupAtual !== null) {
+                selectBelt.append("</optgroup>");
+              }
+              let categoria =
+                belt.type_student == "black"
+                  ? "Dan"
+                  : belt.type_student == "both"
+                  ? "Padrão"
+                  : belt.age_range == "1"
+                  ? "Kyu Menor que 13 anos"
+                  : "Kyu Maior que 13 anos";
+              selectBelt.append("<optgroup label='" + categoria + "'>");
+              optgroupAtual = type;
+            }
+            selectBelt.append(
+              "<option value='" + belt.id + "'>" + belt.title + "</option>"
+            );
+          });
+          if (optgroupAtual !== null) {
+            selectBelt.append("</optgroup>");
+          }
+        } else {
+          selectBelt.append(
+            "<option value=''>Nenhuma graduação encontrada</option>"
+          );
+        }
+      },
+      error: function () {
+        selectBelt.append(
+          "<option value=''>Erro ao carregar graduações</option>"
+        );
+      },
+    });
+  });
+
   /*
    * MOBILE MENU
    */

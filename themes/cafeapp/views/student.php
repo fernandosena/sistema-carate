@@ -117,7 +117,7 @@
             </label>
             <?php if (empty($student)): ?>
                 <label>
-                    <span class="field icon-filter">Graduação:</span>
+                    <span class="field icon-filter">Graduação atual:</span>
                     <?php
                         $graduation = $student->graduation;
                         $select = function ($value) use ($graduation) {
