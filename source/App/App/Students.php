@@ -126,6 +126,14 @@ class Students extends App
                 $studentCreate->photo = $image;
             }
 
+            if(!empty($data["belt"]) || !empty($data["date"])){
+                if (count($data["belt"]) !== count($data["date"])) {
+                    $json["message"] = $this->message->warning("A quantidade de Graduações passadas informadas não confere com a quantidade de datas")->render();
+                    echo json_encode($json);
+                    return;
+                }
+            }
+
             if (!$studentCreate->save()) {
                 $json["message"] = $studentCreate->message()->render();
                 echo json_encode($json);
@@ -144,6 +152,25 @@ class Students extends App
             $hbelt->status = "approved";
             $hbelt->description = "Cadastro inserido pelo Instrutor {$this->user->fullName()}, na data de ";
             $hbelt->save();
+
+
+            if (count($data["belt"]) === count($data["date"])) {
+                for ($i = 0; $i < count($data["belt"]); $i++) {
+                    $hbelt = (new HistoricBelt());
+
+                    if($data["type"] == "black"){
+                        $hbelt->black_belt_id = $studentCreate->id;
+                    }else{
+                        $hbelt->kyus_id = $studentCreate->id;
+                    }
+
+                    $hbelt->graduation_id = $data["belt"][$i];
+                    $hbelt->status = "approved";
+                    $hbelt->description = "Histórico inserido pelo Instrutor {$this->user->fullName()}, na data de ";
+                    $hbelt->graduation_data = $data["date"][$i];
+                    $hbelt->save();
+                }
+            }
 
             $this->message->success("Aluno cadastrado com sucesso...")->flash();
             $json["redirect"] = url("/app/alunos/{$data["type"]}");
