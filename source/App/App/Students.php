@@ -153,7 +153,6 @@ class Students extends App
             $hbelt->description = "Cadastro inserido pelo Instrutor {$this->user->fullName()}, na data de ";
             $hbelt->save();
 
-
             if (count($data["belt"]) === count($data["date"])) {
                 for ($i = 0; $i < count($data["belt"]); $i++) {
                     $hbelt = (new HistoricBelt());
