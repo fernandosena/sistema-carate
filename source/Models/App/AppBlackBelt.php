@@ -58,7 +58,7 @@ class AppBlackBelt extends Model
     public function findByTeacher(int $id, string $columns = "*"): ?array
     {
         $find = $this->find("user_id = :id AND type='black'", "id={$id}", $columns);
-        return $find->fetch(true);
+        return $find->order("dojo")->fetch(true);
     }
 
     /**
