@@ -61,10 +61,16 @@
                     <div><span class="icon-envelope">E-mail:</span></div>
                     <input type="email" name="email" value="<?= $user->email ?>" readonly>
                 </label>
-                <label>
-                    <div><span class="icon-bird">Data de nascimento:</span></div>
-                    <input type="date" name="date" value="<?= $user->datebirth ?>" readonly>
-                </label>
+                <div class="label_group_div">
+                    <label>
+                        <div><span class="icon-bird">Data de nascimento:</span></div>
+                        <input type="date" name="date" value="<?= $user->datebirth ?>" readonly>
+                    </label>
+                    <label>
+                        <div><span class="icon-bird">Dojo:</span></div>
+                        <input type="text" name="date" value="<?= $user->dojo ?>" readonly>
+                    </label>
+                </div>
                 <label>
                     <div><span class="icon-bird">Documento:</span></div>
                     <input type="text" name="document" value="<?= $user->document ?>" readonly>
@@ -102,7 +108,7 @@
                 <div class="label_group_div">
                     <label>
                         <div><span class="icon-user">Graduação:</span></div>
-                        <input type="text" name="cep" value="<?= $user->graduation ?>" readonly>
+                        <input type="text" name="cep" value="<?= $user->belt()->title ?>" readonly>
                     </label>
                     <label>
                         <div><span class="icon-user">Descrição:</span></div>
