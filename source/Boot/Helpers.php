@@ -55,10 +55,6 @@ function verify_renewal_data($renewal, $last_renewal_data, $instructor = false):
             if($instructor){
                 $last_renewal_data = null;
             }
-            $multa = verify_multa_data($last_renewal_data);
-            if($multa){
-                return true;
-            }
             return true;
         }
     }

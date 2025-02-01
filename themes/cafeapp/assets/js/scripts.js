@@ -391,104 +391,104 @@ $(function () {
             $(".document").attr('placeholder', 'CPF do usuário');
         }
     });
-});
+
+  const addressForm = $(".address-form");
+  const cepInput = $(".cep");
+  const addressInput = $(".address");
+  const cityInput = $(".city");
+  const neighborhoodInput = $(".neighborhood");
+  const regionInput = $(".state");
+  const formInputs = $("[data-input]");
+
+  // Validate CEP Input
+  cepInput.keypress(function(e) {
+    const onlyNumbers = /[0-9]|\./;
+    const key = String.fromCharCode(e.keyCode);
+
+    // allow only numbers
+    if (!onlyNumbers.test(key)) {
+      e.preventDefault();
+      return;   
+
+    }
+  });
+
+  // Evento to get address
+  cepInput.keyup(function(e)   
+ {
+    const inputValue = $(this).val();
+
+    //   Check if we have a CEP
+    if (inputValue.length === 8) {
+      getAddress(inputValue);
+    }
+  });
+
+  // Get address from API
+  const getAddress = async (cep) => {
+    toggleLoader();
+    cepInput.blur();   
 
 
-const addressForm = document.querySelector("#address-form");
-const cepInput = document.querySelector("#cep");
-const addressInput = document.querySelector("#address");
-const cityInput = document.querySelector("#city");
-const neighborhoodInput = document.querySelector("#neighborhood");
-const regionInput = document.querySelector("#state");
-const formInputs = document.querySelectorAll("[data-input]");
+    const apiUrl = `https://viacep.com.br/ws/${cep}/json/`;
 
-// Validate CEP Input
-cepInput.addEventListener("keypress", (e) => {
-  const onlyNumbers = /[0-9]|\./;
-  const key = String.fromCharCode(e.keyCode);
+    const response = await fetch(apiUrl);
+    const data = await response.json();
 
-  // allow only numbers
-  if (!onlyNumbers.test(key)) {
-    e.preventDefault();
-    return;
-  }
-});
+    // Show error and reset form
+    if (data.erro === "true") {
+      if   
+ (!addressInput.prop("disabled")) {
+        toggleDisabled();
+      }
 
-// Evento to get address
-cepInput.addEventListener("keyup", (e) => {
-  const inputValue = e.target.value;
+      addressForm[0].reset();
+      toggleLoader();
+      alert("CEP Inválido, tente novamente.");
+      return;
+    }
 
-  //   Check if we have a CEP
-  if (inputValue.length === 8) {
-    getAddress(inputValue);
-  }
-});
-
-// Get address from API
-const getAddress = async (cep) => {
-  toggleLoader();
-
-  cepInput.blur();
-
-  const apiUrl = `https://viacep.com.br/ws/${cep}/json/`;
-
-  const response = await fetch(apiUrl);
-
-  const data = await response.json();
-
-  // Show error and reset form
-  if (data.erro === "true") {
-    if (!addressInput.hasAttribute("disabled")) {
+    // Activate disabled attribute if form is empty
+    if (addressInput.val() === "") {
       toggleDisabled();
     }
 
-    addressForm.reset();
+    addressInput.val(data.logradouro);
+    cityInput.val(data.localidade);
+    neighborhoodInput.val(data.bairro);
+    regionInput.val(data.uf);
+
     toggleLoader();
-    alert("CEP Inválido, tente novamente.");
-    return;
-  }
+  };
 
-  // Activate disabled attribute if form is empty
-  if (addressInput.value === "") {
-    toggleDisabled();
-  }
+  // Add or remove disable attribute
+  const toggleDisabled = () => {
+    if (regionInput.prop("disabled")) {
+      formInputs.each(function() {
+        $(this).removeAttr("disabled");
+      });
+    } else {
+      formInputs.each(function() {
+        $(this).attr("disabled", "disabled");
+      });
+    }
+  };
 
-  addressInput.value = data.logradouro;
-  cityInput.value = data.localidade;
-  neighborhoodInput.value = data.bairro;
-  regionInput.value = data.uf;
+  // Show or hide loader
+  const toggleLoader = () => {
+    const loaderElement = $(".ajax_load");
+    loaderElement.toggleClass("hide");
+  };
 
-  toggleLoader();
-};
+  // Show or hide message
+  const toggleMessage = (msg) => {
+    const fadeElement = $("#fade");
+    const messageElement = $("#message");
+    const messageTextElement = $("#message p");
 
-// Add or remove disable attribute
-const toggleDisabled = () => {
-  if (regionInput.hasAttribute("disabled")) {
-    formInputs.forEach((input) => {
-      input.removeAttribute("disabled");
-    });
-  } else {
-    formInputs.forEach((input) => {
-      input.setAttribute("disabled", "disabled");
-    });
-  }
-};
+    messageTextElement.text(msg);  // Using .text() instead of .innerText
 
-// Show or hide loader
-const toggleLoader = () => {
-  const loaderElement = document.querySelector(".ajax_load");
-  loaderElement.classList.toggle("hide");
-};
-
-// Show or hide message
-const toggleMessage = (msg) => {
-  const fadeElement = document.querySelector("#fade");
-  const messageElement = document.querySelector("#message");
-
-  const messageTextElement = document.querySelector("#message p");
-
-  messageTextElement.innerText = msg;
-
-  fadeElement.classList.toggle("hide");
-  messageElement.classList.toggle("hide");
-};
+    fadeElement.toggleClass("hide");
+    messageElement.toggleClass("hide");
+  };
+});

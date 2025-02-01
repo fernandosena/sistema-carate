@@ -32,7 +32,7 @@ $route->get("/recuperar/{code}", "Web:reset");
 $route->post("/recuperar/resetar", "Web:reset");
 
 $route->get("/certificado", "Web:certificate");
-$route->get("/certificado/{document}", "Web:certificate");
+$route->get("/certificado/{document}/{type}", "Web:certificate");
 $route->post("/certificado", "Web:certificate");
 
 //optin

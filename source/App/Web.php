@@ -241,7 +241,6 @@ class Web extends Controller
                 return;
             }
 
-
             $document = preg_replace("/[^0-9]/", "", $data['document']);
 
             $user = (new User())->findByDocument($document);
@@ -255,13 +254,16 @@ class Web extends Controller
                 return;
             }
 
-            if(verify_renewal_data($user->renewal, $user->last_renewal_data)){
+            $data_obj = new \DateTime("now");
+            $mes = $data_obj->format('m');
+
+            if(verify_renewal_data($user->renewal, $user->last_renewal_data) && ($mes >= 3)){
                 $json['message'] = $this->message->warning("Usuário pendente para regularização")->render();
                 echo json_encode($json);
                 return;
             }
 
-            $json['redirect'] = url("/certificado/{$document}");
+            $json['redirect'] = url("/certificado/{$document}/app");
             echo json_encode($json);
             return;
         }
@@ -273,9 +275,16 @@ class Web extends Controller
             theme("/assets/images/share.jpg")
         );
 
-        if(!empty($data['document'])){
-            $document = preg_replace("/[^0-9]/", "", $data['document']);
+        if(empty($data["document"])){
+            echo $this->view->render("certificate", [
+                "head" => $head,
+                "document" => null
+            ]);
+            return;
+        }
 
+        if(!empty($data["type"]) && $data["type"] == "app"){
+            $document = $data["document"];
             $user = (new User())->findByDocument($document);
             if(!$user){
                 $user = (new AppStudent())->findByDocument($document);
@@ -283,14 +292,40 @@ class Web extends Controller
 
             if(!$user){
                 $this->message->warning("Usuário não encontrado")->flash();
-                redirect("/certificado");
-            }
-            
-            if(verify_renewal_data($user->renewal, $user->last_renewal_data)){
-                $this->message->warning("Usuário pendente")->flash();
-                redirect("/certificado");
+                redirect("/certificado/{$document}/app");
             }
 
+            $data_obj = new \DateTime("now");
+            $mes = $data_obj->format('m');
+
+            $renew = (verify_renewal_data($user->renewal, $user->last_renewal_data) && ($mes >= 3));
+
+            echo $this->view->render("certificate-app", [
+                "head" => $head,
+                "document" => $document,
+                "user" => $user,
+                "renew" => $renew
+            ]);
+            return;
+        }
+
+        if(!empty($data["type"]) && $data["type"] == "certificado"){
+            $document = $data["document"];
+            $user = (new User())->findByDocument($document);
+            if(!$user){
+                $user = (new AppStudent())->findByDocument($document);
+            }
+
+            if(!$user){
+                $this->message->warning("Usuário não encontrado")->flash();
+                redirect("/certificado/{$document}/app");
+            }
+
+            if(verify_renewal_data($user->renewal, $user->last_renewal_data)){
+                $this->message->warning("Usuário pendente")->flash();
+                redirect("/certificado/{$document}/app");
+            }
+    
             $proximoano = date('Y', strtotime('+1 year'));
             $date = "01 de Fevereiro de $proximoano";
             if(!empty($user->type)){
@@ -303,14 +338,14 @@ class Web extends Controller
             }else{
                 $model = "certificado_instrutor.jpg";
             }
-
+    
             $certificate = (new Certificate(
                 $user->fullname(),
                 $date,
                 $user->document,
                 path("assets/images/$model")
             ));
-
+    
             if(!empty($user->type)){
                 if($user->type == "kyus"){
                     $model = "certificado_kyu.jpg";
@@ -327,11 +362,6 @@ class Web extends Controller
             
             $certificate->render();
         }
-
-        echo $this->view->render("certificate", [
-            "head" => $head,
-            "document" => null
-        ]);
     }   
 
     /**

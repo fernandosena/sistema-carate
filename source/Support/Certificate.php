@@ -8,7 +8,7 @@ class Certificate {
     protected $dataName = [
         "font" => "Arial",
         "size" => 30,
-        "x"=> 20,
+        "x"=> 15,
         "y"=> 100,
         "w"=> 265,
         "h"=> 10,
@@ -25,7 +25,7 @@ class Certificate {
     protected $dataDate = [
         "font" => "Arial",
         "size" => 15,
-        "x"=> 130,
+        "x"=> 128,
         "y"=> 172,
         "w"=> 165,
         "h"=> 10,
@@ -64,7 +64,7 @@ class Certificate {
         return $this;
     }
 
-    function setXYName($x = 20, $y = 100){
+    function setXYName($x = 10, $y = 100){
         $this->dataName["x"] = $x;
         $this->dataName["y"] = $y;
         return $this;

@@ -1211,6 +1211,136 @@ body {
     font-size: 1.4em;
 }
 
+
+.container-tap{
+    max-width: 950px;
+    width: 100%;
+    padding: 50px 40px;
+    margin: 50px auto;
+    border-radius: 12px;
+    box-shadow: 0px 4px 16px rgba(254, 205, 211, 0.1), 0px 8px 24px rgba(254, 205, 211, 0.1), 0px 16px 56px rgba(0, 0, 0, 0.8);
+}
+
+.container-tap .topic{
+    font-size: 30px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    color: #000;
+}
+
+.content-tap input{
+    display: none;
+}
+
+.content-tap{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content-tap .list{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 20%;
+    margin-right: 50px;
+}
+
+.content-tap .list label{
+    cursor: pointer;
+    height: 60px;
+    line-height: 60px;
+    font-size: 22px;
+    font-weight: 500;
+    color: #000;
+    padding-left: 25px;
+    transition: all 0.5s ease;
+    z-index: 10;
+}
+
+#home:checked ~ .list label.home,
+#blog:checked ~ .list label.blog,
+#help:checked ~ .list label.help,
+#code:checked ~ .list label.code,
+#about:checked ~ .list label.about{
+  color: #22272C;
+}
+
+.content-tap .slider{
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 60px;
+  width: 100%;
+  border-radius: 12px;
+  transition: all 0.5s ease;
+  
+  background: var(--color-green);
+}
+
+#home:checked ~ .list .slider{
+  top: 0;
+}
+
+#blog:checked ~ .list .slider{
+  top: 60px;
+}
+
+#help:checked ~ .list .slider{
+  top: 120px;
+}
+
+#code:checked ~ .list .slider{
+  top: 180px;
+}
+
+#about:checked ~ .list .slider{
+  top: 240px;
+}
+
+.content-tap .text-content{
+  width: 80%;
+  height: 100%;
+  color: #000;
+}
+
+.content-tap .text{
+  display: none;
+}
+
+.content-tap .text .title{
+  font-size: 25px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.container-tap .text p{
+  text-align: justify;
+}
+
+.content-tap .text-content .home{
+  display: block;
+}
+
+#home:checked ~ .text-content .home,
+#blog:checked ~ .text-content .blog,
+#help:checked ~ .text-content .help,
+#code:checked ~ .text-content .code,
+#about:checked ~ .text-content .about{
+  display: block;
+}
+
+#blog:checked ~ .text-content .home,
+#help:checked ~ .text-content .home,
+#code:checked ~ .text-content .home,
+#about:checked ~ .text-content .home{
+  display: none;
+}
+
+.content-tap .list label:hover{
+  color: #BB86FC;
+}
+
 @media (max-width: 62em) {
     .main_header_logo {
         font-size: 0.8em;

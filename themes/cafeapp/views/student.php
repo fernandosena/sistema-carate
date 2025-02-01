@@ -1,7 +1,7 @@
 <div class="app_modal_box app_modal_student">
     <?php if(empty($student) || (!empty($student) && $student->status != "pending")): ?>
         <p class="title icon-user"><?= (!empty($student)) ? "Atualizar Faixa Preta" : "Novo Faixa Preta" ?>:</p>
-        <form class="app_form" id="address-form" action="<?= url("/app/alunos"); ?>" method="post">
+        <form class="app_form address-form" action="<?= url("/app/alunos"); ?>" method="post">
             <input type="hidden" name="action" value="<?= (!empty($student)) ? "update" : "create" ?>"/>
             <input type="hidden" name="type" value="black">
             <input type="hidden" name="id" value="<?= ($student->id) ?? null ?>"/>
@@ -39,7 +39,7 @@
             <div class="label_group">
                 <label>
                     <span class="field icon-map-marker">CEP:</span>
-                    <input class="radius" id="cep" name="zip" value="<?= $student->zip; ?>" placeholder="CEP" required maxlength="8" minlength="8"/>
+                    <input class="radius cep" name="zip" value="<?= $student->zip; ?>" placeholder="CEP" required maxlength="8" minlength="8"/>
                 </label>
                 <label>
                     <span class="field icon-map-marker">Estado:</span>
@@ -49,7 +49,7 @@
                             return ($state == $value ? "selected" : "");
                         };
                     ?>
-                    <select class="radius" <?= (!empty($student)) ? null : "disabled" ?> name="state" id="state" required data-input>
+                    <select class="radius state" <?= (!empty($student)) ? null : "disabled" ?> name="state" required data-input>
                         <option selected>Estado</option>
                         <option <?= $select("AC")?> value="AC">Acre</option>
                         <option <?= $select("AL")?> value="AL">Alagoas</option>
@@ -84,18 +84,17 @@
             <div class="label_group">
                 <label>
                     <span class="field icon-map-marker">Cidade:</span>
-                    <input id="city" type="text"
-                    name="city" class="radius"  <?= (!empty($student)) ? null : "disabled" ?> value="<?= $student->city ?>" placeholder="Cidade" required data-input>
+                    <input type="text" name="city" class="radius city"  <?= (!empty($student)) ? null : "disabled" ?> value="<?= $student->city ?>" placeholder="Cidade" required data-input>
                 </label>
                 <label>
                     <span class="field icon-map-marker">Endereço:</span>
-                    <input id="address" type="text" name="address" class="radius" value="<?= $student->address ?>" placeholder="Endereço"  <?= (!empty($student)) ? null : "disabled" ?> required data-input>
+                    <input type="text" name="address" class="radius address" value="<?= $student->address ?>" placeholder="Endereço"  <?= (!empty($student)) ? null : "disabled" ?> required data-input>
                 </label>
             </div>
             <div class="label_group">
                 <label>
                     <span class="field icon-map-marker">Bairro:</span>
-                    <input type="text" name="neighborhood" value="<?= $student->neighborhood ?>" id="neighborhood" class="radius"  <?= (!empty($student)) ? null : "disabled" ?> placeholder="Complemento" required data-input>
+                    <input type="text" name="neighborhood" value="<?= $student->neighborhood ?>" class="radius neighborhood"  <?= (!empty($student)) ? null : "disabled" ?> placeholder="Complemento" required data-input>
                 </label>
                 <label>
                     <span class="field icon-map-marker">Número:</span>
