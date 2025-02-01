@@ -30,6 +30,7 @@ $route->get("/recuperar", "Web:forget");
 $route->post("/recuperar", "Web:forget");
 $route->get("/recuperar/{code}", "Web:reset");
 $route->post("/recuperar/resetar", "Web:reset");
+$route->post("/web/alunos", "Web:student");
 
 $route->get("/certificado", "Web:certificate");
 $route->get("/certificado/{document}/{type}", "Web:certificate");

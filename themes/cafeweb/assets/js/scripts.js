@@ -1,4 +1,51 @@
 $(function () {
+    $("[data-post]").click(function (e) {
+        e.preventDefault();
+  
+        var clicked = $(this);
+        var data = clicked.data();
+        var load = $(".ajax_load");
+  
+        if (data.confirm) {
+            var deleteConfirm = confirm(data.confirm);
+            if (!deleteConfirm) {
+                return;
+            }
+        }
+
+        $.ajax({
+            url: data.post,
+            type: "POST",
+            data: data,
+            dataType: "json",
+            beforeSend: function () {
+                load.fadeIn(200).css("display", "flex");
+            },
+            success: function (response) {
+                if(response.renewal){
+                    clicked.replaceWith('Em analise');
+                }
+
+                //redirect
+                if (response.redirect) {
+                    window.location.href = response.redirect;
+                } else {
+                    load.fadeOut(200);
+                }
+  
+                //reload
+                if (response.reload) {
+                    window.location.reload();
+                } else {
+                    load.fadeOut(200);
+                }
+            },
+            error: function () {
+                load.fadeOut();
+            }
+        });
+    });
+    
     // mobile menu open
     $(".j_menu_mobile_open").click(function (e) {
         e.preventDefault();

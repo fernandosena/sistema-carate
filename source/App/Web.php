@@ -3,6 +3,7 @@
 namespace Source\App;
 
 use Source\Core\Controller;
+use Source\Models\App\AppBlackBelt;
 use Source\Models\App\AppKyus;
 use Source\Models\App\AppStudent;
 use Source\Models\Auth;
@@ -222,6 +223,33 @@ class Web extends Controller
                 ->fetch(true)
         ]);
     }
+
+    public function student(?array $data){
+        $student_id = $data["student_id"];
+        $student = (new AppStudent())->findById($student_id);
+        if(!$student){
+            echo json_encode([
+                "message" => $this->message->warning("Estudante informado não existe")->render()
+            ]);
+            return;
+        }
+
+        $student->renewal = 'pending';
+        $student->renewal_data = date("Y-m-d");
+
+        if(!$student->save()){
+            echo json_encode([
+                "message" => $this->message->error("Erro ao atualizar usuario")->render()
+            ]);
+            return;
+        }
+
+        echo json_encode([
+            "renewal" => true
+        ]);
+        return;
+    }
+
 /**
      * SITE CERTIFICATE
      * @param null|array $data
@@ -286,8 +314,14 @@ class Web extends Controller
         if(!empty($data["type"]) && $data["type"] == "app"){
             $document = $data["document"];
             $user = (new User())->findByDocument($document);
+            $student = false;
             if(!$user){
                 $user = (new AppStudent())->findByDocument($document);
+                if($user->type == "black"){
+                    $student = (new AppBlackBelt())->findById($user->id);
+                }else{
+                    $student = (new AppKyus())->findById($user->id);
+                }
             }
 
             if(!$user){
@@ -304,7 +338,9 @@ class Web extends Controller
                 "head" => $head,
                 "document" => $document,
                 "user" => $user,
-                "renew" => $renew
+                "verify" => verify_renewal_data($user->renewal, $user->last_renewal_data),
+                "renew" => $renew,
+                "student" => $student
             ]);
             return;
         }
@@ -321,7 +357,10 @@ class Web extends Controller
                 redirect("/certificado/{$document}/app");
             }
 
-            if(verify_renewal_data($user->renewal, $user->last_renewal_data)){
+            $data_obj = new \DateTime("now");
+            $mes = $data_obj->format('m');
+
+            if(verify_renewal_data($user->renewal, $user->last_renewal_data) && ($mes >= 3)){
                 $this->message->warning("Usuário pendente")->flash();
                 redirect("/certificado/{$document}/app");
             }

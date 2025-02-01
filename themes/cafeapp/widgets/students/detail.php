@@ -106,17 +106,17 @@
                     <div class="card mt-4">
                         <div class="card-body">
                             <h4>Trajetória de graduação</h4>
-                                <ul class="timeline">
-                                    <?php $c=0; foreach($student->historic() as $historic):?>
-                                        <?php  if($historic->status == "approved" && $c == 0){$c = 1;} ?>
-                                        <li <?= ($c == 1) ? 'class="active"': null?>>
-                                            <?php $data = $historic->findBelt($historic->graduation_id) ?>
-                                            <h6><?= $data->title ?><?= ($historic->status == "pending") ? " - <span class='badge bg-warning'>Em Análise</span>" : (($historic->status == "disapprove") ? " - <span class='badge bg-danger'>Reprovado</span>" : null) ; ?></h6>
-                                            <p class="mb-0 text-muted"><?= $historic->description ?></p>
-                                            <o class="text-muted"><?= date_fmt($historic->created_at, "d/m/y \à\s H\hi"); ?></p>
-                                        </li>
-                                    <?php if($c == 1){$c = 2;} endforeach; ?>
-                                </ul>
+                            <ul class="timeline">
+                                <?php $c=0; foreach($student->historic() as $historic):?>
+                                    <?php  if($historic->status == "approved" && $c == 0){$c = 1;} ?>
+                                    <li <?= ($c == 1) ? 'class="active"': null?>>
+                                        <?php $data = $historic->findBelt($historic->graduation_id) ?>
+                                        <h6><?= $data->title ?><?= ($historic->status == "pending") ? " - <span class='badge bg-warning'>Em Análise</span>" : (($historic->status == "disapprove") ? " - <span class='badge bg-danger'>Reprovado</span>" : null) ; ?></h6>
+                                        <p class="mb-0 text-muted"><?= $historic->description ?></p>
+                                        <o class="text-muted"><?= date_fmt($historic->created_at, "d/m/y \à\s H\hi"); ?></p>
+                                    </li>
+                                <?php if($c == 1){$c = 2;} endforeach; ?>
+                            </ul>
                         </div>
                     </div>
                 </div>
