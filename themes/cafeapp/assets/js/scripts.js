@@ -19,6 +19,14 @@ $(function () {
     let labelData = $(
       "<label style='margin-bottom: 0px'><span class='field icon-heartbeat'>Data:</span><input type='date' name='date[]' class='radius' placeholder='dd/mm/yyyy' required/></label>"
     );
+    const ontem = new Date();
+    ontem.setDate(ontem.getDate() - 1);
+    const ontemFormatada = ontem.toISOString().split("T")[0];
+    labelData
+      .find('input[type="date"]')
+      .attr("max", ontemFormatada)
+      .val(ontemFormatada);
+
     let buttonDel = $(
       "<span class='del del-graduations' title='Excluir'><i class='icon-trash'></i></span>"
     );

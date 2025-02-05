@@ -132,6 +132,29 @@ class Students extends App
                     echo json_encode($json);
                     return;
                 }
+
+                for ($i = 0; $i < count($data["date"]); $i++) {
+                    $date = $data["date"][$i];
+
+                    // 1. Converter a data para um objeto DateTime
+                    $dateObj = \DateTime::createFromFormat('Y-m-d', $date); // Ajuste o formato se necessário
+
+                    if ($dateObj === false) {
+                        $json["message"] = $this->message->warning("Formato de data inválido: " . $date)->render();
+                        echo json_encode($json);
+                        return;
+                    }
+
+                    // 2. Obter a data de ontem
+                    $yesterday = new \DateTime('now');
+
+                    // 3. Comparar as datas
+                    if ($dateObj > $yesterday) {
+                        $json["message"] = $this->message->warning("A data " . $date . " é posterior a ontem.")->render();
+                        echo json_encode($json);
+                        return;
+                    }
+                }
             }
 
             if (!$studentCreate->save()) {
@@ -169,6 +192,7 @@ class Students extends App
             $hbelt->graduation_id = $data["graduation"];
             $hbelt->status = "approved";
             $hbelt->description = "Cadastro inserido pelo Instrutor {$this->user->fullName()}, na data de ";
+            $hbelt->graduation_data = date("Y-m-d");
             $hbelt->save();
 
             $this->message->success("Aluno cadastrado com sucesso...")->flash();
@@ -229,23 +253,60 @@ class Students extends App
                 $student->photo = $image;
             }
 
+            if(!empty($data["belt"]) || !empty($data["date"])){
+                if (count($data["belt"]) !== count($data["date"])) {
+                    $json["message"] = $this->message->warning("A quantidade de Graduações passadas informadas não confere com a quantidade de datas")->render();
+                    echo json_encode($json);
+                    return;
+                }
+
+                for ($i = 0; $i < count($data["date"]); $i++) {
+                    $date = $data["date"][$i];
+
+                    // 1. Converter a data para um objeto DateTime
+                    $dateObj = \DateTime::createFromFormat('Y-m-d', $date); // Ajuste o formato se necessário
+
+                    if ($dateObj === false) {
+                        $json["message"] = $this->message->warning("Formato de data inválido: " . $date)->render();
+                        echo json_encode($json);
+                        return;
+                    }
+
+                    // 2. Obter a data de ontem
+                    $yesterday = new \DateTime('now');
+
+                    // 3. Comparar as datas
+                    if ($dateObj > $yesterday) {
+                        $json["message"] = $this->message->warning("A data " . $date . " é posterior a ontem.")->render();
+                        echo json_encode($json);
+                        return;
+                    }
+                }
+            }
+            
             if (!$student->save()) {
                 $json["message"] = $student->message()->render();
                 echo json_encode($json);
                 return;
             }
 
-            $hbelt = (new HistoricBelt());
+            if (count($data["belt"]) === count($data["date"])) {
+                for ($i = 0; $i < count($data["belt"]); $i++) {
+                    $hbelt = (new HistoricBelt());
 
-            if($data["type"] == "black"){
-                $hbelt->black_belt_id = $student->id;
-            }else{
-                $hbelt->kyus_id = $student->id;
+                    if($data["type"] == "black"){
+                        $hbelt->black_belt_id = $student->id;
+                    }else{
+                        $hbelt->kyus_id = $student->id;
+                    }
+
+                    $hbelt->graduation_id = $data["belt"][$i];
+                    $hbelt->status = "approved";
+                    $hbelt->description = "Histórico inserido pelo Instrutor {$this->user->fullName()}, na data de ";
+                    $hbelt->graduation_data = $data["date"][$i];
+                    $hbelt->save();
+                }
             }
-
-            $hbelt->graduation_id = $data["graduation"];
-            $hbelt->description = $data["description"];
-            $hbelt->save();
 
             $json["message"] = $this->message->success("Pronto {$this->user->first_name}, O aluno foi atualizado com sucesso!")->render();
             echo json_encode($json);

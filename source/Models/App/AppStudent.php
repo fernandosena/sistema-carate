@@ -68,9 +68,9 @@ class AppStudent extends Model
     {
         if($this->type){
             if($this->type == "black"){
-                return (new HistoricBelt())->find("black_belt_id = :id", "id={$this->id}")->order("created_at desc")->fetch();
+                return (new HistoricBelt())->find("black_belt_id = :id", "id={$this->id}")->order("graduation_data desc")->fetch();
             }else{
-                return (new HistoricBelt())->find("kyus_id = :id", "id={$this->id}")->order("created_at desc")->fetch();
+                return (new HistoricBelt())->find("kyus_id = :id", "id={$this->id}")->order("graduation_data desc")->fetch();
             }
         }
         return null;
@@ -81,7 +81,7 @@ class AppStudent extends Model
      */
     public function historic($terms = null, $params = null): ?array
     {
-        return (new HistoricBelt())->find("black_belt_id = :id OR kyus_id = :id {$terms}", "id={$this->id}{$params}")->order("created_at desc")->fetch(true);
+        return (new HistoricBelt())->find("black_belt_id = :id OR kyus_id = :id {$terms}", "id={$this->id}{$params}")->order("graduation_data desc")->fetch(true);
     }
 
     /**
@@ -396,9 +396,9 @@ class AppStudent extends Model
     {
         $historic = false;
         if($this->type == 'black'){
-            $historic = (new HistoricBelt())->find("black_belt_id = :id AND status = 'approved'", "id={$this->id}")->order("created_at desc")->fetch();
+            $historic = (new HistoricBelt())->find("black_belt_id = :id AND status = 'approved'", "id={$this->id}")->order("graduation_data desc")->fetch();
         }else{
-            $historic = (new HistoricBelt())->find("kyus_id = :id AND status = 'approved'", "id={$this->id}")->order("created_at desc")->fetch();
+            $historic = (new HistoricBelt())->find("kyus_id = :id AND status = 'approved'", "id={$this->id}")->order("graduation_data desc")->fetch();
         }
 
         if($historic){

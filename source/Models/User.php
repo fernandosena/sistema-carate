@@ -3,8 +3,6 @@
 namespace Source\Models;
 
 use Source\Core\Model;
-use Source\Models\App\AppBlackBelt;
-use Source\Models\App\AppKyus;
 use Source\Models\App\AppPayments;
 use Source\Models\App\AppStudent;
 use Source\Models\Belt;
@@ -81,7 +79,7 @@ class User extends Model
      */
     public function historic($terms = null, $params = null): ?array
     {
-        return (new HistoricBelt())->find("instructor_id = :id{$terms}", "id={$this->id}{$params}")->order("created_at desc")->fetch(true);
+        return (new HistoricBelt())->find("instructor_id = :id{$terms}", "id={$this->id}{$params}")->order("graduation_data desc")->fetch(true);
     }
 
     /**

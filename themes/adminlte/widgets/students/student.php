@@ -51,7 +51,7 @@
                                         <li <?= ($c == 1) ? 'class="active"': null?>>
                                             <h6><?= $historic->findBelt($historic->graduation_id)->title ?><?= ($historic->status == "pending") ? " - <span class='badge bg-warning'>Em Análise</span>" : (($historic->status == "disapprove") ? " - <span class='badge bg-danger'>Reprovado</span>" : null) ; ?></h6>
                                             <p class="mb-0 text-muted"><?= $historic->description ?></p>
-                                            <o class="text-muted"><?= date_fmt($historic->created_at, "d/m/y \à\s H\hi"); ?></p>
+                                            <o class="text-muted"><?= date_fmt($historic->graduation_data, "d/m/y \à\s H\hi"); ?></p>
 
                                             <?php if($historic->status == "pending"): ?>
                                                 <a href="#" class="btn bg-success"
