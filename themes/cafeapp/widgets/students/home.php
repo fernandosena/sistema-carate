@@ -51,6 +51,7 @@
                         }else{
                             $budges = verify_renew($student->created_at);
                         }
+
                         if($budges){
                             $btnOptions = true;
                         }
@@ -64,7 +65,7 @@
                         }
                     }
                 ?>
-                    <tr>
+                    <tr style="background-color: <?= ($budges) ? "#ffd6d6" : null ?>">
                         <td><a title="<?= $student->fullName(); ?>"
                         href="<?= url("/app/aluno/{$type}/{$student->id}"); ?>"><?= str_limit_words($student->fullName(), 3, "...") ?> <?= (calcularIdade($student->datebirth) < 13) ? "<strong class='badge bg-success'>Até 12 anos</strong>": "" ?></a></td>
 
@@ -74,18 +75,18 @@
                         <td><strong class="badge bg-<?= ($student->status == 'activated') ? 'success': (($student->status == 'pending') ? 'warning' : 'danger') ?>"><?= ($student->status == 'activated') ? 'Ativo': (($student->status == 'pending') ? 'Pendente' : 'Desativado') ?></strong></span></td>
                         <td>
                             <?php if($btnOptions): ?>
-                                <a href="#" class="btn bg-success"
+                                <a href="#"
                                 data-post="<?= url("app/alunos") ?>"
                                 data-action="payment"
                                 data-type="create"
-                                data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Renovar afiliação</a>
+                                data-student_id="<?= $student->id; ?>"><button  class="btn bg-primary"><i class="fa-solid fa-circle-check"></i> Renovar afiliação</button></a>
                             <?php endif; ?>
                             <?php  if($btnCancel): ?>
-                                <a href="#" class="btn bg-warning"
+                                <a href="#"
                                 data-post="<?= url("app/alunos") ?>"
                                 data-action="payment"
                                 data-type="cancel"
-                                data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Cancelar </a>
+                                data-student_id="<?= $student->id; ?>"><button  class="btn bg-danger"><i class="fa-solid fa-circle-check"></i> Cancelar renovação </button></a>
                             <?php endif; ?>
                             <?php  if(!$budges && !$btnCancel && !$btnOptions): ?>
                                 Atualizado
@@ -95,17 +96,17 @@
                             <?php
                                 if($student->historicbeltscount()){
                             ?>
-                                <a href="#" class="btn bg-warning"
+                                <a href="#"
                                 data-post="<?= url("/app/alunos/faixa"); ?>"
                                 data-action="update-reverse"
                                 data-id="<?= $student->id ?>"
-                                data-type="<?= $student->type; ?>"><i class="fa-solid fa-circle-check"></i> Cancelar graduação</a>
+                                data-type="<?= $student->type; ?>"><button  class="btn bg-danger"><i class="fa-solid fa-circle-check"></i> Cancelar graduação</button></a>
                             <?php
                                 }else{
                             ?>  
                                 <?php if($student->status == "activated"): ?>
-                                    <a href="#" class="btn bg-success" data-modalopen=".app_modal_student_renew" data-modelid="<?= $student->id ?>"
-                                    data-modeltype="<?= $student->type ?>">Subir de graduação</a>
+                                    <a href="#" data-modalopen=".app_modal_student_renew" data-modelid="<?= $student->id ?>"
+                                    data-modeltype="<?= $student->type ?>" data-graduation="<?= $student->getLastGraduation()->title ?>"><button  class="btn bg-success">Subir de graduação</button></a>
                                 <?php else: ?>
                                     Atualizada
                                 <?php endif ?>

@@ -28,38 +28,38 @@
                                         $studentPhoto = ($student->photo() ? image($student->photo, 300, 300) :
                                         theme("/assets/images/avatar.jpg", CONF_VIEW_ADMIN));
                                     ?>
-                                    <tr>
-                                        <?php 
-                                            //Verifica se existe algum pagamento pendente
-                                            $verify = false;
-                                            $btnOptions = false;
-                                            $btnCancel = false;
-                                            $budges = false;
-                                            $paymentsPending = $student->paymentsPendingId();
+                                    <?php 
+                                        //Verifica se existe algum pagamento pendente
+                                        $verify = false;
+                                        $btnOptions = false;
+                                        $btnCancel = false;
+                                        $budges = false;
+                                        $paymentsPending = $student->paymentsPendingId();
 
-                                            //Verifica se existe um ultimo pagamento (oportunidade para cancelar)
-                                            $lastPayment = $student->paymentsActivatedLast();
+                                        //Verifica se existe um ultimo pagamento (oportunidade para cancelar)
+                                        $lastPayment = $student->paymentsActivatedLast();
 
-                                            if($paymentsPending){
-                                                $btnOptions = true;
-                                            }else{
-                                                if($lastPayment){
-                                                    $dataPayment = new DateTime($lastPayment->created_at);
-                                                    $now = new DateTime();
-                                                    $diferenca = $now->diff($dataPayment);
+                                        if($paymentsPending){
+                                            $btnOptions = true;
+                                        }else{
+                                            if($lastPayment){
+                                                $dataPayment = new DateTime($lastPayment->created_at);
+                                                $now = new DateTime();
+                                                $diferenca = $now->diff($dataPayment);
 
-                                                    $budges = verify_renew($lastPayment->created_at);
+                                                $budges = verify_renew($lastPayment->created_at);
 
-                                                    if($diferenca->days <= 0){
-                                                        $btnCancel = true;
-                                                    }else{
-                                                        $verify = true;
-                                                    }
+                                                if($diferenca->days <= 0){
+                                                    $btnCancel = true;
                                                 }else{
-                                                    $budges = verify_renew($student->created_at);                                                    
+                                                    $verify = true;
                                                 }
+                                            }else{
+                                                $budges = verify_renew($student->created_at);                                                    
                                             }
-                                        ?>
+                                        }
+                                    ?>
+                                    <tr style="background-color: <?= ($budges) ? "#ffd6d6" : null ?>">
                                         <td>
                                             <img class="profile-user-img img-fluid img-circle img-table" src="<?= $studentPhoto; ?>" alt="<?= $student->fullName(); ?>">
                                         </td>
@@ -109,10 +109,10 @@
                                                 <?php endif; ?>
                                             <?php endif; ?>
                                         </td>
-                                        <td class="text-center">   
+                                        <td class="text-center">  
                                             <?php if($budges || $btnCancel || $btnOptions): ?>
                                                 <?php 
-                                                    $penalty = verify_penalty($paymentsPending->create_at);
+                                                    $penalty = verify_penalty($paymentsPending->created_at ?? $student->renewal_data);
                                                     if($penalty):  
                                                 ?>
                                                         <strong class="badge bg-danger">Multa de <?= $penalty*100 ?>%</strong>

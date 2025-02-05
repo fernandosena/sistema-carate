@@ -55,7 +55,7 @@
                                                 }
                                             }
                                         ?>
-                                    <tr>
+                                    <tr style="background-color: <?= ($budges) ? "#ffd6d6" : null ?>">
                                         <td>
                                             <img class="profile-user-img img-fluid img-circle img-table" src="<?= $userPhoto; ?>" alt="<?= $user->fullName(); ?>">
                                         </td>
@@ -97,7 +97,7 @@
                                         <td class="text-center">   
                                             <?php if($budges || $btnCancel || $btnOptions): ?>
                                                 <?php 
-                                                    $penalty = verify_penalty($paymentsPending->create_at);
+                                                    $penalty = verify_penalty($paymentsPending->created_at ?? $user->renewal_data);
                                                     if($penalty):  
                                                 ?>
                                                         <strong class="badge bg-danger">Multa de <?= $penalty*100 ?>%</strong>

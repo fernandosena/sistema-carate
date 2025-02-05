@@ -6,6 +6,7 @@ use Source\Core\Controller;
 use Source\Core\Session;
 use Source\Core\View;
 use Source\Models\App\AppPayments;
+use Source\Models\App\AppTransfers;
 use Source\Models\Auth;
 use Source\Models\Belt;
 use Source\Models\App\AppCategory;
@@ -101,6 +102,97 @@ class App extends Controller
         };
 
         echo json_encode($json);
+    }
+
+    public function transfer(?array $data): void
+    {
+        if(!empty($data["dojo"]) && str_contains($data["dojo"], '|') && !empty($data["id"]) && !empty($data["type"])){
+
+            $dados = explode("|", $data["dojo"]);
+
+            //Consulta Aluno
+            $student = (new AppStudent())->find("user_id = :uid AND id = :id", "uid={$this->user->id}&id={$data["id"]}")->fetch();
+            if (!$student) {
+                $json["message"] = $this->message->warning("O Aluno informado não foi encontrado")->render();
+                echo json_encode($json);
+                return;
+            }
+
+            //Consulta Instrutor
+            $instructor = (new User())->findById($dados[0]);
+            if (!$instructor) {
+                $json["message"] = $this->message->warning("O Instrutor informado não foi encontrado")->render();
+                echo json_encode($json);
+                return;
+            }
+
+            //Consulta Dojo
+            $dojos = explode(",", $instructor->dojo);
+            if (!in_array($dados[1], $dojos)) {
+                $json["message"] = $this->message->warning("O Sojo informado não foi encontrado")->render();
+                echo json_encode($json);
+                return;
+            }
+
+            //Verifica se tem um registro pendente de tranferencia desse usuário
+            $transfer = (new AppTransfers())->find("student_id = :id AND status = 'pending'", "id={$data["id"]}")->fetch();
+            if ($transfer) {
+                $json["message"] = $this->message->warning("Esse aluno já foi tranferido")->render();
+                echo json_encode($json);
+                return;
+            }
+            
+            //Cadastra tranferencia
+            $transfer = (new AppTransfers());
+            $transfer->id_of = $this->user->id;
+            $transfer->id_from = $dados[0];
+            $transfer->student_id = $data["id"];
+            $transfer->dojo = $dados[1];
+            $transfer->status = "pending";
+            
+            if (!$transfer->save()) {
+                $json["message"] = $transfer->message()->before("Ooops! ")->render();
+                echo json_encode($json);
+                return;
+            }
+            
+            $this->message->success("Aluno tranferido com sucesso, aguardando aprovação do instrutor")->flash();
+            echo json_encode(["reload" => true]);
+            return;
+        }
+
+        if(!empty($data['action'])){
+            if($data["action"] == "cancel"){
+                //Consulta Aluno na tabela de tranferencia
+                $tranfer = (new AppTransfers())->find("id_of = :of AND student_id = :id AND status = 'pending'", "of={$this->user->id}&id={$data["student_id"]}")->fetch();
+                if(!$tranfer->destroy()){
+                    $json["message"] = $tranfer->message()->before("Ooops! ")->render();
+                    echo json_encode($json);
+                    return;
+                }
+
+                $this->message->success("Tranferencia cancelada com sucesso!")->flash();
+                echo json_encode(["reload" => true]);
+                return;
+            }
+        }
+
+        $json["message"] = $this->message->error("Informe os dados solicitados antes de enviar")->render();
+        echo json_encode($json);
+    }
+
+    public function documents(?array $data): void
+    {
+        $head = $this->seo->render(
+            "Documentos " . CONF_SITE_NAME,
+            CONF_SITE_DESC,
+            url(),
+            theme("/assets/images/share.jpg"),
+            false
+        );
+        echo $this->view->render("documents", [
+            "head" => $head,
+        ]);
     }
 
     /**

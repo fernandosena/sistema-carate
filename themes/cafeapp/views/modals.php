@@ -98,12 +98,51 @@
             <input type="hidden" name="action" value="update-graduation"/>
             <input type="hidden" class="app_modal_student_renew_type" name="type" value="">
             <input type="hidden" class="app_modal_student_renew_id" name="id" value="">
+            <div class="app_modal_student_renew_graduations">
+                <label>
+                    <span class="field icon-filter">Graduação: </span>
+                    <select name="graduation" required>
+                        <?php 
+                            $graduations = (new \Source\Models\Belt())->find("type_student = :t", "t={$type}")->fetch(true);
+                        ?>
+                        <?php foreach ($graduations as $belt): ?>
+                            <?php if($belt->id !== $student->belts): ?>
+                                <option value="<?= $belt->id; ?>">&ofcir; <?= $belt->title; ?></option>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    </select>
+                </label>
+            </div>
             <label>
                 <span class="field icon-text">Data da graduação:</span>
                 <input type="date" class="radius" name="date" required></t>
             </label>
-
             <button class="btn radius transition icon-check-square-o">Atualizar Graduação</button>
+        </form>
+    </div>
+
+
+    <div class="app_modal_box app_modal_student_transfer">
+        <p class="title icon-user">Tranferir Aluno:</p>
+        <form class="app_form" action="<?= url("/app/transfer"); ?>" method="post">      
+            <input type="hidden" name="id" value="<?= $student->id ?>"/>    
+            <input type="hidden" name="type" value="<?= $type ?>">   
+            <input type="hidden" name="action" value="create">
+            <label>
+                <span class="field icon-status">Dojo:</span>
+                <select name="dojo">
+                    <option value="activated">&ofcir; --- Selecione um Dojo ---</option>
+                    <?php if(!empty($teachers)): ?>
+                        <?php foreach($teachers as $teacher): ?>
+                            <?php foreach (explode(",", $teacher->dojo) as $dojo): ?>
+                                <option value="<?= "{$teacher->id}|{$dojo}" ?>">&ofcir; <?= "{$dojo} - {$teacher->fullName()}" ?></option>
+                            <?php endforeach; ?>  
+                        <?php endforeach; ?>    
+                    <?php endif; ?>
+                </select>
+            </label>
+
+            <button class="btn radius transition icon-check-square-o">Tranferir</button>
         </form>
     </div>
 </div>

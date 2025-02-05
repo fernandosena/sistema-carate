@@ -42,6 +42,31 @@ class Instructors extends Admin
 
         $users = (new User())->find("level < :l", "l=5")->order("first_name asc")->fetch(true);
 
+        $usersActive = [];
+        $usersDebit = [];
+        foreach ($users as $user){
+            //Verifica se existe algum pagamento pendente
+            $budges = false;
+            $paymentsPending = $user->paymentsPendingLast();
+            //Verifica se existe um ultimo pagamento (oportunidade para cancelar)
+            $lastPayment = $user->paymentsActivatedLast();
+
+            if(!$paymentsPending){
+                if($lastPayment){
+                    $budges = verify_renew($lastPayment->created_at);
+                }else{
+                    $budges = verify_renew($user->created_at);                                                    
+                }
+            }
+            if($budges){
+                $usersDebit[] = $user;
+            }else{
+                $usersActive[] = $user;
+            }
+        }
+
+        $users = array_merge($usersActive, $usersDebit);
+
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Usuários",
             CONF_SITE_DESC,
@@ -49,8 +74,6 @@ class Instructors extends Admin
             url("/admin/assets/images/image.jpg"),
             false
         );
-
-
 
         echo $this->view->render("widgets/instructors/home", [
             "app" => "users/home",

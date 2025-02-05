@@ -3,13 +3,13 @@
 namespace Source\App\App;
 
 use Source\Models\App\AppPayments;
+use Source\Models\App\AppTransfers;
 use Source\Models\HistoricBelt;
-use Source\Support\Upload;
-use Source\Models\App\AppBlackBelt;
-use Source\Models\App\AppKyus;
 use Source\Models\User;
+use Source\Support\Upload;
 use Source\Models\Belt;
 use Source\Models\App\AppStudent;
+use stdClass;
 
 /**
  * Class Students
@@ -69,6 +69,55 @@ class Students extends App
                 "renewal" => true
             ]);
             return;
+        }
+
+        if (!empty($data["action"]) && $data["action"] == "transfer") {
+            $transfer_id = $data["transfer_id"];
+            
+            $transfer = (new AppTransfers())->find("id_from = :f AND id = :id", "f={$this->user->id}&id={$transfer_id}")->fetch();
+            if(!$transfer){
+                echo json_encode([
+                    "message" => $this->message->warning("Tranferencia informada não encontrada")->render()
+                ]);
+                return;
+            }
+
+            if($data["type"] == "approved"){
+                $student = (new AppStudent())->findById($transfer->student_id);
+                if(!$student){
+                    echo json_encode([
+                        "message" => $this->message->warning("O Aluno informado não foi encontrado")->render()
+                    ]);
+                    return;
+                }
+
+                $student->user_id = $this->user->id; 
+                $student->dojo = $transfer->dojo;
+
+                if(!$student->save()){
+                    $student->message()->flash();
+                    echo json_encode(["reload" => true]);
+                    return;
+                }
+
+                $transfer->status = "approved";
+                $transfer->save();
+                
+                $this->message->success("Tranferência aprovada com sucesso...")->flash();
+                echo json_encode(["reload" => true]);
+                return;                
+            }else{
+                if(!$transfer->destroy()){
+                    $transfer->message()->flash();
+                    echo json_encode(["reload" => true]);
+                    return;
+                }
+
+                $this->message->success("Tranferência reprovada com sucesso...")->flash();
+                echo json_encode(["reload" => true]);
+                return;
+            }
+
         }
 
         if (!empty($data["action"]) && !empty($data["type"]) && $data["action"] == "create") {
@@ -323,8 +372,40 @@ class Students extends App
 
         //Pesquisa os estuantes
         $students = (new AppStudent())->find("user_id = :user AND type = :type",
-        "user={$this->user->id}}&type={$data["type"]}")->order("first_name asc")->fetch(true);
+        "user={$this->user->id}&type={$data["type"]}")->order("first_name asc")->fetch(true);
 
+        $usersActive = [];
+        $usersDebit = [];
+
+        foreach($students as $student){
+            $budges = false;
+            $btnOptions = false;
+            $lastPayment = $student->paymentsPendingLast();
+
+            //Verifica se existe um ultimo pagamento (oportunidade para cancelar)
+            $paymentsActivatedLast = $student->paymentsActivatedLast();
+
+            if(!$lastPayment){
+                if($paymentsActivatedLast){
+                    $budges = verify_renew($paymentsActivatedLast->created_at);
+                }else{
+                    $budges = verify_renew($student->created_at);
+                }
+
+                if($budges){
+                    $btnOptions = true;
+                }
+            }
+
+            if(!$budges && !$btnOptions){
+                $usersDebit[] = $student;
+            }else{
+                $usersActive[] = $student;
+            }
+        }
+
+        $students = array_merge($usersDebit, $usersActive);
+        
         if($data["type"] == "black"){
             $type = "black";
         }else{
@@ -414,13 +495,19 @@ class Students extends App
                 return;
             }
 
-            $newGraduation = $findGraduation->position + 1;
-            $nextGraduation = (new Belt())->find("age_range = :a AND position = :p","a={$type_age}&p={$newGraduation}")->limit(1)->fetch();
             
-            if (!$nextGraduation) {
-                $json["message"] = $this->message->warning("Não foi encontrar uma proxima graduação para o usuário")->render();
-                echo json_encode($json);
-                return;
+            if($findGraduation->title == "Sem graduação IOGKF"){
+                $nextGraduation = new stdClass();
+                $nextGraduation->id = $data["graduation"];
+            }else{
+                $newGraduation = $findGraduation->position + 1;
+                $nextGraduation = (new Belt())->find("age_range = :a AND position = :p","a={$type_age}&p={$newGraduation}")->limit(1)->fetch();
+                
+                if (!$nextGraduation) {
+                    $json["message"] = $this->message->warning("Não foi encontrar uma proxima graduação para o usuário")->render();
+                    echo json_encode($json);
+                    return;
+                }
             }
 
             $hbelt = (new HistoricBelt());
@@ -473,19 +560,20 @@ class Students extends App
         if($data["type"] == "black"){
             $belts = (new Belt())
                 ->find("title LIKE '%dan%'")
-                ->order("title")
+                ->order("graduation_data ASC")
                 ->fetch(true);
         }else{
             $belts = (new Belt())
             ->find("title NOT LIKE '%dan%'")
-                ->order("title")
+                ->order("graduation_data ASC")
                 ->fetch(true);
         }
         echo $this->view->render("widgets/students/detail", [
             "head" => $head,
             "student" => $student,
             "type" => $data["type"],
-            "belts" => $belts
+            "belts" => $belts,
+            "teachers" => (new User())->find("level != 5")->fetch(true)
         ]);
     }
 

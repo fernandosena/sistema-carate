@@ -48,6 +48,37 @@ class Students extends Admin
         }
 
 
+        $usersActive = [];
+        $usersDebit = [];
+
+        foreach($students as $student){
+            $budges = false;
+            $btnOptions = false;
+            $lastPayment = $student->paymentsPendingLast();
+
+            //Verifica se existe um ultimo pagamento (oportunidade para cancelar)
+            $paymentsActivatedLast = $student->paymentsActivatedLast();
+
+            if(!$lastPayment){
+                if($paymentsActivatedLast){
+                    $budges = verify_renew($paymentsActivatedLast->created_at);
+                }else{
+                    $budges = verify_renew($student->created_at);
+                }
+
+                if($budges){
+                    $btnOptions = true;
+                }
+            }
+
+            if(!$budges && !$btnOptions){
+                $usersDebit[] = $student;
+            }else{
+                $usersActive[] = $student;
+            }
+        }
+
+        $students = array_merge($usersDebit, $usersActive);
 
         $head = $this->seo->render(
             CONF_SITE_NAME . " | Alunos",

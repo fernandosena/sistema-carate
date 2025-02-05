@@ -1,4 +1,6 @@
-<?php $this->layout("_theme"); ?>
+<?php $this->layout("_theme"); 
+
+use Source\Models\App\AppTransfers;?>
 <?php $this->start('style') ?>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 <?php $this->stop() ?>
@@ -66,6 +68,22 @@
                                         <span><?= $student->belt()->title ?></span>
                                     </li>
                                 </ul>
+                            </div>
+                            <div class="list-group list-group-flush text-center mt-4">
+                                <?php 
+                                    $trsnfer = (new AppTransfers())->find("id_of = :of AND student_id = :id AND status = 'pending'", "of=".(user()->id)."&id={$student->id}")->fetch();
+
+                                    if($trsnfer):
+                                ?>
+                                <a href="#"
+                                    data-post="<?= url("app/transfer") ?>"
+                                    data-action="cancel"
+                                    data-student_id="<?= $student->id; ?>"><button  class="btn bg-danger"><i class="fa-solid fa-circle-check"></i> Cancelar Transferência</button></a>
+                                <?php else: ?>
+
+                                <a href="#"
+                                data-modalopen=".app_modal_student_transfer"><button  class="btn bg-success"><i class="fa-solid fa-circle-check"></i> Tranferir Aluno</button></a>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>

@@ -217,6 +217,7 @@ $(function () {
     var modal = clicked.data("modalopen");
     $(".app_modal").fadeIn(effecttime).css("display", "flex");
     $(modal).fadeIn(effecttime);
+    $(modal + "_graduations").hide();
 
     if (clicked.data("modelid")) {
       $(modal + "_id").val(clicked.data("modelid"));
@@ -224,6 +225,10 @@ $(function () {
 
     if (clicked.data("modeltype")) {
       $(modal + "_type").val(clicked.data("modeltype"));
+    }
+    
+    if (clicked.data("graduation") === "Sem graduação IOGKF") {
+      $(modal + "_graduations").show();
     }
   });
 

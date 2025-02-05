@@ -49,7 +49,8 @@ $route->get("/obrigado/{email}", "Web:success");
 $route->namespace("Source\App\App");
 $route->group("/app");
 
-$route->get("/", handler: "App:home");
+$route->get("/", "App:home");
+$route->get("/documents", "App:documents");
 $route->post("/get_belts", "App:getBelts");
 $route->post("/graduation", "App:getgraduation");
 $route->get("/regularization", "App:regularization");
@@ -64,6 +65,7 @@ $route->post("/support", "App:support");
 $route->post("/onpaid", "App:onpaid");
 $route->post("/profile", "App:profile");
 $route->post("/wallets/{wallet}", "App:wallets");
+$route->post("/transfer", "App:transfer");
 
 $route->get("/pagamentos", "Payments:pagamentos");
 $route->post("/pagamentos/gerar", "Payments:pagamentosGerar");

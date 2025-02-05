@@ -87,10 +87,18 @@ function multa_data($data = "now")
 }
 
 function verify_penalty($data = null){
+    $now = new DateTime("now");
+    $nowAno = $now->format('Y');
+
     $data_obj = new DateTime($data);
     $ano = $data_obj->format('Y');
     $mes = $data_obj->format('m');
-    return multa_data($data);
+
+    if(($nowAno-$ano) > 1){
+        return 0;
+
+    }
+    return multa_data($now->format('Y-m-d'));
 }
 
 function verify_renew($data){

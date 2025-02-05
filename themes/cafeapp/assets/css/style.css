@@ -43,6 +43,11 @@ body {
 .btn {
   padding: 5px;
   border-radius: 10px;
+  cursor: pointer;
+  border: none;
+}
+.btn:hover{
+  opacity: .8;
 }
 .app_form .field {
   display: block;

@@ -50,6 +50,7 @@ class Web extends Controller
             "video" => "lDZGl9Wdc7Y",
         ]);
     }
+
     public function profile(array $data): void
     {
         if (!empty($data['csrf'])) {
@@ -75,7 +76,6 @@ class Web extends Controller
                 $files = $_FILES["photo"];
                 $upload = new Upload();
                 $image = $upload->image($files, $user->fullName(), 600);
-
                 if (!$image) {
                     $json["message"] = $upload->message()->render();
                     echo json_encode($json);

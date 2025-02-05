@@ -1,4 +1,6 @@
-<?php $this->layout("_theme"); ?>
+<?php $this->layout("_theme"); 
+
+use Source\Models\App\AppTransfers;?>
     <div class="app_main_box">
         <section class="app_main_left">
             <article class="app_widget">
@@ -33,6 +35,10 @@
                     <h2 class="icon-info">Avisos:</h2>
                 </header>
                 <div class="app_widget_content">
+                    <?php 
+                        $id = user()->id;
+                        $transfers = (new AppTransfers())->find("id_from = :f AND status = 'pending'", "f={$id}")->fetch(true); 
+                    ?>
                     <?php if (!empty($notices)): ?>
                         <?php foreach ($notices as $notice): ?>
                             <article class="app_widget_blog_article">
@@ -43,6 +49,33 @@
                                     <a href="<?= url("app/aluno/{$notice->type}/{$notice->id}"); ?>"
                                        title="<?= $notice->title; ?>"><?= $notice->fullName() ?></a> precisa ser atualizado. O mesmo já é maior de 18 anos
                                 </h3>
+                            </article>
+                        <?php endforeach; ?>
+
+                    <?php elseif(!empty($transfers)): ?>
+                        <?php
+                            foreach($transfers as $transfer):
+                        ?>
+                            <article class="app_widget_blog_article">
+                                <div>
+                                    <div class="thumb">
+                                        <strong class="badge bg-warning">Tranferencia de aluno</strong>
+                                    </div>
+                                    <h3 class="title">o Aluno(a) <strong><?= $transfer->student()->fullName() ?></strong> Foi tranferido para o seu dojo por <strong><?= $transfer->instructor()->fullName() ?></strong>
+                                    </h3>
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 5px">
+                                    <a href="#"
+                                    data-post="<?= url("app/alunos") ?>"
+                                    data-action="transfer"
+                                    data-type="approved"
+                                    data-transfer_id="<?= $transfer->id; ?>"><button  class="btn bg-success"><i class="fa-solid fa-circle-check"></i> Aceitar</button></a>
+                                    <a href="#"
+                                    data-post="<?= url("app/alunos") ?>"
+                                    data-action="transfer"
+                                    data-type="disapprove"
+                                    data-transfer_id="<?= $transfer->id; ?>"><button  class="btn bg-danger"><i class="fa-solid fa-circle-check"></i> Cancelar</button></a>
+                                </div>
                             </article>
                         <?php endforeach; ?>
                     <?php else: ?>
