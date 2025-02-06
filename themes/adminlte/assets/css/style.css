@@ -61,3 +61,21 @@ ul.timeline > li.active:before {
     font-size: 30px;
     border: 2px solid #28a745;
 }
+
+.div_archives{
+    display: flex;
+    gap: 10px;
+}
+.div_archives div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #cecece;
+    border-radius: 7px;
+    padding: 10px;
+}
+.div_archives div h2{
+    font-size: 18px;
+}

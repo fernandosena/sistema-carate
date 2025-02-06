@@ -5,6 +5,7 @@ namespace Source\App\App;
 use Source\Core\Controller;
 use Source\Core\Session;
 use Source\Core\View;
+use Source\Models\App\AppArchives;
 use Source\Models\App\AppPayments;
 use Source\Models\App\AppTransfers;
 use Source\Models\Auth;
@@ -192,6 +193,7 @@ class App extends Controller
         );
         echo $this->view->render("documents", [
             "head" => $head,
+            "documents" => (new AppArchives())->find()->fetch(true)
         ]);
     }
 

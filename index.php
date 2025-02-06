@@ -116,6 +116,10 @@ $route->get("/dash/home", "Dash:home");
 $route->post("/dash/home", "Dash:home");
 $route->get("/logoff", "Dash:logoff");
 
+//Documents
+$route->get("/documents", "Documents:home");
+$route->post("/documents", "Documents:home");
+
 //users
 $route->get("/instructors/home", "Instructors:home");
 $route->post("/instructors/home", "Instructors:home");

@@ -178,6 +178,13 @@
                                     ],
                                 ],
                             );
+                            echo $nav(
+                                [
+                                    "icon"=>"fa-file",
+                                    "href"=>"documents",
+                                    "title"=>"Documentos",
+                                ],
+                            );
                             echo '<li class="nav-header">Sistema</li>';
                             echo $nav(
                                 [
