@@ -347,6 +347,7 @@
                         <thead>
                             <tr>
                                 <th>Nome</th>
+                                <th>Graduação</th>
                                 <th>Data</th>
                             </tr>
                         </thead>
@@ -355,6 +356,7 @@
                         <tfoot>
                             <tr>
                                 <th>Nome</th>
+                                <th>Graduação</th>
                                 <th>Data</th>
                             </tr>
                         </tfoot>
@@ -365,6 +367,7 @@
                         <thead>
                             <tr>
                                 <th>Nome</th>
+                                <th>Graduação</th>
                                 <th>Data</th>
                             </tr>
                         </thead>
@@ -373,6 +376,7 @@
                         <tfoot>
                             <tr>
                                 <th>Nome</th>
+                                <th>Graduação</th>
                                 <th>Data</th>
                             </tr>
                         </tfoot>
@@ -382,6 +386,7 @@
                         <thead>
                             <tr>
                                 <th>Nome</th>
+                                <th>Graduação</th>
                                 <th>Data</th>
                             </tr>
                         </thead>
@@ -390,6 +395,7 @@
                         <tfoot>
                             <tr>
                                 <th>Nome</th>
+                                <th>Graduação</th>
                                 <th>Data</th>
                             </tr>
                         </tfoot>
@@ -570,7 +576,7 @@
             [<?= implode(",", $amount_days["kyusG"] ?? []) ?>]
         );
 
-        function table(table, type, instructorId, yearId, monthId){
+        function table(table, type, instructorId, yearId, monthId, code = false){
             var optionTable = {
                 responsive: true,
                 lengthChange: false,
@@ -616,10 +622,19 @@
                 "serverSide": true,
             };
 
-            optionTable["columns"] = [
-                { "data": "name" },
-                { "data": "created_at"},
-            ];
+            if(code){
+                optionTable["columns"] = [
+                    { "data": "name" },
+                    { "data": "graduation" },
+                    { "data": "created_at"},
+                ];
+            }else{
+                optionTable["columns"] = [
+                    { "data": "name" },
+                    { "data": "created_at"},
+                ];
+            }
+
 
             $(table).DataTable({
                 ...optionTable,
@@ -669,7 +684,8 @@
             'intructor', 
             '#instructorChartG',
             '#yearChartG',
-            '#monthChartG'
+            '#monthChartG',
+            "G"
         );
 
         table(
@@ -677,7 +693,8 @@
             'black',
             '#instructorChartG',
             '#yearChartG',
-            '#monthChartG'
+            '#monthChartG',
+            "G"
         );
 
         table(
@@ -685,7 +702,8 @@
             'kyus',
             '#instructorChartG',
             '#yearChartG',
-            '#monthChartG'
+            '#monthChartG',
+            "G"
         );
     });
 </script>
