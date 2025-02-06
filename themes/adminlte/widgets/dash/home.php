@@ -165,7 +165,7 @@
                     <div class="col-3">
                         <div class="form-group">
                             <label for="yearChart">Ano</label>
-                            <select class="custom-select form-control-border" id="yearChart" data-url="<?= url("admin/chart/quantity") ?>" data-filter="1">
+                            <select class="custom-select form-control-border" id="yearChart" data-url="<?= url("admin/chart/quantity/A") ?>" data-filter="1">
                                 <?php 
                                     $yeaNow = (int) date("Y");
                                     for($i = 2024; $i <= $yeaNow; $i++):
@@ -306,7 +306,7 @@
                     <div class="col-3">
                         <div class="form-group">
                             <label for="yearChartG">Ano</label>
-                            <select class="custom-select form-control-border" id="yearChartG" data-url="<?= url("admin/chart/quantity") ?>" data-filter="1">
+                            <select class="custom-select form-control-border" id="yearChartG" data-url="<?= url("admin/chart/quantity/G") ?>" data-filter="1">
                                 <?php 
                                     $yeaNow = (int) date("Y");
                                     for($i = 2024; $i <= $yeaNow; $i++):
@@ -418,6 +418,7 @@
 
             var data = year.data();
             var load = $(".ajax_load");
+            console.log(data.url);
 
             $.ajax({
                 url: data.url,

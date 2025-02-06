@@ -31,11 +31,23 @@ class Chart extends Admin
         $label = null;
         if(!empty($data)){
             //Filtra Instrutor/Dan e Kyus
-            $result = [
-                "instrutores" => (new User())->quantityDays($data["instructor"],$data["year"],$data["month"]),
-                "dan" => (new AppStudent())->quantityDays('black', $data["instructor"], null, $data["year"], $data["month"]),
-                "kyus" => (new AppStudent())->quantityDays('kyus', $data["instructor"], null, $data["year"], $data["month"]),
-            ];
+
+            if($data["type"] == "A"){
+                $result = [
+                    "instrutores" => (new User())->quantityDays($data["instructor"],$data["year"],$data["month"]),
+                    "dan" => (new AppStudent())->quantityDays('black', $data["instructor"], null, $data["year"], $data["month"]),
+                    "kyus" => (new AppStudent())->quantityDays('kyus', $data["instructor"], null, $data["year"], $data["month"]),
+                ];
+            }
+
+            if($data["type"] == "G"){
+                $result = [
+                    "instrutores" => (new User())->quantityGDays($data["instructor"],$data["year"],$data["month"]),
+                    "dan" => (new AppStudent())->quantityGDays('black', $data["instructor"],  $data["year"], $data["month"]),
+                    "kyus" => (new AppStudent())->quantityGDays('kyus', $data["instructor"],  $data["year"], $data["month"]),
+                ];
+            }
+
             $label = arrayDaysRanger($data["year"], $data["month"]);
         }
         $json["result"] = $result;

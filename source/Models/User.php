@@ -233,7 +233,7 @@ class User extends Model
         }
 
         $u = null;
-        if(!empty($user)){
+        if(!empty($user) && $user != "all"){
             $u = "AND h.instructor_id = {$user}";
         }
 
@@ -263,7 +263,7 @@ class User extends Model
             n.dia
         ORDER BY 
             n.dia";
-
+            
         $datas = $this->query($sql)->fetch(true);
 
 

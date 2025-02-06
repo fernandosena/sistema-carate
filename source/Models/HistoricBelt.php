@@ -90,8 +90,11 @@ class HistoricBelt extends Model
             $sqlParams .= " AND description LIKE '%{$search}%'";
         }
 
-        if(!empty($user) && !empty($type) && $user !== "all"){
+        if(!empty($user) && $user !== "all"){
             $sqlParams .= " AND instructor_id = {$user}";
+        }
+
+        if(!empty($type)){
             if($type == 'black'){
                 $sqlParams .= " AND black_belt_id IS NOT NULL";
             }else if($type == 'kyus'){
