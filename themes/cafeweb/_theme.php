@@ -59,7 +59,7 @@
 </header>
 
 <!--CONTENT-->
-<main class="main_content">
+<main class="main_content" style="min-height: 84vh">
     <?= $this->section("content"); ?>
 </main>
 
@@ -69,36 +69,43 @@
 
 <!--FOOTER-->
 <footer class="main_footer">
-    <div class="container content">
-        <section class="main_footer_content">
-            <article class="main_footer_content_item">
-                <h2>Sobre:</h2>
-                <p>O <?= CONF_SITE_NAME ?> é um gerenciador de contas simples, poderoso e gratuito.</p>
-            </article>
+    <?php if(empty($certificate) && empty($document)): ?>
+        <div class="container content">
+                <section class="main_footer_content">
+                    <article class="main_footer_content_item">
+                        <h2>Sobre:</h2>
+                        <p>O <?= CONF_SITE_NAME ?> é um gerenciador de contas simples, poderoso e gratuito.</p>
+                    </article>
 
-            <article class="main_footer_content_item">
-                <h2>Mais:</h2>
-                <a class="link transition radius" title="Home" href="<?= url(); ?>">Home</a>
-            </article>
+                    <article class="main_footer_content_item">
+                        <h2>Mais:</h2>
+                        <a class="link transition radius" title="Home" href="<?= url(); ?>">Home</a>
+                    </article>
 
-            <article class="main_footer_content_item">
-                <h2>Contato:</h2>
-                <p class="icon-phone"><b>Telefone:</b><br> +55 55 5555.5555</p>
-                <p class="icon-envelope"><b>Email:</b><br> sac@<?= CONF_SITE_DOMAIN ?></p>
-                <p class="icon-map-marker"><b>Endereço:</b><br> Fpolis, SC/Brasil</p>
-            </article>
+                    <article class="main_footer_content_item">
+                        <h2>Contato:</h2>
+                        <p class="icon-phone"><b>Telefone:</b><br> +55 55 5555.5555</p>
+                        <p class="icon-envelope"><b>Email:</b><br> sac@<?= CONF_SITE_DOMAIN ?></p>
+                        <p class="icon-map-marker"><b>Endereço:</b><br> Fpolis, SC/Brasil</p>
+                    </article>
 
-            <article class="main_footer_content_item social">
-                <h2>Social:</h2>
-                <a target="_blank" class="icon-facebook"
-                   href="https://www.facebook.com/<?= CONF_SOCIAL_FACEBOOK_PAGE; ?>" title="<?= CONF_SITE_NAME ?> no Facebook">/<?= CONF_SITE_NAME ?></a>
-                <a target="_blank" class="icon-instagram"
-                   href="https://www.instagram.com/<?= CONF_SOCIAL_INSTAGRAM_PAGE; ?>" title="<?= CONF_SITE_NAME ?> no Instagram">@<?= CONF_SITE_NAME ?></a>
-                <a target="_blank" class="icon-youtube" href="https://www.youtube.com/<?= CONF_SOCIAL_YOUTUBE_PAGE; ?>"
-                   title="<?= CONF_SITE_NAME ?> no YouTube">/<?= CONF_SITE_NAME ?></a>
-            </article>
-        </section>
-    </div>
+                    <article class="main_footer_content_item social">
+                        <h2>Social:</h2>
+                        <a target="_blank" class="icon-facebook"
+                        href="https://www.facebook.com/<?= CONF_SOCIAL_FACEBOOK_PAGE; ?>" title="<?= CONF_SITE_NAME ?> no Facebook">/<?= CONF_SITE_NAME ?></a>
+                        <a target="_blank" class="icon-instagram"
+                        href="https://www.instagram.com/<?= CONF_SOCIAL_INSTAGRAM_PAGE; ?>" title="<?= CONF_SITE_NAME ?> no Instagram">@<?= CONF_SITE_NAME ?></a>
+                        <a target="_blank" class="icon-youtube" href="https://www.youtube.com/<?= CONF_SOCIAL_YOUTUBE_PAGE; ?>"
+                        title="<?= CONF_SITE_NAME ?> no YouTube">/<?= CONF_SITE_NAME ?></a>
+                    </article>
+                </section>
+        </div>
+    <?php else: ?>
+        <p style="text-align: center; padding: 10px">
+            <strong>Copyright © 2025</strong>
+            Todos os direitos reservados.
+        </p>
+    <?php endif; ?>
 </footer>
 <script src="<?= theme("/assets/scripts.js"); ?>"></script>
 <?= $this->section("scripts"); ?>
