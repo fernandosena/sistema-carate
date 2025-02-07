@@ -1,3 +1,29 @@
+<?php 
+    // Verifica se já existe o cookie 'pages' e decodifica
+    if (isset($_COOKIE['pages2'])) {
+        $pages = json_decode($_COOKIE['pages'], true);
+    } else {
+        $pages = [];
+    }
+
+    // Adiciona a URL da página atual
+    $currentUrl = $_SERVER['REQUEST_URI'];
+    if (!in_array($currentUrl, $pages)) {
+        // Adiciona a nova página ao array
+        array_unshift($pages, $currentUrl); // Adiciona ao início para que o último seja o anterior
+        // Limita o número de URLs armazenadas a um número máximo (por exemplo, 10)
+        if (count($pages) > 10) {
+            array_pop($pages); // Remove a página mais antiga se exceder o limite
+        }
+        // Atualiza o cookie com a lista de páginas
+        setcookie('pages2', json_encode($pages), time() + 3600*24, '/'); // O cookie dura 24 hora
+    }else{
+        $pages = array_diff($pages, [$currentUrl]);
+        array_unshift($pages, $currentUrl);
+        // Atualiza o cookie com a lista de páginas
+        setcookie('pages2', json_encode($pages), time() + 3600*24, '/'); // O cookie dura 24 hora
+    }
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -53,7 +79,14 @@
 
         <main class="app_main">
             <div style="text-align: right;margin-bottom: 10px">
-                <a href="<?= url_back() ?>"><- Retornar a página anterior</a>
+                <?php 
+                    if (isset($pages)) {
+                        if (count($pages) > 1) { // Garante que há uma página anterior
+                            $previousPage = $pages[1]; // A página anterior está no índice 0
+                            echo "<a href='$previousPage'><- Retornar a página anterior</a>";
+                        }
+                    }
+                ?>
             </div>
             <div class="al-center"><?= flash(); ?></div>
             <?= $this->section("content"); ?>
