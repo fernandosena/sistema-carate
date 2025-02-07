@@ -514,7 +514,7 @@ class Students extends Admin
         }else{
             $graduations =(new Belt())->find("title NOT LIKE '%dan%'")->order("title")->fetch(true);
         }
-
+        
         echo $this->view->render("widgets/students/student", [
             "app" => "students/student",
             "head" => $head,

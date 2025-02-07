@@ -81,7 +81,8 @@ class AppStudent extends Model
      */
     public function historic($terms = null, $params = null): ?array
     {
-        return (new HistoricBelt())->find("black_belt_id = :id OR kyus_id = :id {$terms}", "id={$this->id}{$params}")->order("graduation_data desc")->fetch(true);
+        $historic =  (new HistoricBelt())->find("black_belt_id = :id OR kyus_id = :id {$terms}", "id={$this->id}{$params}")->order("graduation_data DESC");
+        return $historic ->fetch(true);
     }
 
     /**
