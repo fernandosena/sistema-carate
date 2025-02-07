@@ -445,7 +445,21 @@ class Web extends Controller
     
             // $proximoano = date('Y', strtotime('+1 year'));
             $proximoano = date('Y');
-            $date = "31 de Dezembro de $proximoano";
+
+            if(!empty($user->paymentsActivatedLast()->created_at)){
+                $renew_data = new \DateTime($user->paymentsActivatedLast()->created_at);
+            }else{
+                $renew_data = new \DateTime($user->created_at);
+            }
+            
+            $proximoano = $renew_data->format('Y') + 1;
+
+            if((int) $proximoano <= (int) date('Y')){
+                $date = "28 de Fevereiro de $proximoano";
+            }else{
+                $date = "28 de Fevereiro de ".date('Y', strtotime('+1 year'));
+            }
+            
             if(!empty($user->type)){
                 if($user->type == "black"){
                     $model = "certificado_faixa_preta.jpg";
