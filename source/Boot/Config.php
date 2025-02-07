@@ -87,7 +87,7 @@ define("CONF_MAIL_PORT", "465");
 define("CONF_MAIL_USER", "sac@iogkfbrasil.com.br");
 define("CONF_MAIL_PASS", "jTG#K#540=I");
 define("CONF_MAIL_SENDER", ["name" => "Sistema", "address" => "sac@iogkfbrasil.com.br"]);
-define("CONF_MAIL_SUPPORT", "sac@iogkfbrasil.com.br");
+define("CONF_MAIL_SUPPORT", "fernandocarvalho.sena@gmail.com");
 define("CONF_MAIL_OPTION_LANG", "br");
 define("CONF_MAIL_OPTION_HTML", true);
 define("CONF_MAIL_OPTION_AUTH", true);
