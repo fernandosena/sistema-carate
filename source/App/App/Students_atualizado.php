@@ -206,14 +206,22 @@ class Students extends App
                 }
             }
 
+            //Cadastra o aluno
             if (!$studentCreate->save()) {
                 $json["message"] = $studentCreate->message()->render();
                 echo json_encode($json);
                 return;
             }
 
+            $gErros = [];
+            $hbelIdSaves = [];
+            //Cadastra o historico de graduação
             if (count($data["belt"]) === count($data["date"])) {
+                $register = false;
+                $graduationAtual = (new Belt())->findById($data["graduation"]);
+
                 for ($i = 0; $i < count($data["belt"]); $i++) {
+                    $graduation = (new Belt())->findById($data["belt"][$i]);
                     $hbelt = (new HistoricBelt());
 
                     if($data["type"] == "black"){
@@ -222,12 +230,69 @@ class Students extends App
                         $hbelt->kyus_id = $studentCreate->id;
                     }
 
-                    $hbelt->graduation_id = $data["belt"][$i];
-                    $hbelt->status = "approved";
-                    $hbelt->description = "Histórico inserido pelo Instrutor {$this->user->fullName()}, na data de ";
-                    $hbelt->graduation_data = $data["date"][$i];
-                    $hbelt->save();
+                    if($graduationAtual->type_student == "black"){
+                        if($graduation->type_student == "black"){
+                            //Verifica position
+                            if(!empty($graduationAtual->position) && $graduation->position >= $graduationAtual->position){
+                                $gErros[] = [
+                                    "erro" => "A gradução '{$graduation->title}' não pode ser superior ao atual"
+                                ];
+                                break;
+                            }
+                        }
+                        $register = true;
+                    }else{
+                        if($graduation->type_student == "black"){
+                            $gErros[] = [
+                                "erro" => "A gradução '{$graduation->title}' não pode ser usado para alunos kyus"
+                            ];
+                            break;
+                        }
+
+                        if(!empty($graduationAtual->position) && $graduation->position >= $graduationAtual->position && $graduation->age_range == $graduationAtual->age_range){
+                            $gErros[] = [
+                                "erro" => "A gradução '{$graduation->title}' não pode ser superior ao atual"
+                            ];
+                            break;
+                        }
+
+                        $register = true;
+                    }
+
+                    if($register){
+                        $hbelt->graduation_id = $data["belt"][$i];
+                        $hbelt->status = "approved";
+                        $hbelt->description = "Histórico inserido pelo Instrutor {$this->user->fullName()}, na data de ";
+                        $hbelt->graduation_data = $data["date"][$i];
+                        $hbelt->save();
+                        $hbelIdSaves[] = $hbelt->id;
+                    }
                 }
+            }
+
+            //Exlui os historicos cadastrados se existir algum erro
+            if(!empty($gErros) && !empty($hbelIdSaves)){
+                foreach($hbelIdSaves as $hbelIdSave){
+                    $graduationRemove = (new HistoricBelt())->findById($hbelIdSave);
+                    $graduationRemove->destroy();
+                }
+
+                //Exclui usuario;
+                $studentCreate->destroy();
+            }
+
+            //Mostrar os erros
+            if(!empty($gErros)){
+                //Exclui usuario;
+                $studentCreate->destroy();
+
+                $msg = "";
+                foreach($gErros as $gErro){
+                    $msg .= $this->message->error($gErro["erro"])->render();
+                }
+                $json["message"] = $msg;
+                echo json_encode($json);
+                return;
             }
 
             $hbelt = (new HistoricBelt());
@@ -309,15 +374,6 @@ class Students extends App
                     return;
                 }
 
-                
-                if($data["type"] == 'black'){
-                    $historicLast = (new HistoricBelt())->find("black_belt_id = :id AND status = 'approved'", "id={$student->id}")->order("graduation_data desc")->fetch();
-                }else{
-                    $historicLast = (new HistoricBelt())->find("kyus_id = :id AND status = 'approved'", "id={$student->id}")->order("graduation_data desc")->fetch();
-                }
-
-                $ultimoRegistroData = (new \DateTime($historicLast->graduation_data));
-
                 for ($i = 0; $i < count($data["date"]); $i++) {
                     $date = $data["date"][$i];
 
@@ -327,37 +383,36 @@ class Students extends App
                     if ($dateObj === false) {
                         $json["message"] = $this->message->warning("Formato de data inválido: " . $date)->render();
                         echo json_encode($json);
-                        break;
+                        return;
                     }
 
                     // 2. Obter a data de ontem
                     $yesterday = new \DateTime('now');
 
-                    if($dateObj >= $ultimoRegistroData){
-                        $belt = (new Belt())->findById($data["belt"][$i]);
-                        $json["message"] = $this->message->warning("A Gradução '{$belt->title}' não pode ser com a data superior a atual")->render();
-                        echo json_encode($json);
-                        break;
-                    }
-
                     // 3. Comparar as datas
                     if ($dateObj > $yesterday) {
                         $json["message"] = $this->message->warning("A data " . $date . " é posterior a ontem.")->render();
                         echo json_encode($json);
-                        break;
+                        return;
                     }
                 }
             }
             
-            
+            //Cadastrar o aluno
             if (!$student->save()) {
                 $json["message"] = $student->message()->render();
                 echo json_encode($json);
                 return;
             }
 
+            $gErros = [];
+            $hbelIdSaves = [];
+            //Cadastra o historico de graduação
             if (count($data["belt"]) === count($data["date"])) {
+                $register = false;
+                $graduationAtual = $student->getLastGraduation();
                 for ($i = 0; $i < count($data["belt"]); $i++) {
+                    $graduation = (new Belt())->findById($data["belt"][$i]);
                     $hbelt = (new HistoricBelt());
 
                     if($data["type"] == "black"){
@@ -366,12 +421,62 @@ class Students extends App
                         $hbelt->kyus_id = $student->id;
                     }
 
-                    $hbelt->graduation_id = $data["belt"][$i];
-                    $hbelt->status = "approved";
-                    $hbelt->description = "Histórico inserido pelo Instrutor {$this->user->fullName()}, na data de ";
-                    $hbelt->graduation_data = $data["date"][$i];
-                    $hbelt->save();
+                    if($graduationAtual->type_student == "black"){
+                        if($graduation->type_student == "black"){
+                            //Verifica position
+                            if(!empty($graduationAtual->position) && $graduation->position >= $graduationAtual->position){
+                                $gErros[] = [
+                                    "erro" => "A gradução '{$graduation->title}' não pode ser superior ao atual"
+                                ];
+                            }
+                        }
+                        $register = true;
+                    }else{
+                        if($graduation->type_student == "black"){
+                            $gErros[] = [
+                                "erro" => "A gradução '{$graduation->title}' não pode ser usado para alunos kyus"
+                            ];
+                            break;
+                        }
+
+                        if(!empty($graduationAtual->position) && $graduation->position >= $graduationAtual->position && $graduation->age_range == $graduationAtual->age_range && $graduationAtual->type_student == "black"){
+                            $gErros[] = [
+                                "erro" => "A gradução '{$graduation->title}' não pode ser superior ao atual"
+                            ];
+                            break;
+                        }
+
+                        $register = true;
+                    }
+
+                    if($register){
+                        $hbelt->graduation_id = $data["belt"][$i];
+                        $hbelt->status = "approved";
+                        $hbelt->description = "Histórico inserido pelo Instrutor {$this->user->fullName()}, na data de ";
+                        $hbelt->graduation_data = $data["date"][$i];
+                        $hbelt->save();
+                        $hbelIdSaves[] = $hbelt->id;
+                    }
                 }
+            }
+
+            //Exlui os historicos cadastrados se existir algum erro
+            if(!empty($gErros) && !empty($hbelIdSaves)){
+                foreach($hbelIdSaves as $hbelIdSave){
+                    $graduationRemove = (new HistoricBelt())->findById($hbelIdSave);
+                    $graduationRemove->destroy();
+                }
+            }
+
+            //Mostrar os erros
+            if(!empty($gErros)){
+                $msg = "";
+                foreach($gErros as $gErro){
+                    $msg .= $this->message->error($gErro["erro"])->render();
+                }
+                $json["message"] = $msg;
+                echo json_encode($json);
+                return;
             }
 
             $json["message"] = $this->message->success("Pronto {$this->user->first_name}, O aluno foi atualizado com sucesso!")->render();
@@ -393,7 +498,6 @@ class Students extends App
 
         $usersActive = [];
         $usersDebit = [];
-
         foreach($students as $student){
             $budges = false;
             $btnOptions = false;

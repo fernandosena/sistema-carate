@@ -137,7 +137,7 @@
             <?php endif; ?>
             <label style="display: flex; flex-direction: row;justify-content: space-between; align-items: center;">
                 <span class="field icon-filter" style="margin-bottom: 0">Graduações passadas:</span>
-                <span class="radius transition icon-plus add add-graduations" data-url="<?= url("app/get_belts") ?>">Adicionar</span>
+                <span class="radius transition icon-plus add add-graduations" data-url="<?= url("app/get_belts") ?>" data-id="<?= $student->id ?>" data-type="kyus">Adicionar</span>
             </label>
             <label>
                 <span class="field icon-filter">Dojo:</span>

@@ -19,13 +19,6 @@ $(function () {
     let labelData = $(
       "<label style='margin-bottom: 0px'><span class='field icon-heartbeat'>Data:</span><input type='date' name='date[]' class='radius' placeholder='dd/mm/yyyy' required/></label>"
     );
-    const ontem = new Date();
-    ontem.setDate(ontem.getDate() - 1);
-    const ontemFormatada = ontem.toISOString().split("T")[0];
-    labelData
-      .find('input[type="date"]')
-      .attr("max", ontemFormatada)
-      .val(ontemFormatada);
 
     let buttonDel = $(
       "<span class='del del-graduations' title='Excluir'><i class='icon-trash'></i></span>"
@@ -45,11 +38,21 @@ $(function () {
     $.ajax({
       url: $(this).data("url"),
       type: "POST",
+      data: $(this).data(),
       dataType: "json",
       success: function (data) {
-        if (data && data.length > 0) {
+        if (data.dados && data.dados.length > 0) {
+
+          let ontem = new Date(data.data);
+          ontem.setDate(ontem.getDate() - 1);
+          const ontemFormatada = ontem.toISOString().split("T")[0];
+          labelData
+            .find('input[type="date"]')
+            .attr("max", ontemFormatada)
+            .val(ontemFormatada);
+            
           let optgroupAtual = null;
-          $.each(data, function (index, belt) {
+          $.each(data.dados, function (index, belt) {
             let type =
               belt.type_student == "kyus"
                 ? belt.age_range == "1"

@@ -17,6 +17,7 @@ use Source\Models\App\AppPlan;
 use Source\Models\App\AppSubscription;
 use Source\Models\App\AppWallet;
 use Source\Models\App\AppStudent;
+use Source\Models\HistoricBelt;
 use Source\Models\Report\Access;
 use Source\Models\Report\Online;
 use Source\Models\User;
@@ -86,6 +87,12 @@ class App extends Controller
 
     public function getBelts(?array $data): void
     {
+        if($data["type"] == 'black'){
+            $historicLast = (new HistoricBelt())->find("black_belt_id = :id AND status = 'approved'", "id={$data["id"]}")->order("graduation_data desc")->fetch();
+        }else{
+            $historicLast = (new HistoricBelt())->find("kyus_id = :id AND status = 'approved'", "id={$data["id"]}")->order("graduation_data desc")->fetch();
+        }
+
         $belts = (new Belt())
         ->find()
         ->order("type_student ASC, age_range ASC, title DESC")
@@ -102,7 +109,10 @@ class App extends Controller
             ];
         };
 
-        echo json_encode($json);
+        echo json_encode([
+            "data" => $historicLast->graduation_data,
+            "dados" => $json
+        ]);
     }
 
     public function transfer(?array $data): void
