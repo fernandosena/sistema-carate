@@ -370,7 +370,6 @@ class Students extends Admin
             }
 
             if (!$studentUpdate->save()) {
-                var_dump($studentUpdate->fail());
                 $json["message"] = $studentUpdate->message()->render();
                 echo json_encode($json);
                 return;
@@ -378,12 +377,13 @@ class Students extends Admin
 
             if($data["type"] == "black"){
                 $hbelt = (new HistoricBelt());
-                $find = $hbelt->find("black_belt_id = :id OR  AND graduation_id = :gid", "id={$studentUpdate->id}&gid={$data["graduation"]}")->count();
+                $find = $hbelt->find("black_belt_id = :id AND graduation_id = :gid", "id={$studentUpdate->id}&gid={$data["graduation"]}")->count();
                 
                 if(!$find){
                     $hbelt->black_belt_id = $studentUpdate->id;
                     $hbelt->graduation_id = $data["graduation"];
                     $hbelt->description = "Alteração de graduação realizada pelo administrador";
+                    $hbelt->status = "approved";
                     $hbelt->save();
                 }
             }else{
@@ -394,6 +394,7 @@ class Students extends Admin
                     $hbelt->kyus_id = $studentUpdate->id;
                     $hbelt->graduation_id = $data["graduation"];
                     $hbelt->description = "Alteração de graduação realizada pelo administrador";
+                    $hbelt->status = "approved";
                     $hbelt->save();
                 }
             }
@@ -440,7 +441,6 @@ class Students extends Admin
         //update graduation
         if (!empty($data["action"]) && $data["action"] == "update_graduation") {
             $data = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
-            
             $historic = (new HistoricBelt())->findById($data["historic_id"]);
 
             if (!$historic) {
@@ -523,6 +523,7 @@ class Students extends Admin
                 "url" => url("admin/students/{$data["type"]}/student/{$studentEdit->id}"),
                 "graduations" => $graduations,
                 "data" => $studentEdit,
+                "lastgraduation" => $studentEdit->getLastGraduation(),
                 "type" => $data["type"],
                 "teachers" => (new User())->find("level < :l", "l=5")->order("id")->fetch(true)
             ],

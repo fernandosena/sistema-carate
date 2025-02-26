@@ -45,11 +45,11 @@ $(function () {
 
           let ontem = new Date(data.data);
           ontem.setDate(ontem.getDate() - 1);
-          const ontemFormatada = ontem.toISOString().split("T")[0];
-          labelData
-            .find('input[type="date"]')
-            .attr("max", ontemFormatada)
-            .val(ontemFormatada);
+          // const ontemFormatada = ontem.toISOString().split("T")[0];
+          // labelData
+          //   .find('input[type="date"]')
+          //   .attr("max", ontemFormatada)
+          //   .val(ontemFormatada);
             
           let optgroupAtual = null;
           $.each(data.dados, function (index, belt) {

@@ -1,11 +1,11 @@
 <?php 
     // Verifica se já existe o cookie 'pages' e decodifica
     if (isset($_COOKIE['pages2'])) {
-        $pages = json_decode($_COOKIE['pages'], true);
+        $pages = json_decode($_COOKIE['pages2'], true);
     } else {
         $pages = [];
     }
-
+    
     // Adiciona a URL da página atual
     $currentUrl = $_SERVER['REQUEST_URI'];
     if (!in_array($currentUrl, $pages)) {

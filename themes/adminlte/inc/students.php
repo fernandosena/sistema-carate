@@ -210,12 +210,13 @@
                 <div class="form-group">
                     <label>*Graduação</label>
                     <?php
-                        $graduation = $form["data"]->graduation;
+                        $graduation = $form["lastgraduation"]->id;
                         $select = function ($value) use ($graduation) {
                             return ($graduation == $value ? "selected" : "");
                         };
                     ?>
                     <select class="form-control" required name="graduation">
+                        <option selected value="">Selecione uma graduação</option>
                         <?php foreach($form["graduations"] as $graduation): ?>
                             <option <?= $select($graduation->id); ?> value="<?= $graduation->id ?>"><?= $graduation->title ?></option>
                         <?php endforeach;   ?>
