@@ -212,7 +212,7 @@ class Students extends App
                 return;
             }
 
-            if (count($data["belt"]) === count($data["date"])) {
+            if (!empty($data["belt"]) && (count($data["belt"]) === count($data["date"]))) {
                 for ($i = 0; $i < count($data["belt"]); $i++) {
                     $hbelt = (new HistoricBelt());
 
