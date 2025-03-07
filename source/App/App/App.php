@@ -76,7 +76,7 @@ class App extends Controller
 
         $data_obj = new \DateTime("now");
         $mes = $data_obj->format('m');;
-        if((verify_renew($this->user->last_renewal_data)) && ($mes >= 3)){
+        if($msg && ($mes >= 3)){
             $this->message->error("Usuário pendente para regularização, realize o pagamento")->flash();
             if(!str_contains($_SERVER["REQUEST_URI"], "regularization") && !str_contains($_SERVER["REQUEST_URI"], "sair")){
                 redirect("app/regularization");
