@@ -13,7 +13,6 @@ use Source\Models\App\AppPlan;
 use Source\Models\App\AppSubscription;
 use Source\Models\App\AppWallet;
 use Source\Models\App\AppBlackBelt;
-use Source\Models\App\AppKyus;
 use Source\Models\Post;
 use Source\Models\Report\Access;
 use Source\Models\Report\Online;
@@ -54,12 +53,19 @@ class App extends Controller
         (new AppInvoice())->fixed($this->user, 3);
 
         //UNCONFIRMED EMAIL
-        if ($this->user->status != "confirmed") {
-            $session = new Session();
-            if (!$session->has("appconfirmed")) {
-                $this->message->info("IMPORTANTE: Acesse seu e-mail para confirmar seu cadastro e ativar todos os recursos.")->flash();
-                $session->set("appconfirmed", true);
-                (new Auth())->register($this->user);
+        // if ($this->user->status != "confirmed") {
+        //     $session = new Session();
+        //     if (!$session->has("appconfirmed")) {
+        //         $this->message->info("IMPORTANTE: Acesse seu e-mail para confirmar seu cadastro e ativar todos os recursos.")->flash();
+        //         $session->set("appconfirmed", true);
+        //         (new Auth())->register($this->user);
+        //     }
+        // }
+
+        if(verify_renew($this->user->last_renewal_data)){
+            $this->message->error("Usuário pendente para regularização, realize o pagamento")->flash();
+            if(!str_contains($_SERVER["REQUEST_URI"], "regularization")){
+                redirect("app/regularization");
             }
         }
     }
@@ -623,6 +629,50 @@ class App extends Controller
                 ->fetch(true)
         ]);
     }
+    
+    public function regularization(?array $data): void
+    {
+        $head = $this->seo->render(
+            "Regularização - " . CONF_SITE_NAME,
+            CONF_SITE_DESC,
+            url(),
+            theme("/assets/images/share.jpg"),
+            false
+        );
+
+        if (!empty($data["action"]) && $data["action"] == "payment") {
+            $user_id = $data["user_id"];
+
+            $user = (new User())->findById($user_id);
+            if(!$user){
+                echo json_encode([
+                    "message" => $this->message->warning("Usuario informado não existe")->render()
+                ]);
+                return;
+            }
+
+            $user->renewal = 'pending';
+            $user->renewal_data = date("Y-m-d");
+
+            if(!$user->save()){
+                var_dump($user->fail());
+                echo json_encode([
+                    "message" => $this->message->error("Erro ao atualizar usuario")->render()
+                ]);
+                return;
+            }
+
+            echo json_encode([
+                "renewal" => true
+            ]);
+            return;
+        }
+
+        echo $this->view->render("regularization", [
+            "head" => $head,
+        ]);
+    }
+
 
     /**
      * APP LOGOUT

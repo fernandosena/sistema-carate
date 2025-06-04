@@ -104,14 +104,7 @@ class Auth extends Model
             $this->message->error("Desculpe, mas você não tem permissão para logar-se aqui");
             return null;
         }
-
-        if ($user->level != 5) {
-            if (verify_renewal_data($user->renewal, $user->last_renewal_data)) {
-                $this->message->error("Usuário pendente para regularização, favor contante o administrador do sistema");
-                return null;
-            }
-        }
-
+        
         if (passwd_rehash($user->password)) {
             $user->password = $password;
             $user->save();

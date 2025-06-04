@@ -46,7 +46,9 @@ $route->get("/obrigado/{email}", "Web:success");
 $route->namespace("Source\App\App");
 $route->group("/app");
 
-$route->get("/", "App:home");
+$route->get("/", handler: "App:home");
+$route->get("/regularization", "App:regularization");
+$route->post("/regularization", "App:regularization");
 $route->get("/perfil", "App:profile");
 $route->get("/sair", "App:logout");
 $route->post("/dash", "App:dash");

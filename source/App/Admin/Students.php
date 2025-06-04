@@ -193,6 +193,7 @@ class Students extends Admin
             }
 
             $student->renewal = 'approved';
+            $student->last_renewal_data = date("Y-m-d");
 
             if(!$student->save()){
                 echo json_encode([

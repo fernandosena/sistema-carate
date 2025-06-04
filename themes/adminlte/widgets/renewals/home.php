@@ -34,60 +34,52 @@
 
                                             <td>
                                                 <?php 
-                                                    $renewal_data = verify_renewal_data($student->renewal, $student->last_renewal_data);
-                                                    if($renewal_data):
-                                                        if(!empty($student->user_id)):
-                                                ?>
-                                                        <?php if($student->renewal == "pending"): ?>
+                                                $last_renewal_data = $student->last_renewal_data;
+                                                if(verify_renew($last_renewal_data)): ?>
+                                                    <?php if(empty($student->renewal)): ?>
+                                                        <strong class="badge bg-warning">Aguardando envio</strong>
+                                                    <?php elseif($student->renewal == "approved"): ?>
+                                                        <strong class="badge bg-success">Pagamento realizado</strong></strong>
+                                                    <?php else: ?>
+                                                        <?php if(!empty($student->user_id)): ?>
+                                                            <a href="#" class="btn bg-success"
+                                                            data-postbtn="<?= url("admin/students/$student->type/student") ?>"
+                                                            data-action="payment"
+                                                            data-user_id="<?= user()->id; ?>"
+                                                            data-student_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Aprovar</a>
+                                                        <?php else: ?>
                                                             <a href="#" class="btn bg-success"
                                                             data-postbtn="<?= url("admin/instructors/instructor") ?>"
                                                             data-action="payment"
                                                             data-user_id="<?= user()->id; ?>"
                                                             data-instruncto_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Aprovar</a>
-                                                        <?php elseif($student->renewal == "approved"):  ?>
-                                                            <strong class="badge bg-success">Pagamento realizado</strong>
-                                                        <?php else: ?>
-                                                            <strong class="badge bg-warning">Aguardando envio</strong>
                                                         <?php endif; ?>
-                                                    <?php else: ?>
-                                                        <a href="#" class="btn bg-success"
-                                                        data-postbtn="<?= url("admin/instructors/instructor") ?>"
-                                                        data-action="payment"
-                                                        data-user_id="<?= user()->id; ?>"
-                                                        data-instruncto_id="<?= $student->id; ?>"><i class="fa-solid fa-circle-check"></i> Aprovar</a>
                                                     <?php endif; ?>
                                                 <?php else: ?>
-                                                    Atualizado
+                                                    atualizado
                                                 <?php endif; ?>
                                             </td>
                                             <td>
                                                 <?php 
-                                                    if($renewal_data){
-                                                        $instructor = false;
-                                                        if(empty($student->user_id)){
-                                                            $instructor = true;
+                                                    if(verify_renew($last_renewal_data)):
+                                                        if(!empty($student->renewal) && ($student->renewal == "pending")){
+                                                            $last_renewal_data = $student->renewal_data;
                                                         }
-                                                        
-                                                        $multa = verify_multa_renewal_data($student->renewal, $student->last_renewal_data, $instructor);
-                                                        if(!empty($multa)){
-                                                            ?>
-                                                                <strong class="badge bg-danger">
-                                                                    <?php 
-                                                                        $multa = $multa *100;
-                                                                        echo "Multa de {$multa}%";
-                                                                    ?>
-                                                                </strong>
-                                                            <?php
-                                                        }else{
-                                                            ?>
-                                                                <strong class="badge bg-success">Sem multa</strong>
-                                                            <?php
+                                                        if(empty($student->renewal)){
+                                                            $last_renewal_data=null;
                                                         }
-                                                            
-                                                    }else{
-                                                        echo "Atualizado";
-                                                    }
+
+                                                        $verify = verify_penalty($last_renewal_data);
+                                                        if($verify):
+                                                            $multa = $verify *100;
                                                 ?>
+                                                        <strong class="badge bg-danger">Multa de <?= $multa ?>%</strong>
+                                                    <?php else:?>
+                                                        <strong class="badge bg-success">Sem multa</strong>
+                                                    <?php endif;?>
+                                                <?php else: ?>
+                                                    atualizado
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>

@@ -15,6 +15,18 @@ function is_email(string $email): bool
     return filter_var($email, FILTER_VALIDATE_EMAIL);
 }
 
+function count_renewals()
+{
+    $user = (new \Source\Models\User())->find("level != :l AND YEAR(last_renewal_data) < YEAR(CURRENT_DATE())", "l=5")->count();
+    $students = (new \Source\Models\App\AppStudent())->find("YEAR(last_renewal_data) < YEAR(CURRENT_DATE())")->count();
+
+    return [
+        "all" => $user+$students,
+        "user" => $user,
+        "students" => $students,
+    ];
+}
+
 function verify_multa_data($data = "now")
 {
     $data_obj = new DateTime($data);
@@ -31,18 +43,6 @@ function verify_multa_data($data = "now")
     }
 
     return $multa;
-}
-
-function count_renewals()
-{
-    $user = (new \Source\Models\User())->find("level != :l AND YEAR(last_renewal_data) < YEAR(CURRENT_DATE())", "l=5")->count();
-    $students = (new \Source\Models\App\AppStudent())->find("YEAR(last_renewal_data) < YEAR(CURRENT_DATE())")->count();
-
-    return [
-        "all" => $user+$students,
-        "user" => $user,
-        "students" => $students,
-    ];
 }
 
 function verify_renewal_data($renewal, $last_renewal_data, $instructor = false): bool|string
@@ -65,6 +65,42 @@ function verify_renewal_data($renewal, $last_renewal_data, $instructor = false):
 
     return False;
 }
+
+function multa_data($data = "now")
+{
+    $data_obj = new DateTime($data);
+
+    // Obtém o mês e o dia da data
+    $mes = $data_obj->format('m');
+
+    if (($mes >= 1 && $mes <= 2)) {
+        $multa = 0;
+    } elseif (($mes >= 3 && $mes <= 5)) {
+        $multa = 0.5;
+    } else {
+        $multa = 1;
+    }
+
+    return $multa;
+}
+
+function verify_penalty($data = null){
+    $data_obj = new DateTime($data);
+    $ano = $data_obj->format('Y');
+    $mes = $data_obj->format('m');
+    return multa_data($data);
+}
+
+function verify_renew($data){
+    $data_obj = new DateTime($data);
+    $ano = $data_obj->format('Y');
+    if($ano < date('Y')){
+        return true;
+    }
+    return false;
+}
+
+
 function verify_multa_renewal_data($renewal, $last_renewal_data, $instructor = false): bool|string
 {
     if(!empty($last_renewal_data)){

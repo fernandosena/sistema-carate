@@ -25,7 +25,7 @@
                                     ?>
                                     <tr>
                                         <td>
-                                            <img class="profile-user-img img-fluid img-circle" src="<?= $studentPhoto; ?>" alt="<?= $student->fullName(); ?>">
+                                            <img class="profile-user-img img-fluid img-circle img-table" src="<?= $studentPhoto; ?>" alt="<?= $student->fullName(); ?>">
                                         </td>
                                         <td><h3 class="profile-username text-center"><?= $student->fullName(); ?></h3></td>
                                         <td><?= date_fmt($student->created_at, "d/m/y \à\s H\hi"); ?>
